@@ -1,4 +1,6 @@
 import { getAllCameras } from "@/lib/cameras";
+import { fetchBatchCameraSnapshots } from "@/lib/server-camera";
+import { analyzeFloodWithGemini, CameraImageInput } from "@/lib/server-flood-analysis";
 import {
   CameraFloodAnalysis,
   CameraItem,
@@ -65,7 +67,9 @@ export function getDistanceKm(
 
 /**
  * Fetch and aggregate weather & flood state on the server for all cameras.
- * Uses Spatial Haversine Clustering to minimize Open-Meteo API requests by >95%.
+ * 1. Uses Spatial Haversine Clustering to minimize Open-Meteo API requests by >95%.
+ * 2. Implements Weather Gating & TTL Cooldown to avoid unnecessary Gemini calls.
+ * 3. Proactively fetches camera snapshots on the server for rain/storm zones to perform AI flood analysis.
  */
 export async function computeAggregatedWeatherState(): Promise<{
   weatherMap: Record<string, CameraWeatherState>;
@@ -179,13 +183,30 @@ export async function computeAggregatedWeatherState(): Promise<{
     parseInt(process.env.GEMINI_FLOOD_TTL_MINUTES || "10", 10) || 10;
   const floodTtlMs = floodTtlMinutes * 60 * 1000;
 
+  const camsNeedingFloodAnalysis: CameraItem[] = [];
+
   clusters.forEach((cl) => {
     const repW = repResults[cl.representative.CamId];
     if (repW) {
+      const isRainy =
+        [80, 81, 82, 95, 96, 99].includes(repW.weatherCode) ||
+        (repW.precipitation !== undefined && repW.precipitation > 0.5);
+
       cl.members.forEach((m) => {
         fullWeatherMap[m.CamId] = { ...repW };
 
-        // Check if an analyzed flood state already exists and is still within TTL
+        // Layer 1: Weather Gating - Dry/clear weather is automatically Level 0 (0 token, 0 fetch)
+        if (!isRainy) {
+          fullFloodMap[m.CamId] = {
+            camId: m.CamId,
+            floodLevel: "LEVEL_0",
+            description: "Thời tiết thông thoáng - Tuyến đường khô ráo, không ngập",
+            analyzedAt: now,
+          };
+          return;
+        }
+
+        // Layer 2: State TTL Cooldown - Check if analyzed flood state in cache is still fresh (< TTL)
         const existingFlood = cache.floodMap[m.CamId];
         if (
           existingFlood &&
@@ -195,30 +216,84 @@ export async function computeAggregatedWeatherState(): Promise<{
           return;
         }
 
-        // Determine default flood assessment based on weather severity
-        if ([95, 96, 99].includes(repW.weatherCode)) {
-          fullFloodMap[m.CamId] = {
-            camId: m.CamId,
-            floodLevel: "LEVEL_1",
-            description: "Cảnh báo giông bão - Tuyến đường có nguy cơ ngập nhẹ",
-            analyzedAt: now,
-          };
-        } else if ([80, 81, 82].includes(repW.weatherCode)) {
-          fullFloodMap[m.CamId] = {
-            camId: m.CamId,
-            floodLevel: "LEVEL_0",
-            description: "Mưa rào diện rộng - Tuyến đường tạm thời thông suốt",
-            analyzedAt: now,
-          };
+        // Rainy & TTL expired / not yet analyzed -> needs proactive server fetch & AI analysis
+        camsNeedingFloodAnalysis.push(m);
+      });
+    }
+  });
+
+  // 4. Server-side Proactive Snapshot Fetching & AI Flood Analysis for Rainy Cameras
+  if (camsNeedingFloodAnalysis.length > 0) {
+    try {
+      // Proactively fetch camera snapshots on the server
+      const camIds = camsNeedingFloodAnalysis.map((c) => c.CamId);
+      const snapshotResults = await fetchBatchCameraSnapshots(camIds, 8, 6000);
+
+      const itemsForGemini: CameraImageInput[] = [];
+      const offlineCamIds: string[] = [];
+
+      snapshotResults.forEach((res) => {
+        if (res.imageBase64 && res.imageBase64.length > 50) {
+          itemsForGemini.push({
+            camId: res.camId,
+            imageBase64: res.imageBase64,
+          });
         } else {
-          fullFloodMap[m.CamId] = {
-            camId: m.CamId,
-            floodLevel: "LEVEL_0",
-            description: "Thời tiết thông thoáng - Tuyến đường khô ráo, không ngập",
-            analyzedAt: now,
-          };
+          offlineCamIds.push(res.camId);
         }
       });
+
+      // Handle offline/unavailable cameras
+      offlineCamIds.forEach((camId) => {
+        const offlineResult: CameraFloodAnalysis = {
+          camId,
+          floodLevel: "LEVEL_0",
+          description: "Mất kết nối camera - Đang thử kết nối lại",
+          analyzedAt: now,
+        };
+        fullFloodMap[camId] = offlineResult;
+        cache.floodMap[camId] = offlineResult;
+      });
+
+      // Run Gemini AI Multimodal Flood Forecasting on available snapshots
+      if (itemsForGemini.length > 0) {
+        const analyzed = await analyzeFloodWithGemini(itemsForGemini, fullWeatherMap);
+        analyzed.forEach((res) => {
+          fullFloodMap[res.camId] = res;
+          cache.floodMap[res.camId] = res;
+        });
+      }
+    } catch (err) {
+      console.error("[ServerWeather] Proactive flood analysis error:", err);
+      // Fallback heuristics for any remaining cams
+      camsNeedingFloodAnalysis.forEach((cam) => {
+        if (!fullFloodMap[cam.CamId]) {
+          const w = fullWeatherMap[cam.CamId];
+          const isStorm = w && [95, 96, 99].includes(w.weatherCode);
+          const fallbackRes: CameraFloodAnalysis = {
+            camId: cam.CamId,
+            floodLevel: isStorm ? "LEVEL_1" : "LEVEL_0",
+            description: isStorm
+              ? "Cảnh báo giông bão - Tuyến đường có nguy cơ ngập nhẹ"
+              : "Mưa rào diện rộng - Tuyến đường thông suốt",
+            analyzedAt: now,
+          };
+          fullFloodMap[cam.CamId] = fallbackRes;
+          cache.floodMap[cam.CamId] = fallbackRes;
+        }
+      });
+    }
+  }
+
+  // Ensure all valid cameras have a floodMap entry
+  validCams.forEach((cam) => {
+    if (!fullFloodMap[cam.CamId]) {
+      fullFloodMap[cam.CamId] = {
+        camId: cam.CamId,
+        floodLevel: "LEVEL_0",
+        description: "Tuyến đường thông suốt, không ngập",
+        analyzedAt: now,
+      };
     }
   });
 

@@ -47,7 +47,7 @@ interface CameraContextType {
   refreshAll: () => void;
   refreshSingleCamera: (camId: string) => void;
 
-  // Stream state accessor & subscription
+  // Stream state accessor & subscription (On-demand Lazy Fetching)
   streams: Record<string, CameraStreamState>;
   getStreamState: (camId: string) => CameraStreamState;
   registerActiveCamera: (camId: string) => void;
@@ -55,7 +55,6 @@ interface CameraContextType {
   updateActiveViewportCameras: (camIds: string[]) => void;
   getActiveViewportCamIds: () => string[];
 }
-
 
 const defaultStreamState: CameraStreamState = {
   currentImgSrc: "",
@@ -92,7 +91,7 @@ export function CameraProvider({
   const envInterval = parseInt(
     process.env.NEXT_PUBLIC_CAMERA_REFRESH_INTERVAL ||
       process.env.NEXT_PUBLIC_REFRESH_INTERVAL ||
-      "60",
+      "30",
     10
   );
 
@@ -103,7 +102,7 @@ export function CameraProvider({
   const [selectedDistrict, setSelectedDistrict] = useState<string>(districtParam);
   const [viewMode, setViewModeState] = useState<ViewMode>(viewParam);
   const [refreshInterval, setRefreshIntervalState] = useState<number>(
-    Number.isNaN(envInterval) ? 10 : envInterval
+    Number.isNaN(envInterval) ? 30 : envInterval
   );
   const [gridCols, setGridCols] = useState<2 | 3 | 4>(3);
   const [selectedCamera, setSelectedCamera] = useState<CameraItem | null>(null);
@@ -114,10 +113,12 @@ export function CameraProvider({
   const streamsRef = useRef<Record<string, CameraStreamState>>(streams);
   streamsRef.current = streams;
 
+  // Track active opened/subscribed cameras (Lazy fetching: only opened nodes fetch images)
+  const activeSubscribersRef = useRef<Map<string, number>>(new Map());
+  const activeViewportCamIdsRef = useRef<Set<string>>(new Set());
+
   // Synchronized camera countdown timer
   const [cameraCountdown, setCameraCountdown] = useState<number>(refreshInterval);
-  const activeViewportCamIdsRef = useRef<Set<string>>(new Set());
-  const activeSubscribersRef = useRef<Map<string, number>>(new Map());
   const refreshIntervalRef = useRef<number>(refreshInterval);
   refreshIntervalRef.current = refreshInterval;
 
@@ -215,22 +216,14 @@ export function CameraProvider({
     img.src = newUrl;
   }, []);
 
-  // Synchronized batch fetch for all cameras in viewport
-  const fetchBatchViewportCameras = useCallback(() => {
-    const viewportIds = Array.from(activeViewportCamIdsRef.current);
-    viewportIds.forEach((id) => {
-      fetchCameraImage(id);
-    });
-
-    // Also fetch any explicitly subscribed active cameras
-    activeSubscribersRef.current.forEach((_, id) => {
-      if (!activeViewportCamIdsRef.current.has(id)) {
-        fetchCameraImage(id);
-      }
+  // Refresh all actively opened cameras (Only cameras currently opened/viewed by the user)
+  const refreshActiveCameras = useCallback(() => {
+    activeSubscribersRef.current.forEach((_, camId) => {
+      fetchCameraImage(camId);
     });
   }, [fetchCameraImage]);
 
-  // Synchronized Camera Refresh Timer (Interval based on NEXT_PUBLIC_CAMERA_REFRESH_INTERVAL)
+  // Synchronized Camera Refresh Timer for active subscribers
   useEffect(() => {
     if (refreshInterval <= 0) return;
 
@@ -239,7 +232,7 @@ export function CameraProvider({
     const timer = setInterval(() => {
       setCameraCountdown((prev) => {
         if (prev <= 1) {
-          fetchBatchViewportCameras();
+          refreshActiveCameras();
           return refreshIntervalRef.current;
         }
         return prev - 1;
@@ -247,15 +240,15 @@ export function CameraProvider({
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [fetchBatchViewportCameras, refreshInterval]);
+  }, [refreshActiveCameras, refreshInterval]);
 
-  // Register single active camera observer
+  // Register single active camera observer (Triggered ONLY when user opens a camera node / card / modal)
   const registerActiveCamera = useCallback(
     (camId: string) => {
       const currentCount = activeSubscribersRef.current.get(camId) || 0;
       activeSubscribersRef.current.set(camId, currentCount + 1);
 
-      // Fetch immediately on subscription if no image loaded
+      // Fetch immediately upon opening if not already loaded or fetching
       setStreams((curr) => {
         if (!curr[camId]?.currentImgSrc && !curr[camId]?.isFetching) {
           setTimeout(() => fetchCameraImage(camId), 0);
@@ -266,7 +259,7 @@ export function CameraProvider({
     [fetchCameraImage]
   );
 
-  // Unregister active camera observer
+  // Unregister active camera observer (Triggered when user closes preview card / modal)
   const unregisterActiveCamera = useCallback((camId: string) => {
     const currentCount = activeSubscribersRef.current.get(camId) || 0;
     if (currentCount <= 1) {
@@ -276,37 +269,16 @@ export function CameraProvider({
     }
   }, []);
 
-  // Update active cameras in viewport
-  const updateActiveViewportCameras = useCallback(
-    (visibleCamIds: string[]) => {
-      const newSet = new Set(visibleCamIds);
-      activeViewportCamIdsRef.current = newSet;
+  // Update active cameras in viewport (Purely updates viewport bounds count, DOES NOT fetch images)
+  const updateActiveViewportCameras = useCallback((visibleCamIds: string[]) => {
+    activeViewportCamIdsRef.current = new Set(visibleCamIds);
+  }, []);
 
-      // Fetch images for newly visible cameras that do not have an image yet
-      setStreams((currentStreams) => {
-        const toFetch: string[] = [];
-        newSet.forEach((camId) => {
-          if (!currentStreams[camId]?.currentImgSrc && !currentStreams[camId]?.isFetching) {
-            toFetch.push(camId);
-          }
-        });
-
-        if (toFetch.length > 0) {
-          setTimeout(() => {
-            toFetch.forEach((id) => fetchCameraImage(id));
-          }, 0);
-        }
-        return currentStreams;
-      });
-    },
-    [fetchCameraImage]
-  );
-
-  // Manual refresh for all cameras in viewport
+  // Manual refresh for all currently opened cameras
   const refreshAll = useCallback(() => {
     setCameraCountdown(refreshIntervalRef.current);
-    fetchBatchViewportCameras();
-  }, [fetchBatchViewportCameras]);
+    refreshActiveCameras();
+  }, [refreshActiveCameras]);
 
   // Refresh single camera
   const refreshSingleCamera = useCallback(
@@ -449,7 +421,6 @@ export function CameraProvider({
     updateActiveViewportCameras,
     getActiveViewportCamIds,
   };
-
 
   return (
     <CameraContext.Provider value={contextValue}>

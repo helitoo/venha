@@ -9,8 +9,9 @@ Hệ thống bản đồ trực quan hóa hơn **790+ Camera giao thông** thự
 - 🗺️ **Bản đồ Camera Full màn hình**: Tích hợp dữ liệu 796 camera giao thông với tọa độ GPS chính xác, hỗ trợ chuyển đổi lớp bản đồ Đường phố / Vệ tinh Google Maps.
 - ⚡ **0ms Cold-Start SSR Hydration**: Trạng thái thời tiết và cảnh báo ngập của toàn bộ 796 camera được nạp sẵn ngay từ máy chủ (Server Component), người dùng mở trang có dữ liệu ngay lập tức mà không cần fetch lại từ đầu.
 - ⏱️ **Đồng bộ Countdown Toàn cầu (Global Epoch Time)**: Đồng hồ đếm lùi chu kỳ thời tiết & ngập lụt được tính toán theo mốc Unix Epoch tuyệt đối, đảm bảo mọi client trên thế giới luôn đếm đúng cùng một nhịp giây.
-- 🎯 **Viewport Culling (Tối ưu 60 FPS)**: Chỉ kích hoạt nạp luồng ảnh cho các camera thực sự nằm trong khung nhìn bản đồ với vùng đệm buffer 15%.
-- 🛡️ **4 Tầng Phòng Vệ Tiết Kiệm Token AI**: Cơ chế Weather Gating, State TTL Cooldown (10 phút), Image Stream Check và Micro-batching (35 ảnh/request) giúp triệt tiêu hoàn toàn việc lạm dụng API Gemini.
+- 🎯 **Lazy Fetching On-Demand (Tối ưu Client)**: Các node camera trên bản đồ hiển thị dạng marker gọn nhẹ; client **chỉ fetch ảnh khi người dùng thực sự mở xem một node camera** (bật thẻ xem nhanh ở góc màn hình hoặc mở modal phóng to), tiết kiệm tối đa băng thông và tài nguyên trình duyệt.
+- 🤖 **Server Proactive Fetching (Chủ động dự báo lũ)**: Máy chủ chủ động nạp ảnh camera tại các khu vực đang có mưa/bão để cung cấp cho Google Gemini AI phân tích mực nước và phân loại mức ngập lụt tự động.
+- 🛡️ **4 Tầng Phòng Vệ Tiết Kiệm Token AI**: Cơ chế Weather Gating, State TTL Cooldown (10 phút), Server Snapshot Stream Check và Micro-batching (35 ảnh/request) giúp triệt tiêu hoàn toàn việc lạm dụng API Gemini.
 - 🌦️ **Dự báo thời tiết cục bộ Open-Meteo & Gom cụm Haversine**: Gom 796 camera theo bán kính không gian để lấy mẫu đại diện, giảm hơn 95% request mạng.
 - 🚀 **Tối ưu hóa Vercel Serverless**: Kiến trúc In-Memory SWR Cache kết hợp Serverless Edge Handlers giúp chia sẻ 1 kết quả tính toán cho hàng nghìn người dùng truy cập đồng thời.
 
@@ -18,35 +19,43 @@ Hệ thống bản đồ trực quan hóa hơn **790+ Camera giao thông** thự
 
 ## 🏛️ KIẾN TRÚC TỔNG QUAN HỆ THỐNG (SYSTEM ARCHITECTURE)
 
-Hệ thống hoạt động theo mô hình phân tách 2 luồng độc lập giữa **Server-side (Thời tiết & Ngập lụt)** và **Client-side (Hình ảnh Camera)**:
+Hệ thống hoạt động theo mô hình phân tách 2 luồng độc lập giữa **Server-side (Chủ động dự báo thời tiết & ngập lụt qua AI)** và **Client-side (Lazy Fetching hình ảnh khi mở node camera)**:
 
 ```mermaid
 flowchart TD
-    subgraph SERVER["1. LUỒNG MÁY CHỦ (SERVER-SIDE & SWR CACHE)"]
-        A["Khởi tạo Trang / SSR Request"] --> B["src/app/page.tsx (Server Component)"]
-        B --> C["getAggregatedWeatherFloodState()"]
-        C --> D{"Kiểm tra Server SWR Cache<br/>(Hạn < 60s?)"}
-        D -->|Cache Hit| E["Trả về State ngay lập tức (0ms)"]
-        D -->|Cache Miss / Hết hạn| F["Gom cụm không gian Haversine"]
-        F --> G["Batch Query Open-Meteo (100 coords/req)"]
-        G --> H["Phân phối thời tiết cho 796 camera"]
-        H --> I["Kiểm tra State TTL Cooldown (10 phút)"]
-        I --> J["Lưu State vào globalThis Singleton Cache"]
-        J --> E
-        E --> K["Nhúng sẵn vào HTML (SSR Hydration)"]
+    subgraph SERVER["1. LUỒNG MÁY CHỦ (SERVER PROACTIVE FETCHING & AI FORECASTING)"]
+        A["Khởi tạo Trang / Chu kỳ SWR"] --> B["computeAggregatedWeatherState()"]
+        B --> C["Gom cụm không gian Haversine & Query Open-Meteo"]
+        C --> D{"Tầng 1: Weather Gating<br/>(Khu vực khô ráo hay mưa?)"}
+        
+        D -->|Khô ráo / Mưa nhỏ| E["Gán LEVEL_0 (Khô ráo)<br/>⚡ 0 Token - 0 Fetch"]
+        D -->|Mưa rào / Giông bão| F{"Tầng 2: State TTL Cooldown<br/>(Đã phân tích < 10 phút trước?)"}
+        
+        F -->|Trong hạn TTL| G["Tái sử dụng State phân tích cũ từ Cache"]
+        F -->|Hết TTL / Cần phân tích mới| H["Server CHỦ ĐỘNG FETCH ẢNH CAMERA<br/>(fetchBatchCameraSnapshots)"]
+        
+        H --> I{"Tầng 3: Kiểm tra ảnh hợp lệ"}
+        I -->|Mất kết nối / Không có ảnh| J["Gán LEVEL_0 / UNCLEAR (Mất tín hiệu)"]
+        I -->|Có ảnh JPEG hợp lệ| K["Tầng 4: Micro-Batching (35 ảnh/req)<br/>Gửi sang Gemini Multimodal AI"]
+        
+        K --> L["Nhận diện mức ngập LEVEL_0 / 1 / 2 / 3"]
+        E --> M["Lưu State vào globalThis Singleton Cache"]
+        G --> M
+        J --> M
+        L --> M
+        M --> N["SSR Hydration (0ms) / GET /api/weather"]
     end
 
-    subgraph CLIENT["2. LUỒNG CLIENT-SIDE & ĐỒNG BỘ TOÀN CẦU"]
-        K --> L["Client hiển thị ngay 796 Node Camera"]
-        M["Unix Epoch Time (Date.now())"] --> N["Countdown Đồng bộ Toàn cầu"]
-        N -->|Khi chạm 0s| O["GET /api/weather"]
-        O --> J
+    subgraph CLIENT["2. LUỒNG CLIENT-SIDE (LAZY ON-DEMAND FETCHING)"]
+        N --> O["Client hiển thị 796 Node Camera trên Bản đồ"]
+        P["Unix Epoch Time (Date.now())"] --> Q["Countdown Đồng bộ Toàn cầu (60s)"]
+        Q -->|Khi chạm chu kỳ| R["Đồng bộ State Thời tiết & Ngập mới nhất"]
+        R --> O
         
-        P["Người dùng Pan / Zoom Bản đồ"] --> Q["Viewport Culling (Bounds + 15% Buffer)"]
-        Q -->|Đăng ký Camera trong tầm nhìn| R["GET /api/proxy?id={camId}&t={timestamp}"]
-        R --> S["Cổng Camera Giao thông TP.HCM"]
-        S -->|Thành công| T["Stream ảnh JPEG lên UI"]
-        S -->|Lỗi Socket / Đóng cổng| U["Fallback ảnh SVG 'Mất tín hiệu'"]
+        S["Người dùng click mở một Node Camera"] --> T["Mount useCameraStream(camId)"]
+        T --> U["Client FETCH ẢNH CAMERA qua /api/proxy?id={camId}"]
+        U --> V["Hiển thị Live Snapshot & Phân tích ngập trên Floating Card / Modal"]
+        W["Người dùng đóng Node Camera"] --> X["Unmount stream & Dừng fetch ảnh"]
     end
 ```
 
@@ -72,50 +81,52 @@ $$\text{countdown} = \text{NEXT\_PUBLIC\_FLOOD\_INTERVAL} - \text{elapsed}$$
 
 ## 🧠 2. MÔ HÌNH 4 TẦNG PHÒNG VỆ CHỐNG LẠM DỤNG GEMINI AI
 
-Để kiểm soát chặt chẽ chi phí token và tránh lạm dụng API Google Gemini, hệ thống triển khai kiến trúc **4 tầng phòng vệ (Defense-in-Depth)**:
+Để kiểm soát chặt chẽ chi phí token và tránh lạm dụng API Google Gemini, hệ thống triển khai kiến trúc **4 tầng phòng vệ (Defense-in-Depth)** kết hợp chủ động nạp ảnh trên máy chủ:
 
 ```mermaid
 flowchart TD
-    A["Chu kỳ quét 796 Camera"] --> B{"Tầng 1: Weather Gating<br/>(Kiểm tra mã Open-Meteo)"}
+    A["Chu kỳ quét 796 Camera trên Server"] --> B{"Tầng 1: Weather Gating<br/>(Kiểm tra mã Open-Meteo)"}
     
-    B -->|"Thời tiết Khô ráo / Mưa nhỏ (WMO 61,63,65)"| C["Gán LEVEL_0 (Khô ráo)<br/>⚡ 0 Token - 0 API Call"]
+    B -->|"Thời tiết Khô ráo / Mưa nhỏ (WMO 61,63,65)"| C["Gán LEVEL_0 (Khô ráo)<br/>⚡ 0 Token - 0 API Call - 0 Fetch"]
     
     B -->|"Mưa to / Giông bão (WMO 80,81,82,95,96,99)"| D{"Tầng 2: State TTL Cooldown<br/>(Đã phân tích < 10 phút trước?)"}
     
     D -->|Vẫn trong hạn TTL| E["Tái sử dụng State cũ từ Cache<br/>⚡ 0 Token - 0 API Call"]
     
-    D -->|Hết TTL hoặc Chưa có kết quả| F{"Tầng 3: Image Stream Check<br/>(Camera có ảnh hợp lệ?)"}
+    D -->|Hết TTL hoặc Chưa có kết quả| F["Server chủ động fetch ảnh snapshot camera"]
     
-    F -->|Mất kết nối / Không có ảnh| G["Gán LEVEL_0 thông báo an toàn<br/>⚡ 0 Token - 0 API Call"]
+    F --> G{"Tầng 3: Image Availability Check<br/>(Camera có ảnh hợp lệ?)"}
     
-    F -->|Có ảnh JPEG hợp lệ| H["Tầng 4: Micro-Batching (Gom 35 ảnh/req)<br/>Gửi 1 request duy nhất tới Gemini"]
+    G -->|Mất kết nối / Không có ảnh| H["Gán LEVEL_0 thông báo an toàn<br/>⚡ 0 Token - 0 API Call"]
     
-    H --> I["Lưu vào Server State Cache"]
-    C --> I
-    E --> I
-    G --> I
-    I --> J["Phát tán đồng thời cho hàng nghìn người dùng"]
+    G -->|Có ảnh JPEG hợp lệ| I["Tầng 4: Micro-Batching (Gom 35 ảnh/req)<br/>Gửi 1 request duy nhất tới Gemini"]
+    
+    I --> J["Lưu vào Server State Cache"]
+    C --> J
+    E --> J
+    H --> J
+    J --> K["Phát tán đồng thời cho hàng nghìn người dùng"]
 ```
 
-1. **Tầng 1 - Weather Gating:** Tuyệt đối không gọi Gemini cho các camera ở vùng không mưa hoặc mưa nhỏ (`61, 63, 65`). Tự động gán `LEVEL_0` với **0 token**.
+1. **Tầng 1 - Weather Gating:** Tuyệt đối không gọi Gemini cho các camera ở vùng không mưa hoặc mưa nhỏ (`61, 63, 65`). Tự động gán `LEVEL_0` với **0 token và 0 ảnh cần nạp**.
 2. **Tầng 2 - State TTL Cooldown (`GEMINI_FLOOD_TTL_MINUTES=10`):** Mức ngập lụt không thay đổi theo từng giây. Kết quả phân tích được giữ nguyên trong **10 phút**. Trong suốt thời gian này, các chu kỳ quét 60s tiếp theo kế thừa lại kết quả cũ mà **không gọi lại Gemini**.
-3. **Tầng 3 - Image Availability Check:** Chỉ gửi ảnh sang Gemini khi camera đang hoạt động và có luồng ảnh thực tế. Bỏ qua các camera mất tín hiệu.
+3. **Tầng 3 - Server Proactive Image Check:** Máy chủ chủ động nạp ảnh từ cổng giao thông cho các camera trong vùng mưa bão. Chỉ gửi ảnh sang Gemini khi camera đang hoạt động và có luồng ảnh thực tế. Bỏ qua các camera mất tín hiệu.
 4. **Tầng 4 - Micro-Batching ($35\text{ ảnh/request}$):** Đóng gói tối đa 35 camera vào một mảng Multimodal Array duy nhất theo định dạng JSON Structured Output, giảm hơn 80% chi phí token so với gọi đơn lẻ.
-5. **Tập trung hóa Server (Centralized Pipeline):** Người dùng không được gọi trực tiếp Gemini từ trình duyệt. Dù có **1.000 người dùng cùng online**, máy chủ cũng chỉ gọi AI **1 lần duy nhất** và chia sẻ state cho tất cả.
+5. **Tập trung hóa Server (Centralized Pipeline):** Người dùng không được gọi trực tiếp Gemini từ trình duyệt. Dù có **1.000 người dùng cùng online**, máy chủ cũng chỉ phân tích **1 lần duy nhất** và chia sẻ state cho tất cả.
 
 ---
 
-## 📸 3. CƠ CHẾ FETCH HÌNH ẢNH CAMERA & PROXY
+## 📸 3. CƠ CHẾ FETCH HÌNH ẢNH CAMERA: CLIENT & SERVER
 
-### A. Viewport Culling & Buffer Padding
-* Bản đồ Leaflet chỉ kích hoạt nạp ảnh cho các camera nằm trong vùng hiển thị hiện tại cộng thêm 15% viền đệm (`map.getBounds().pad(0.15)`).
-* Khi camera trượt ra ngoài khung nhìn, luồng nạp ảnh tự động tạm dừng để giải phóng tài nguyên.
-* Countdown làm mới ảnh chạy độc lập theo từng client (`NEXT_PUBLIC_CAMERA_REFRESH_INTERVAL=30s`).
+### A. Client-Side: Lazy On-Demand Fetching (Chỉ nạp khi mở Node)
+* **Bản đồ Leaflet nhẹ tối đa:** 796 camera trên bản đồ được hiển thị dưới dạng các node marker tròn trực quan (màu sắc cấp độ ngập + icon thời tiết). Trình duyệt **hoàn toàn không nạp ảnh cho các marker này**, tránh giật lag khung hình và tiết kiệm 100% băng thông nhàn rỗi.
+* **Kích hoạt khi mở Node:** Chỉ khi người dùng click vào một node camera trên bản đồ để mở **Thẻ xem trực tiếp (Active Floating Card)**, mở **Modal phóng to**, hoặc vào trang chi tiết `/camera/[id]`, hook `useCameraStream(camId)` mới kích hoạt yêu cầu nạp ảnh qua `/api/proxy?id={camId}`.
+* **Tự động hủy khi đóng:** Khi đóng thẻ xem hoặc đóng modal, luồng fetch ảnh của camera đó lập tức được hủy đăng ký (`unregisterActiveCamera`), đảm bảo không có request ngầm chạy lãng phí.
 
-### B. Xử lý Proxy & Fallback Mất tín hiệu ([`src/app/api/proxy/route.ts`](file:///d:/PROJECT/venha/venha/src/app/api/proxy/route.ts))
-* Client yêu cầu ảnh qua proxy: `/api/proxy?id={camId}&t={timestamp}`.
-* **Negative Caching & Backoff (3 phút):** Khi cổng giao thông TP.HCM đóng socket hoặc ngắt kết nối TLS, proxy tự động đặt cờ hoãn 3 phút, triệt tiêu hoàn toàn hiện tượng spam log lỗi trên máy chủ.
-* **SVG Fallback:** Tự động trả về hình ảnh vector SVG *"Mất tín hiệu"* hiển thị gọn gàng trên bản đồ.
+### B. Server-Side: Proactive Fetching for AI Flood Forecasting (Chủ động dự báo ngập)
+* Trong mỗi chu kỳ revalidate / SWR của máy chủ ([`src/lib/server-weather.ts`](file:///d:/PROJECT/venha/venha/src/lib/server-weather.ts)), máy chủ **chủ động nạp ảnh snapshot** của các camera thuộc vùng mưa/giông bão thông qua module [`src/lib/server-camera.ts`](file:///d:/PROJECT/venha/venha/src/lib/server-camera.ts).
+* Các ảnh hợp lệ được gom thành từng batch và gửi sang Google Gemini AI để chẩn đoán mức ngập lụt đô thị theo 4 cấp độ thực tế.
+* **Xử lý Proxy & Negative Caching ([`src/app/api/proxy/route.ts`](file:///d:/PROJECT/venha/venha/src/app/api/proxy/route.ts)):** Khi cổng giao thông TP.HCM đóng socket hoặc ngắt kết nối TLS, hệ thống tự động đặt cờ hoãn 3 phút (negative backoff), triệt tiêu hoàn toàn hiện tượng spam log lỗi trên máy chủ và tự động trả về ảnh vector SVG *"Mất tín hiệu"*.
 
 ---
 
@@ -161,14 +172,14 @@ GEMINI_FLOOD_PROMPT="Analyze street camera images for flood severity based on re
 # ==========================================
 # 2. Cấu hình chu kỳ làm mới & đồng bộ
 # ==========================================
-# Chu kỳ tự động làm mới ảnh camera trong khung nhìn (tính theo giây)
+# Chu kỳ tự động làm mới ảnh camera đang mở (tính theo giây)
 NEXT_PUBLIC_CAMERA_REFRESH_INTERVAL=30
 
 # Chu kỳ tự động kiểm tra thời tiết Open-Meteo & đồng bộ ngập lụt (tính theo giây)
 NEXT_PUBLIC_FLOOD_INTERVAL=60
 
 # Bán kính gom cụm trạm thời tiết Haversine (tùy chỉnh bán kính phù hợp)
-# NEXT_PUBLIC_WEATHER_SAMPLE_RADIUS_KM=...
+# NEXT_PUBLIC_WEATHER_SAMPLE_RADIUS_KM=2.5
 
 # ==========================================
 # 3. Tùy chọn Session Cookie Cổng giao thông
