@@ -1,0 +1,4167 @@
+[
+  {
+    "CamId": "586e28a0f9fab7001111b0b3",
+    "CamName": "Quốc Lộ 1 - Khu Chế Xuất Linh Trung",
+    "Disctrict": "Quận Thủ Đức",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/586e28a0f9fab7001111b0b3",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5a8241105058170011f6eaa6",
+    "CamName": "Đinh Tiên Hoàng - Võ Thị Sáu 2",
+    "Disctrict": "Quận 3",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "63ae7a50bfd3d90017e8f2b2",
+    "CamName": "Ba Tháng Hai - Sư Vạn Hánh",
+    "Disctrict": "Quận 10",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "63b65fd8bfd3d90017eaa461",
+    "CamName": "TTH 237",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "63b54c51bfd3d90017ea7aa0",
+    "CamName": "TTH 223",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "587470c2b807da0011e33ce4",
+    "CamName": "TTH 40.2",
+    "Disctrict": "Quận Bình Thạnh",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/587470c2b807da0011e33ce4",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "6623e5d66f998a001b25235a",
+    "CamName": "TTH 263",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "662b81eb1afb9c00172dcc85",
+    "CamName": "TTH 387",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "662b82da1afb9c00172dce94",
+    "CamName": "TTH 390",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5deb576d1dc17d7c5515ad1a",
+    "CamName": "ITS 8.51",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5deb576d1dc17d7c5515acf4",
+    "CamName": "ITS 1.3-1",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5deb576d1dc17d7c5515ad08",
+    "CamName": "ITS 6.2",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "662b4f7e1afb9c00172d872e",
+    "CamName": "TTH 338",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5deb576d1dc17d7c5515ad13",
+    "CamName": "ITS 7.52",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5deb576d1dc17d7c5515ad05",
+    "CamName": "ITS 4.1",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "6623e3566f998a001b25226d",
+    "CamName": "TTH 256",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5ad0679598d8fc001102e274",
+    "CamName": "TTH 105.3",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5deb576d1dc17d7c5515ad01",
+    "CamName": "ITS 3.2",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "662b4e201afb9c00172d85f9",
+    "CamName": "TTH 332",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5874769eb807da0011e33cec",
+    "CamName": "TTH 38.3",
+    "Disctrict": "Quận Tân Bình",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/5874769eb807da0011e33cec",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "662b4de41afb9c00172d85c5",
+    "CamName": "TTH 331",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "662b82a61afb9c00172dcdfd",
+    "CamName": "TTH 389",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "62da3e620637a10017d70720",
+    "CamName": "TTH 268.2",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth_axis",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5deb576d1dc17d7c5515ad17",
+    "CamName": "ITS 8.5",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5deb576d1dc17d7c5515acfd",
+    "CamName": "ITS 2.7",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "65e0552f6b18080018db6647",
+    "CamName": "TTH 251",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "662b81721afb9c00172dcc44",
+    "CamName": "TTH 385",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5deb576d1dc17d7c5515acf9",
+    "CamName": "ITS 2.1-1",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "62da3e840637a10017d7073d",
+    "CamName": "TTH 268.3",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth_axis",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5deb576d1dc17d7c5515acf3",
+    "CamName": "ITS 1.2",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5deb576d1dc17d7c5515ad23",
+    "CamName": "ITS 10.3",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "662b5be91afb9c00172d939b",
+    "CamName": "TTH 371",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "63b54996bfd3d90017ea781a",
+    "CamName": "TTH 214",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "63ae76afbfd3d90017e8f106",
+    "CamName": "TTH 184",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "6623ec826f998a001b252686",
+    "CamName": "TTH 279",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5deb576d1dc17d7c5515acfb",
+    "CamName": "ITS 2.6",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "63ae76ddbfd3d90017e8f11b",
+    "CamName": "TTH 185",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5a8250cc5058170011f6eaba",
+    "CamName": "TTH 105.1",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "662b83381afb9c00172dcf88",
+    "CamName": "TTH 392",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "63b549b8bfd3d90017ea782c",
+    "CamName": "TTH 215",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "6623f3436f998a001b252863",
+    "CamName": "TTH 297.1",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "662b85031afb9c00172dd0dc",
+    "CamName": "TTH 398",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "6623ecc16f998a001b25269e",
+    "CamName": "TTH 280",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "662b81a31afb9c00172dcc65",
+    "CamName": "TTH 386",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "63ae7709bfd3d90017e8f135",
+    "CamName": "TTH 186.1",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "63ae768dbfd3d90017e8f0f1",
+    "CamName": "TTH 183.2",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "58746371b807da0011e33cd1",
+    "CamName": "TTH 21.7",
+    "Disctrict": "Quận Thủ Đức",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/58746371b807da0011e33cd1",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "63b65f33bfd3d90017eaa405",
+    "CamName": "TTH 233.2",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5a606a0f8576340017d0661e",
+    "CamName": "TTH 44.7",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5a824dc05058170011f6eab2",
+    "CamName": "TTH 115.1",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "662b830e1afb9c00172dcf50",
+    "CamName": "TTH 391",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "662b57711afb9c00172d90a7",
+    "CamName": "TTH 358",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5d8cdc9d766c880017188970",
+    "CamName": "TTH 166",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth_axis",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "6623e7b76f998a001b25242d",
+    "CamName": "TTH 269",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "63ae7be0bfd3d90017e8f3a8",
+    "CamName": "TTH 201.1",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "63b3c9bfbfd3d90017e9b039",
+    "CamName": "TTH 208",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5d8cdc1d766c88001718896c",
+    "CamName": "TTH 164",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth_axis",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "587478d8b807da0011e33cf3",
+    "CamName": "TTH 28.1",
+    "Disctrict": "Quận Tân Bình",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/587478d8b807da0011e33cf3",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "58d7bbf2c1e33c00112b3216",
+    "CamName": "TTH 21.46",
+    "Disctrict": "Huyện Bình Chánh",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/58d7bbf2c1e33c00112b3216",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5d8cdd26766c880017188974",
+    "CamName": "TTH 168",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth_axis",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "6623efc26f998a001b25277f",
+    "CamName": "TTH 288",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "58ad7291bd82540010390bf9",
+    "CamName": "TTH 44.3",
+    "Disctrict": "Quận Bình Thạnh",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/58ad7291bd82540010390bf9",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "587c8183b807da0011e33d3f",
+    "CamName": "TTH 27.2",
+    "Disctrict": "Quận Tân Bình",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/587c8183b807da0011e33d3f",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5deb576d1dc17d7c5515acf2",
+    "CamName": "ITS 1.1",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "662b83ff1afb9c00172dcffb",
+    "CamName": "TTH 394",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "662b84c11afb9c00172dd0b5",
+    "CamName": "TTH 397",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "56de42f611f398ec0c4812a1",
+    "CamName": "TTH 22.3",
+    "Disctrict": "Quận 2",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/56de42f611f398ec0c4812a1",
+    "ManagementUnit": "Khu quản lý giao thông đô thị số 2"
+  },
+  {
+    "CamId": "63b54fe4bfd3d90017ea7ca2",
+    "CamName": "TTH 231.1",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "6318283cc9eae60017a19f0c",
+    "CamName": "TTH 176.1",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "662b5b481afb9c00172d92a8",
+    "CamName": "TTH 368",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "58df4adedc195800111e04b4",
+    "CamName": "TTH 26.2",
+    "Disctrict": "Quận Tân Bình",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/58df4adedc195800111e04b4",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "662b57471afb9c00172d9095",
+    "CamName": "TTH 357",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "58aff2c6bd82540010390c55",
+    "CamName": "TTH 21.45",
+    "Disctrict": "Huyện Bình Chánh",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/58aff2c6bd82540010390c55",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "6623e43e6f998a001b2522cb",
+    "CamName": "TTH 259",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "662b85481afb9c00172dd0f1",
+    "CamName": "TTH 399",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "6623ef776f998a001b252768",
+    "CamName": "TTH 287",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "59d34ce302eb490011a0a616",
+    "CamName": "TTH 33.7",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "662b80721afb9c00172dcb28",
+    "CamName": "TTH 381",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "63ae7893bfd3d90017e8f1e1",
+    "CamName": "TTH 189",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5990ffdbbec3b90016d2ad2d",
+    "CamName": "TTH 60.2",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "586e25e1f9fab7001111b0ae",
+    "CamName": "TTH 28.4",
+    "Disctrict": "Quận Tân Bình",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/586e25e1f9fab7001111b0ae",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "58744e3eb807da0011e33cb7",
+    "CamName": "TTH 42.2",
+    "Disctrict": "Quận 8",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/58744e3eb807da0011e33cb7",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "58744e97b807da0011e33cb9",
+    "CamName": "TTH 42.3",
+    "Disctrict": "Quận 8",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/58744e97b807da0011e33cb9",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "662b4f411afb9c00172d86fc",
+    "CamName": "TTH 337",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "587463bab807da0011e33cd3",
+    "CamName": "TTH 21.8",
+    "Disctrict": "Quận Thủ Đức",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/587463bab807da0011e33cd3",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5ad0644698d8fc001102e26b",
+    "CamName": "TTH 125.1",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "63b65e6abfd3d90017eaa361",
+    "CamName": "TTH 232",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "631828cac9eae60017a19f50",
+    "CamName": "TTH 177",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "662a8ddd1afb9c00172d2a0f",
+    "CamName": "TTH 323.1",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "662a8e121afb9c00172d2a3f",
+    "CamName": "TTH 323.2",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "665861d864f11e00173c73a9",
+    "CamName": "TTH 309",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "66b1c3fa779f740018674146",
+    "CamName": "TTH 418",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "66b1c398779f7400186740e3",
+    "CamName": "TTH 416",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "66b1c4a2779f74001867418c",
+    "CamName": "TTH 420",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "662b4e8e1afb9c00172d865c",
+    "CamName": "TTH 334",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "662b811d1afb9c00172dcc1d",
+    "CamName": "TTH 384",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5deb576d1dc17d7c5515ad02",
+    "CamName": "ITS 3.4",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "662b85bf1afb9c00172dd149",
+    "CamName": "TTH 401",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5d8cd372766c880017188940",
+    "CamName": "TTH 142",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth_axis",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "662b872d1afb9c00172dd36a",
+    "CamName": "TTH 407",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "6623f0576f998a001b2527ac",
+    "CamName": "TTH 290",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "649da77ea6068200171a6dd4",
+    "CamName": "TTH 248",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "63ae7a26bfd3d90017e8f29a",
+    "CamName": "TTH 196.2",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5a8257e25058170011f6eacd",
+    "CamName": "TTH 111",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "583f958161cfea0012cf68f5",
+    "CamName": "TTH 22.6",
+    "Disctrict": "Quận 2",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/583f958161cfea0012cf68f5",
+    "ManagementUnit": "Khu quản lý giao thông đô thị số 2"
+  },
+  {
+    "CamId": "63ae798abfd3d90017e8f255",
+    "CamName": "TTH 194",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "649da419a6068200171a6c90",
+    "CamName": "TTH 229",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "6623e9e96f998a001b2525ce",
+    "CamName": "TTH 274",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "662a8cfe1afb9c00172d296e",
+    "CamName": "TTH 321",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5b0e1faacddcc80011ceb449",
+    "CamName": "TTH 175.2",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "587ef2e4b807da0011e33d57",
+    "CamName": "TTH 34.7",
+    "Disctrict": "Quận Phú Nhuận",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/587ef2e4b807da0011e33d57",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "63b54a9ebfd3d90017ea7911",
+    "CamName": "TTH 219",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "63b66035bfd3d90017eaa48e",
+    "CamName": "TTH 239",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "63b66051bfd3d90017eaa4a3",
+    "CamName": "TTH 240",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "63195512c9eae60017a1c279",
+    "CamName": "TTH 178.1",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "58b5528e17139d0010f35d52",
+    "CamName": "TTH 33.4",
+    "Disctrict": "Quận 9",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/58b5528e17139d0010f35d52",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "6623e5066f998a001b252317",
+    "CamName": "TTH 261",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "587ee7d7b807da0011e33d55",
+    "CamName": "TTH 44.2",
+    "Disctrict": "Quận Bình Thạnh",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/587ee7d7b807da0011e33d55",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "662a8cc51afb9c00172d2938",
+    "CamName": "TTH 320",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5a8278f35058170011f6eaed",
+    "CamName": "TTH 122.1",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "63195556c9eae60017a1c2ba",
+    "CamName": "TTH 178.2",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "63ae7a9cbfd3d90017e8f303",
+    "CamName": "TTH 199",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5a8256315058170011f6eac9",
+    "CamName": "TTH 109.2",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5d8cda6a766c880017188960",
+    "CamName": "TTH 158",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5d8cd9cb766c88001718895c",
+    "CamName": "TTH 156",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth_axis",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "662a8c931afb9c00172d2901",
+    "CamName": "TTH 319",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "58746536b807da0011e33cdc",
+    "CamName": "TTH 21.12",
+    "Disctrict": "Quận Thủ Đức",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/58746536b807da0011e33cdc",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "63ae75f9bfd3d90017e8f097",
+    "CamName": "TTH 181.2",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "63bd1f48bfd3d90017ec3d19",
+    "CamName": "TTH 246",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5d8cd653766c88001718894c",
+    "CamName": "TTH 148",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5a8254b05058170011f6eac3",
+    "CamName": "TTH 108.1",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "6623ed396f998a001b2526b8",
+    "CamName": "TTH 281",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "587c8d97b807da0011e33d49",
+    "CamName": "TTH 34.4",
+    "Disctrict": "Quận Phú Nhuận",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/587c8d97b807da0011e33d49",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "63ae7af4bfd3d90017e8f32c",
+    "CamName": "TTH 200.2",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "662b571d1afb9c00172d9083",
+    "CamName": "TTH 356",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "6623eec96f998a001b25273b",
+    "CamName": "TTH 285",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5a82628e5058170011f6eadb",
+    "CamName": "TTH 121.1",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "662b50571afb9c00172d87df",
+    "CamName": "TTH 341",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "662b857b1afb9c00172dd106",
+    "CamName": "TTH 400",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "58af9a07bd82540010390c3b",
+    "CamName": "TTH 36.3",
+    "Disctrict": "Quận 1",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/58af9a07bd82540010390c3b",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "58af994abd82540010390c37",
+    "CamName": "TTH 36.1",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5deb576d1dc17d7c5515ad15",
+    "CamName": "ITS 8.2",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "63b54cffbfd3d90017ea7ad0",
+    "CamName": "TTH 225",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "63b54d5abfd3d90017ea7afe",
+    "CamName": "TTH 227",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "662b843d1afb9c00172dd02d",
+    "CamName": "TTH 395",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "63b54c93bfd3d90017ea7ab8",
+    "CamName": "TTH 224",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "63ae7c53bfd3d90017e8f3d8",
+    "CamName": "TTH 203.1",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5deb576d1dc17d7c5515ad06",
+    "CamName": "ITS 4.2",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "6623e6b86f998a001b2523b8",
+    "CamName": "TTH 266",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "58744fb0b807da0011e33cc0",
+    "CamName": "TTH 43.2",
+    "Disctrict": "Quận 8",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/58744fb0b807da0011e33cc0",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "58746314b807da0011e33cce",
+    "CamName": "TTH 21.6",
+    "Disctrict": "Quận Thủ Đức",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/58746314b807da0011e33cce",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "6623ee176f998a001b25270c",
+    "CamName": "TTH 283",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5d8cd2a3766c88001718893c",
+    "CamName": "TTH 140",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth_axis",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "583f926761cfea0012cf68f1",
+    "CamName": "TTH 22.9",
+    "Disctrict": "Quận 2",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/583f926761cfea0012cf68f1",
+    "ManagementUnit": "Khu quản lý giao thông đô thị số 2"
+  },
+  {
+    "CamId": "5deb576d1dc17d7c5515ad09",
+    "CamName": "ITS 6.51",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "662a861e1afb9c00172d23ad",
+    "CamName": "TTH 303",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "662b57ec1afb9c00172d90e3",
+    "CamName": "TTH 359",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "58ad69c4bd82540010390be7",
+    "CamName": "TTH 34.10",
+    "Disctrict": "Quận Phú Nhuận",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/58ad69c4bd82540010390be7",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "58df5016dc195800111e04bd",
+    "CamName": "TTH 26.6",
+    "Disctrict": "Quận Tân Bình",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/58df5016dc195800111e04bd",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "662a8d821afb9c00172d29c8",
+    "CamName": "TTH 322",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "662a8eb41afb9c00172d2aba",
+    "CamName": "TTH 324.2",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "662a8e641afb9c00172d2a7e",
+    "CamName": "TTH 324.1",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "662a8f701afb9c00172d2b5e",
+    "CamName": "TTH 327",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "63b54d27bfd3d90017ea7ae5",
+    "CamName": "TTH 226",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "662b7f251afb9c00172dc8bc",
+    "CamName": "TTH 377",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "63b54a70bfd3d90017ea7862",
+    "CamName": "TTH 218",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "56f11ac33ac17b11001c504c",
+    "CamName": "TTH 34.1",
+    "Disctrict": "Quận Phú Nhuận",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/56f11ac33ac17b11001c504c",
+    "ManagementUnit": "Management Center of Sai Gon River Tunnel"
+  },
+  {
+    "CamId": "587464e2b807da0011e33cd9",
+    "CamName": "TTH 21.11",
+    "Disctrict": "Quận Thủ Đức",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/587464e2b807da0011e33cd9",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5a8279865058170011f6eaef",
+    "CamName": "TTH 122.2",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5ad0621c98d8fc001102e268",
+    "CamName": "TTH 101.2",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5a8254f25058170011f6eac5",
+    "CamName": "TTH 108.2",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5a823d555058170011f6eaa2",
+    "CamName": "TTH 101.1",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "63b54bcdbfd3d90017ea7a82",
+    "CamName": "TTH 222",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "63ae73cebfd3d90017e8f00d",
+    "CamName": "TTH 180.1",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "662b867b1afb9c00172dd250",
+    "CamName": "TTH 405",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "6623e4b06f998a001b2522f1",
+    "CamName": "TTH 260",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "662b862a1afb9c00172dd1ff",
+    "CamName": "TTH 403",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "66b1c158779f740018673eb4",
+    "CamName": "TTH 409",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "56de42f611f398ec0c4812a0",
+    "CamName": "TTH 22.5",
+    "Disctrict": "Quận 2",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/56de42f611f398ec0c4812a0",
+    "ManagementUnit": "Khu quản lý giao thông đô thị số 2"
+  },
+  {
+    "CamId": "6623ea416f998a001b25260a",
+    "CamName": "TTH 275",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "662b5a9c1afb9c00172d9240",
+    "CamName": "TTH 365",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "63ae7a08bfd3d90017e8f285",
+    "CamName": "TTH 196.1",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "63ae7669bfd3d90017e8f0d9",
+    "CamName": "TTH 183.1",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "583f969161cfea0012cf68f7",
+    "CamName": "TTH 22.7",
+    "Disctrict": "Quận 2",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/583f969161cfea0012cf68f7",
+    "ManagementUnit": "Khu quản lý giao thông đô thị số 2"
+  },
+  {
+    "CamId": "6623e3ea6f998a001b2522ae",
+    "CamName": "TTH 258",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "58746122b807da0011e33cc5",
+    "CamName": "TTH 21.2",
+    "Disctrict": "Quận Thủ Đức",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/58746122b807da0011e33cc5",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "63ae7a74bfd3d90017e8f2c7",
+    "CamName": "TTH 198",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "66b1c3c2779f740018674125",
+    "CamName": "TTH 417",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "6623e2e16f998a001b252233",
+    "CamName": "TTH 254",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "6623f36e6f998a001b252878",
+    "CamName": "TTH 297.2",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5d8cd4ee766c880017188946",
+    "CamName": "TTH 145",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "662b5bc31afb9c00172d92e2",
+    "CamName": "TTH 370",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "6623df636f998a001b251e92",
+    "CamName": "TTH 253",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "6623f3d66f998a001b252890",
+    "CamName": "TTH 298",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "56df81d8c062921100c143de",
+    "CamName": "TTH 32.2",
+    "Disctrict": "Quận Thủ Đức",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/56df81d8c062921100c143de",
+    "ManagementUnit": "Management Center of Sai Gon River Tunnel"
+  },
+  {
+    "CamId": "63ae7cfcbfd3d90017e8f422",
+    "CamName": "TTH 205",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "63ae7b3cbfd3d90017e8f34d",
+    "CamName": "TTH 200.3",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "63ae77bfbfd3d90017e8f18f",
+    "CamName": "TTH 188.1",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "63ae7759bfd3d90017e8f162",
+    "CamName": "TTH 187.1",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "63ae777cbfd3d90017e8f177",
+    "CamName": "TTH 187.2",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "585b2980c3f96200127dc502",
+    "CamName": "TTH 37.2",
+    "Disctrict": "Quận 7",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/585b2980c3f96200127dc502",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "585b284ac3f96200127dc500",
+    "CamName": "TTH 37.1",
+    "Disctrict": "Quận 7",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/585b284ac3f96200127dc500",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "662a881a1afb9c00172d2559",
+    "CamName": "TTH 308",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "662b5b271afb9c00172d9296",
+    "CamName": "TTH 367",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "63ae7727bfd3d90017e8f14a",
+    "CamName": "TTH 186.2",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5a606dbc8576340017d0662b",
+    "CamName": "TTH 40.4",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "63bd1e95bfd3d90017ec3cd5",
+    "CamName": "TTH 244",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "662a8fd41afb9c00172d2bac",
+    "CamName": "TTH 328",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "662b86551afb9c00172dd227",
+    "CamName": "TTH 404",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5bbc7163ca0577001164127f",
+    "CamName": "TTH 137",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5deb576d1dc17d7c5515ad10",
+    "CamName": "ITS 7.7",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "587c79e9b807da0011e33d3d",
+    "CamName": "TTH 40.3",
+    "Disctrict": "Quận Bình Thạnh",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/587c79e9b807da0011e33d3d",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "6623f1f16f998a001b25281f",
+    "CamName": "TTH 295",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "63ae7cd3bfd3d90017e8f408",
+    "CamName": "TTH 204",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "63b65ebebfd3d90017eaa3ae",
+    "CamName": "TTH 233.1",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "63b54a04bfd3d90017ea783e",
+    "CamName": "TTH 216",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "631955e7c9eae60017a1c30a",
+    "CamName": "TTH 179",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "63ae763bbfd3d90017e8f0c4",
+    "CamName": "TTH 182",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "6623ebd76f998a001b25264d",
+    "CamName": "TTH 277",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "65e054fb6b18080018db6632",
+    "CamName": "TTH 250",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5deb576d1dc17d7c5515acf5",
+    "CamName": "ITS 1.3-2",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "62da3e390637a10017d706ff",
+    "CamName": "TTH 268.1",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth_axis",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "63b54968bfd3d90017ea7808",
+    "CamName": "TTH 213",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "63b65f8dbfd3d90017eaa434",
+    "CamName": "TTH 235",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "662b836d1afb9c00172dcfa0",
+    "CamName": "TTH 393",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "587461c1b807da0011e33cc8",
+    "CamName": "TTH 21.4",
+    "Disctrict": "Quận Thủ Đức",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/587461c1b807da0011e33cc8",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5a8267fe5058170011f6eae1",
+    "CamName": "TTH 123.1",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5deb576d1dc17d7c5515ad14",
+    "CamName": "ITS 7.53",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "56df807bc062921100c143da",
+    "CamName": "TTH 28.3",
+    "Disctrict": "Quận Tân Bình",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/56df807bc062921100c143da",
+    "ManagementUnit": "Management Center of Sai Gon River Tunnel"
+  },
+  {
+    "CamId": "5b87c386ca057700116404a6",
+    "CamName": "TTH 60.4",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5deb576d1dc17d7c5515ad0f",
+    "CamName": "ITS 7.4",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5deb576d1dc17d7c5515acfe",
+    "CamName": "ITS 2.8",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "58afea5dbd82540010390c4d",
+    "CamName": "TTH 21.43",
+    "Disctrict": "Huyện Bình Chánh",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/58afea5dbd82540010390c4d",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "58d7b3e8c1e33c00112b3207",
+    "CamName": "TTH 21.47",
+    "Disctrict": "Huyện Bình Chánh",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/58d7b3e8c1e33c00112b3207",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "662a8f3a1afb9c00172d2b31",
+    "CamName": "TTH 326",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "662a8ef41afb9c00172d2af2",
+    "CamName": "TTH 325",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "6623e3a26f998a001b252291",
+    "CamName": "TTH 257",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "662b4e581afb9c00172d862f",
+    "CamName": "TTH 333",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "662b7ce71afb9c00172dc676",
+    "CamName": "TTH 374",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "6623f1996f998a001b252805",
+    "CamName": "TTH 294",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "56df8108c062921100c143db",
+    "CamName": "TTH 23",
+    "Disctrict": "Quận Phú Nhuận",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/56df8108c062921100c143db",
+    "ManagementUnit": "Management Center of Sai Gon River Tunnel"
+  },
+  {
+    "CamId": "58d7c20ac1e33c00112b321c",
+    "CamName": "TTH 45.4",
+    "Disctrict": "Quận Bình Thạnh",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/58d7c20ac1e33c00112b321c",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "58e49ff8d9d6200011e0b9d4",
+    "CamName": "TTH 35.2",
+    "Disctrict": "Quận 3",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/58e49ff8d9d6200011e0b9d4",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5a8253bc5058170011f6eac1",
+    "CamName": "TTH 107.2",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5a8253615058170011f6eabf",
+    "CamName": "TTH 107.1",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "662b50c11afb9c00172d8843",
+    "CamName": "TTH 343",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5deb576d1dc17d7c5515ad1c",
+    "CamName": "ITS 9.2",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "662b50261afb9c00172d87b2",
+    "CamName": "TTH 340",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "63ae7903bfd3d90017e8f211",
+    "CamName": "TTH 191",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "56de42f611f398ec0c48129d",
+    "CamName": "TTH 21.39",
+    "Disctrict": "Huyện Bình Chánh",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/56de42f611f398ec0c48129d",
+    "ManagementUnit": "Management Center of Sai Gon River Tunnel"
+  },
+  {
+    "CamId": "589b3705b3bf7600110283bd",
+    "CamName": "TTH 47.1",
+    "Disctrict": "Quận 12",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/589b3705b3bf7600110283bd",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5d8cdb0a766c880017188964",
+    "CamName": "TTH 160",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5a10c79f02eb490011a0b0dd",
+    "CamName": "TTH 59.1",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5d8cdc57766c88001718896e",
+    "CamName": "TTH 165",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "66f1266f538c780017c93579",
+    "CamName": "TTH 265.2",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5d8cdbdc766c88001718896a",
+    "CamName": "TTH 163",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "66f126e8538c780017c9362f",
+    "CamName": "TTH 334.2",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5b632950fd4edb0019c7dc07",
+    "CamName": "TTH 131",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "6623eb466f998a001b252632",
+    "CamName": "TTH 276",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "56de42f611f398ec0c48129a",
+    "CamName": "TTH 19.1",
+    "Disctrict": "Quận Bình Tân",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/56de42f611f398ec0c48129a",
+    "ManagementUnit": "Management Center of Sai Gon River Tunnel"
+  },
+  {
+    "CamId": "56de42f611f398ec0c481289",
+    "CamName": "TTH 7.2",
+    "Disctrict": "Quận 1",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/56de42f611f398ec0c481289",
+    "ManagementUnit": "Management Center of Sai Gon River Tunnel"
+  },
+  {
+    "CamId": "56de42f611f398ec0c48128b",
+    "CamName": "TTH 9.1",
+    "Disctrict": "Quận 1",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/56de42f611f398ec0c48128b",
+    "ManagementUnit": "Management Center of Sai Gon River Tunnel"
+  },
+  {
+    "CamId": "56de42f611f398ec0c481292",
+    "CamName": "TTH 17.1",
+    "Disctrict": "Quận 6",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/56de42f611f398ec0c481292",
+    "ManagementUnit": "Management Center of Sai Gon River Tunnel"
+  },
+  {
+    "CamId": "56de42f611f398ec0c48128e",
+    "CamName": "TTH 10.2",
+    "Disctrict": "Quận 5",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/56de42f611f398ec0c48128e",
+    "ManagementUnit": "Management Center of Sai Gon River Tunnel"
+  },
+  {
+    "CamId": "56de42f611f398ec0c48128c",
+    "CamName": "TTH 9.2",
+    "Disctrict": "Management Center of Sai Gon River Tunnel",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": "Management Center of Sai Gon River Tunnel"
+  },
+  {
+    "CamId": "56de42f611f398ec0c481287",
+    "CamName": "TTH 6.1",
+    "Disctrict": "Quận 1",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/56de42f611f398ec0c481287",
+    "ManagementUnit": "Management Center of Sai Gon River Tunnel"
+  },
+  {
+    "CamId": "56de42f611f398ec0c48129b",
+    "CamName": "TTH 19.2",
+    "Disctrict": "Quận Bình Tân",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/56de42f611f398ec0c48129b",
+    "ManagementUnit": "Management Center of Sai Gon River Tunnel"
+  },
+  {
+    "CamId": "5822adbbedeb6c0012a2d65f",
+    "CamName": "TTH 10.1",
+    "Disctrict": "Quận 5",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/5822adbbedeb6c0012a2d65f",
+    "ManagementUnit": "Management Center of Sai Gon River Tunnel"
+  },
+  {
+    "CamId": "56de42f611f398ec0c481299",
+    "CamName": "TTH 18.2",
+    "Disctrict": "Quận Bình Tân",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/56de42f611f398ec0c481299",
+    "ManagementUnit": "Management Center of Sai Gon River Tunnel"
+  },
+  {
+    "CamId": "56de42f611f398ec0c481288",
+    "CamName": "TTH 7.1",
+    "Disctrict": "Quận 1",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/56de42f611f398ec0c481288",
+    "ManagementUnit": "Management Center of Sai Gon River Tunnel"
+  },
+  {
+    "CamId": "56de42f611f398ec0c481296",
+    "CamName": "TTH 16.1",
+    "Disctrict": "Quận 6",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/56de42f611f398ec0c481296",
+    "ManagementUnit": "Management Center of Sai Gon River Tunnel"
+  },
+  {
+    "CamId": "56de42f611f398ec0c48129c",
+    "CamName": "TTH 20.1",
+    "Disctrict": "Huyện Bình Chánh",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/56de42f611f398ec0c48129c",
+    "ManagementUnit": "Management Center of Sai Gon River Tunnel"
+  },
+  {
+    "CamId": "58c2717ed56e930010a39ac0",
+    "CamName": "TTH 42.6",
+    "Disctrict": "Quận 8",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/58c2717ed56e930010a39ac0",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "58afcd9bbd82540010390c41",
+    "CamName": "TTH 21.41",
+    "Disctrict": "Huyện Bình Chánh",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/58afcd9bbd82540010390c41",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "58afccadbd82540010390c3f",
+    "CamName": "TTH 21.40",
+    "Disctrict": "Huyện Bình Chánh",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/58afccadbd82540010390c3f",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "6623e7076f998a001b2523ea",
+    "CamName": "TTH 267",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "586e266ef9fab7001111b0b0",
+    "CamName": "TTH 28.5",
+    "Disctrict": "Quận Tân Bình",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/586e266ef9fab7001111b0b0",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "662b7f9f1afb9c00172dca50",
+    "CamName": "TTH 379",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "662b87551afb9c00172dd43a",
+    "CamName": "TTH 408",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5d8cdb9f766c880017188968",
+    "CamName": "TTH 162",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth_axis",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "63b65f64bfd3d90017eaa41f",
+    "CamName": "TTH 234",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "662b4efc1afb9c00172d86bc",
+    "CamName": "TTH 336",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5b728aafca0577001163ff7e",
+    "CamName": "TTH 136",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "662b58791afb9c00172d9107",
+    "CamName": "TTH 361",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5a8255a55058170011f6eac7",
+    "CamName": "TTH 109.1",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5822f23aedeb6c0012a2d6a8",
+    "CamName": "TTH 3a",
+    "Disctrict": "Khu quản lý giao thông đô thị số 1",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": "Khu quản lý giao thông đô thị số 1"
+  },
+  {
+    "CamId": "5b632b60fd4edb0019c7dc12",
+    "CamName": "TTH 134",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "63b3c274bfd3d90017e9ab93",
+    "CamName": "TTH 10a",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "662a89f51afb9c00172d26ef",
+    "CamName": "TTH 314.2",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "63ae7c12bfd3d90017e8f3c0",
+    "CamName": "TTH 201.2",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5deb576d1dc17d7c5515ad0b",
+    "CamName": "ITS 7.1",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5deb576d1dc17d7c5515ad03",
+    "CamName": "ITS 3.5",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5deb576d1dc17d7c5515ad07",
+    "CamName": "ITS 5.2",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "63ae78ccbfd3d90017e8f1f9",
+    "CamName": "TTH 190",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "6623f0b46f998a001b2527c3",
+    "CamName": "TTH 291",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "662b51a41afb9c00172d8926",
+    "CamName": "TTH 347",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "586e20a0f9fab7001111b0a7",
+    "CamName": "TTH 39.1",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5a606c078576340017d06624",
+    "CamName": "TTH 21.16",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "662b5a401afb9c00172d91fc",
+    "CamName": "TTH 364",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "6623edd26f998a001b2526f7",
+    "CamName": "TTH 282.2",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "662b59291afb9c00172d912b",
+    "CamName": "TTH 363",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "56df84abc062921100c143e5",
+    "CamName": "TTH 24.2",
+    "Disctrict": "Quận Gò Vấp",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/56df84abc062921100c143e5",
+    "ManagementUnit": "Management Center of Sai Gon River Tunnel"
+  },
+  {
+    "CamId": "587ef859b807da0011e33d5b",
+    "CamName": "TTH 45.1",
+    "Disctrict": "Quận Bình Thạnh",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/587ef859b807da0011e33d5b",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "587efb60b807da0011e33d5d",
+    "CamName": "TTH 45.2",
+    "Disctrict": "Quận Gò Vấp",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/587efb60b807da0011e33d5d",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5a824f975058170011f6eab8",
+    "CamName": "TTH 116.2",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "6623e6706f998a001b25239b",
+    "CamName": "TTH 265",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "58aff01fbd82540010390c50",
+    "CamName": "TTH 21.44",
+    "Disctrict": "Huyện Bình Chánh",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/58aff01fbd82540010390c50",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "6623e8406f998a001b252465",
+    "CamName": "TTH 271",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "63ae7c73bfd3d90017e8f3ed",
+    "CamName": "TTH 203.2",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5a82439f5058170011f6eaa9",
+    "CamName": "TTH 103",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "662b5afe1afb9c00172d9284",
+    "CamName": "TTH 366.2",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "58affc6017139d0010f35cc8",
+    "CamName": "TTH 21.14",
+    "Disctrict": "Quận Thủ Đức",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/58affc6017139d0010f35cc8",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "59d3414302eb490011a0a610",
+    "CamName": "TTH 33.6",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "6623f5b56f998a001b25292f",
+    "CamName": "TTH 302.2",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "58d7b5a7c1e33c00112b320a",
+    "CamName": "TTH 21.48",
+    "Disctrict": "Huyện Bình Chánh",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/58d7b5a7c1e33c00112b320a",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "58b555ac17139d0010f35d59",
+    "CamName": "TTH 42.5",
+    "Disctrict": "Quận 8",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/58b555ac17139d0010f35d59",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "587475abb807da0011e33cea",
+    "CamName": "TTH 29.3",
+    "Disctrict": "Quận Tân Bình",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/587475abb807da0011e33cea",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "58e49e3dd9d6200011e0b9d1",
+    "CamName": "TTH 35.1",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth_axis",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5d8cd326766c88001718893e",
+    "CamName": "TTH 141",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "66b1c426779f74001867415e",
+    "CamName": "TTH 419",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5deb576d1dc17d7c5515acff",
+    "CamName": "ITS 3.3",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "56df8381c062921100c143e2",
+    "CamName": "TTH 25.1",
+    "Disctrict": "Quận 7",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/56df8381c062921100c143e2",
+    "ManagementUnit": "Management Center of Sai Gon River Tunnel"
+  },
+  {
+    "CamId": "63b6617ebfd3d90017eaa50b",
+    "CamName": "TTH 242.3",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "59ca317602eb490011a0a408",
+    "CamName": "IDICO-QL1 29",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5a607fa38576340017d06671",
+    "CamName": "IDICO-QL1 08",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5a6087858576340017d0668e",
+    "CamName": "IDICO-QL1 32",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5a6085fb8576340017d06686",
+    "CamName": "IDICO-QL1 28",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "584e738361cfea0012cf6951",
+    "CamName": "TTH 21.38",
+    "Disctrict": "Quận Bình Tân",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/584e738361cfea0012cf6951",
+    "ManagementUnit": "MCST"
+  },
+  {
+    "CamId": "584e71cb61cfea0012cf694b",
+    "CamName": "TTH 21.36",
+    "Disctrict": "Quận Bình Tân",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/584e71cb61cfea0012cf694b",
+    "ManagementUnit": "MCST"
+  },
+  {
+    "CamId": "59ca2cf302eb490011a0a3eb",
+    "CamName": "IDICO-QL1 03",
+    "Disctrict": "2",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": 2
+  },
+  {
+    "CamId": "59ca30fd02eb490011a0a406",
+    "CamName": "IDICO-QL1 25",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "59ca2cac02eb490011a0a3e9",
+    "CamName": "IDICO-QL1 02",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "59ca321b02eb490011a0a40d",
+    "CamName": "IDICO-QL1 34",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5d8cd767766c880017188950",
+    "CamName": "TTH 150",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth_axis",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5a6084898576340017d06680",
+    "CamName": "IDICO-QL1 24",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "584e734a61cfea0012cf694f",
+    "CamName": "TTH 21.37",
+    "Disctrict": "Quận Bình Tân",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/584e734a61cfea0012cf694f",
+    "ManagementUnit": "MCST"
+  },
+  {
+    "CamId": "59ca308302eb490011a0a403",
+    "CamName": "IDICO-QL1 22",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "59ca301902eb490011a0a400",
+    "CamName": "IDICO-QL1 20",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5a6084208576340017d0667e",
+    "CamName": "IDICO-QL1 23",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5a6085688576340017d06684",
+    "CamName": "IDICO-QL1 27",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5a6085188576340017d06682",
+    "CamName": "IDICO-QL1 26",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5a60839c8576340017d0667c",
+    "CamName": "IDICO-QL1 21",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5a6086e88576340017d0668a",
+    "CamName": "IDICO-QL1 30",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "662a8b9e1afb9c00172d284d",
+    "CamName": "TTH 317.1",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5a60604f8576340017d0660b",
+    "CamName": "TTH 24.5",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "63b664edbfd3d90017eaaa24",
+    "CamName": "TTH 243.2",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "63ae7d29bfd3d90017e8f437",
+    "CamName": "TTH 206",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5ad06a0d98d8fc001102e27b",
+    "CamName": "TTH 119.2",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "587654d3b807da0011e33d36",
+    "CamName": "TTH 22.12",
+    "Disctrict": "Quận 2",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/587654d3b807da0011e33d36",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "63b54dcbbfd3d90017ea7ba8",
+    "CamName": "TTH 228",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "63b66008bfd3d90017eaa476",
+    "CamName": "TTH 238",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5deb576d1dc17d7c5515ad21",
+    "CamName": "ITS 10.2-1",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5a8266105058170011f6eadf",
+    "CamName": "TTH 121.2",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5deb576d1dc17d7c5515ad11",
+    "CamName": "ITS 7.5",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5deb576d1dc17d7c5515acfc",
+    "CamName": "ITS 2.5",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5874656eb807da0011e33cde",
+    "CamName": "TTH 21.13",
+    "Disctrict": "Quận Thủ Đức",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/5874656eb807da0011e33cde",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5aab1f852d266a0017e5afd4",
+    "CamName": "TTH 124.2",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5deb576d1dc17d7c5515ad22",
+    "CamName": "ITS 10.2-2",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "6623e61d6f998a001b252377",
+    "CamName": "TTH 264",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5deb576d1dc17d7c5515ad0c",
+    "CamName": "ITS 7.2",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5deb576d1dc17d7c5515acfa",
+    "CamName": "ITS 2.1-2",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5deb576d1dc17d7c5515acf8",
+    "CamName": "ITS 1.51",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "63ae75a3bfd3d90017e8f051",
+    "CamName": "TTH 180.2",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "587c8661b807da0011e33d43",
+    "CamName": "TTH 38.6",
+    "Disctrict": "Quận Tân Bình",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/587c8661b807da0011e33d43",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "66b1c34d779f74001867409e",
+    "CamName": "TTH 414",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "66b1c370779f7400186740b3",
+    "CamName": "TTH 415",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5b0b7aba0e517b00119fd800",
+    "CamName": "TTH 126.1",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5d8cd49f766c880017188944",
+    "CamName": "TTH 144",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth_axis",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5deb576d1dc17d7c5515ad1f",
+    "CamName": "ITS 9.51",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5d8cdac3766c880017188962",
+    "CamName": "TTH 159",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth_axis",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "66b1c4e7779f7400186741e4",
+    "CamName": "TTH 421",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5deb576d1dc17d7c5515ad20",
+    "CamName": "ITS 10.1",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5deb576d1dc17d7c5515acf6",
+    "CamName": "ITS 1.4-1",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5deb576d1dc17d7c5515acf7",
+    "CamName": "ITS 1.4-2",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5d8cd1f9766c880017188938",
+    "CamName": "TTH 138",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth_axis",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "56df82d4c062921100c143e0",
+    "CamName": "TTH 33.2",
+    "Disctrict": "Quận 9",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/56df82d4c062921100c143e0",
+    "ManagementUnit": "Management Center of Sai Gon River Tunnel"
+  },
+  {
+    "CamId": "56df8274c062921100c143df",
+    "CamName": "TTH 33.1",
+    "Disctrict": "Quận 9",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/56df8274c062921100c143df",
+    "ManagementUnit": "Management Center of Sai Gon River Tunnel"
+  },
+  {
+    "CamId": "56de42f611f398ec0c481284",
+    "CamName": "TTH 5a",
+    "Disctrict": "Quận 1",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/56de42f611f398ec0c481284",
+    "ManagementUnit": "Khu quản lý giao thông đô thị số 1"
+  },
+  {
+    "CamId": "63b664d2bfd3d90017eaaa0f",
+    "CamName": "TTH 243.1",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "58afdbaebd82540010390c48",
+    "CamName": "TTH 21.42",
+    "Disctrict": "Huyện Bình Chánh",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/58afdbaebd82540010390c48",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "58747923b807da0011e33cf5",
+    "CamName": "TTH 28.2",
+    "Disctrict": "Quận Tân Bình",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/58747923b807da0011e33cf5",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5a606c758576340017d06626",
+    "CamName": "TTH 44.9",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5a8256df5058170011f6eacb",
+    "CamName": "TTH 110",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "662a902a1afb9c00172d2bed",
+    "CamName": "TTH 329",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5abbb77298d8fc001102dfce",
+    "CamName": "TTH 249.2",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "586e2492f9fab7001111b0ab",
+    "CamName": "TTH 34.2",
+    "Disctrict": "Quận Phú Nhuận",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/586e2492f9fab7001111b0ab",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5875cef0b807da0011e33d14",
+    "CamName": "TTH 28.6",
+    "Disctrict": "Quận Tân Bình",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/5875cef0b807da0011e33d14",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "587ed91db807da0011e33d4e",
+    "CamName": "TTH 44.5",
+    "Disctrict": "Quận Bình Thạnh",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/587ed91db807da0011e33d4e",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5a824b6c5058170011f6eaab",
+    "CamName": "TTH 104.1",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5874796db807da0011e33cf7",
+    "CamName": "TTH 28.7",
+    "Disctrict": "Quận Tân Bình",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/5874796db807da0011e33cf7",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "58b5752e17139d0010f35d5f",
+    "CamName": "TTH 35.7",
+    "Disctrict": "Quận 1",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/58b5752e17139d0010f35d5f",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "58af8d68bd82540010390c2e",
+    "CamName": "TTH 35.5",
+    "Disctrict": "Quận 3",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/58af8d68bd82540010390c2e",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "589b3f7db3bf7600110283c6",
+    "CamName": "TTH 47.4",
+    "Disctrict": "Huyện Hóc Môn",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/589b3f7db3bf7600110283c6",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "589b4379b3bf7600110283c9",
+    "CamName": "TTH 47.5",
+    "Disctrict": "Huyện Củ Chi",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/589b4379b3bf7600110283c9",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "595dd7693dcfc400106f28b0",
+    "CamName": "TTH 21.68",
+    "Disctrict": "2",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": 2
+  },
+  {
+    "CamId": "595ddc123dcfc400106f28ba",
+    "CamName": "TTH 21.73",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5a6065c58576340017d06615",
+    "CamName": "TTH 21.84",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5a6066608576340017d06617",
+    "CamName": "TTH 21.85",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "58e49783d9d6200011e0b9ce",
+    "CamName": "TTH 28.10",
+    "Disctrict": "Quận 12",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/58e49783d9d6200011e0b9ce",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "58af8a0bbd82540010390c25",
+    "CamName": "TTH 35.3",
+    "Disctrict": "Quận 3",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/58af8a0bbd82540010390c25",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "59ca2d9d02eb490011a0a3f0",
+    "CamName": "IDICO-QL1 05",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "595f8d233dcfc400106f28f0",
+    "CamName": "TTH 21.78",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "63ae79aabfd3d90017e8f26a",
+    "CamName": "TTH 195",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "58ad6214bd82540010390be2",
+    "CamName": "TTH 38.8",
+    "Disctrict": "Quận Tân Bình",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/58ad6214bd82540010390be2",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5a824c3e5058170011f6eaae",
+    "CamName": "TTH 104.2",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5a607f078576340017d0666f",
+    "CamName": "IDICO-QL1 07",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "58d7c2e6c1e33c00112b321e",
+    "CamName": "TTH 28.9",
+    "Disctrict": "Quận 12",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/58d7c2e6c1e33c00112b321e",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "589b39d9b3bf7600110283c1",
+    "CamName": "TTH 47.2",
+    "Disctrict": "Quận 12",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/589b39d9b3bf7600110283c1",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "595ddb493dcfc400106f28b6",
+    "CamName": "TTH 21.71",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "595f86c43dcfc400106f28ea",
+    "CamName": "TTH 21.75",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "595dd4f43dcfc400106f28ab",
+    "CamName": "TTH 21.66",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5a824c905058170011f6eab0",
+    "CamName": "TTH 104.3",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5a824e465058170011f6eab4",
+    "CamName": "TTH 115.2",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5a6061fd8576340017d06613",
+    "CamName": "TTH 21.83",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "58af8eb2bd82540010390c30",
+    "CamName": "TTH 35.6",
+    "Disctrict": "Quận 3",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/58af8eb2bd82540010390c30",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "58df4d95dc195800111e04b9",
+    "CamName": "TTH 26.4",
+    "Disctrict": "Quận Tân Bình",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/58df4d95dc195800111e04b9",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "589b4644b3bf7600110283ce",
+    "CamName": "TTH 48.1",
+    "Disctrict": "Quận 12",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/589b4644b3bf7600110283ce",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "58df50ffdc195800111e04c0",
+    "CamName": "TTH 26.7",
+    "Disctrict": "Quận Tân Bình",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/58df50ffdc195800111e04c0",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "595f874d3dcfc400106f28ec",
+    "CamName": "TTH 21.76",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5a6060a88576340017d0660d",
+    "CamName": "TTH 24.6",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "589ad89eb3bf7600110283ac",
+    "CamName": "TTH 46.1",
+    "Disctrict": "Quận 12",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/589ad89eb3bf7600110283ac",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "586e2995f9fab7001111b0b5",
+    "CamName": "TTH 40.1",
+    "Disctrict": "Quận Bình Thạnh",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/586e2995f9fab7001111b0b5",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "6623ec376f998a001b252671",
+    "CamName": "TTH 278",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "586e1f18f9fab7001111b0a5",
+    "CamName": "TTH 38.1",
+    "Disctrict": "Quận Tân Bình",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/586e1f18f9fab7001111b0a5",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "662a87a41afb9c00172d24e9",
+    "CamName": "TTH 306",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "662a88521afb9c00172d2592",
+    "CamName": "TTH 310",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "662b558c1afb9c00172d8ed2",
+    "CamName": "TTH 354",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "63b55020bfd3d90017ea7cb7",
+    "CamName": "TTH 231.2",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5deb576d1dc17d7c5515ad18",
+    "CamName": "ITS 8.6",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "58abc0cbbd82540010390ba6",
+    "CamName": "TTH 49.3",
+    "Disctrict": "Quận Bình Thạnh",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/58abc0cbbd82540010390ba6",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "631812e6c9eae60017a19567",
+    "CamName": "TTH 49.11",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "63b3c2fbbfd3d90017e9abbf",
+    "CamName": "TTH 49.1",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "63b54f70bfd3d90017ea7c86",
+    "CamName": "TTH 49.10",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "58abbf72bd82540010390ba4",
+    "CamName": "TTH 49.9",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "63b660d8bfd3d90017eaa4d5",
+    "CamName": "TTH 242.1",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5deb576d1dc17d7c5515ad1e",
+    "CamName": "ITS 9.5",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "56f11afc3ac17b11001c504e",
+    "CamName": "TTH 31",
+    "Disctrict": "Quận Tân Bình",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/56f11afc3ac17b11001c504e",
+    "ManagementUnit": "Management Center of Sai Gon River Tunnel"
+  },
+  {
+    "CamId": "56df8159c062921100c143dc",
+    "CamName": "TTH 32.1",
+    "Disctrict": "Quận 9",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/56df8159c062921100c143dc",
+    "ManagementUnit": "Management Center of Sai Gon River Tunnel"
+  },
+  {
+    "CamId": "587ef5dfb807da0011e33d59",
+    "CamName": "TTH 34.8",
+    "Disctrict": "Quận Phú Nhuận",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/587ef5dfb807da0011e33d59",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5ad064b498d8fc001102e26f",
+    "CamName": "TTH 125.2",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "56df8544c062921100c143e6",
+    "CamName": "TTH 29.1",
+    "Disctrict": "Quận Tân Bình",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/56df8544c062921100c143e6",
+    "ManagementUnit": "Management Center of Sai Gon River Tunnel"
+  },
+  {
+    "CamId": "63b65fa9bfd3d90017eaa449",
+    "CamName": "TTH 236",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "63b5503bbfd3d90017ea7ccc",
+    "CamName": "TTH 231.3",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "662b80e81afb9c00172dcbec",
+    "CamName": "TTH 383",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "6623f4836f998a001b2528bf",
+    "CamName": "TTH 299.2",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "586e1d4ef9fab7001111b0a2",
+    "CamName": "TTH 38.2",
+    "Disctrict": "Quận Tân Bình",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/586e1d4ef9fab7001111b0a2",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "58746295b807da0011e33ccb",
+    "CamName": "TTH 21.5",
+    "Disctrict": "Quận Thủ Đức",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/58746295b807da0011e33ccb",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5a6069238576340017d0661c",
+    "CamName": "TTH 44.6",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "56de42f611f398ec0c481298",
+    "CamName": "TTH 18.1",
+    "Disctrict": "Quận Bình Tân",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/56de42f611f398ec0c481298",
+    "ManagementUnit": "Management Center of Sai Gon River Tunnel"
+  },
+  {
+    "CamId": "662b54bb1afb9c00172d8dbb",
+    "CamName": "TTH 352",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "56df83d8c062921100c143e3",
+    "CamName": "TTH 24.1",
+    "Disctrict": "Quận Gò Vấp",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/56df83d8c062921100c143e3",
+    "ManagementUnit": "Management Center of Sai Gon River Tunnel"
+  },
+  {
+    "CamId": "56de42f611f398ec0c481283",
+    "CamName": "TTH 4.1",
+    "Disctrict": "Quận 2",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/56de42f611f398ec0c481283",
+    "ManagementUnit": "Management Center of Sai Gon River Tunnel"
+  },
+  {
+    "CamId": "56de42f611f398ec0c481286",
+    "CamName": "TTH 5.2",
+    "Disctrict": "Quận 2",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/56de42f611f398ec0c481286",
+    "ManagementUnit": "Management Center of Sai Gon River Tunnel"
+  },
+  {
+    "CamId": "58175c81edeb6c0012a2d5c2",
+    "CamName": "TTH 4.2",
+    "Disctrict": "Quận 2",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/58175c81edeb6c0012a2d5c2",
+    "ManagementUnit": "Management Center of Sai Gon River Tunnel"
+  },
+  {
+    "CamId": "5d8cd542766c880017188948",
+    "CamName": "TTH 146",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth_axis",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "662b4ecb1afb9c00172d8692",
+    "CamName": "TTH 335",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "662b54711afb9c00172d8d4f",
+    "CamName": "TTH 351",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "56de42f611f398ec0c48129e",
+    "CamName": "TTH 22.1",
+    "Disctrict": "Quận 2",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/56de42f611f398ec0c48129e",
+    "ManagementUnit": "Khu quản lý giao thông đô thị số 2"
+  },
+  {
+    "CamId": "5701e22bc4350a1100e26f6c",
+    "CamName": "TTH 1a",
+    "Disctrict": "Quận 1",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/5701e22bc4350a1100e26f6c",
+    "ManagementUnit": "Khu quản lý giao thông đô thị số 1"
+  },
+  {
+    "CamId": "6623f44f6f998a001b2528aa",
+    "CamName": "TTH 299.1",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "56de42f611f398ec0c481290",
+    "CamName": "TTH 12.1",
+    "Disctrict": "Quận 5",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/56de42f611f398ec0c481290",
+    "ManagementUnit": "Management Center of Sai Gon River Tunnel"
+  },
+  {
+    "CamId": "587c8c20b807da0011e33d47",
+    "CamName": "TTH 34.3",
+    "Disctrict": "Quận Phú Nhuận",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/587c8c20b807da0011e33d47",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "58746488b807da0011e33cd7",
+    "CamName": "TTH 21.10",
+    "Disctrict": "Quận Thủ Đức",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/58746488b807da0011e33cd7",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "56de42f611f398ec0c48128f",
+    "CamName": "TTH 11.1",
+    "Disctrict": "Quận 5",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/56de42f611f398ec0c48128f",
+    "ManagementUnit": "Management Center of Sai Gon River Tunnel"
+  },
+  {
+    "CamId": "56de42f611f398ec0c481291",
+    "CamName": "TTH 13.1",
+    "Disctrict": "Quận 5",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/56de42f611f398ec0c481291",
+    "ManagementUnit": "Management Center of Sai Gon River Tunnel"
+  },
+  {
+    "CamId": "58ad6961bd82540010390be5",
+    "CamName": "TTH 34.9",
+    "Disctrict": "Quận Phú Nhuận",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/58ad6961bd82540010390be5",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "587ee0ecb807da0011e33d50",
+    "CamName": "TTH 44.4",
+    "Disctrict": "Quận Bình Thạnh",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/587ee0ecb807da0011e33d50",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "6623f1046f998a001b2527db",
+    "CamName": "TTH 292",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "56de42f611f398ec0c48128a",
+    "CamName": "TTH 8.2",
+    "Disctrict": "Quận 1",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/56de42f611f398ec0c48128a",
+    "ManagementUnit": "Management Center of Sai Gon River Tunnel"
+  },
+  {
+    "CamId": "5a8259035058170011f6eacf",
+    "CamName": "TTH 117.1",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "58af99abbd82540010390c39",
+    "CamName": "TTH 36.2",
+    "Disctrict": "Quận 1",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/58af99abbd82540010390c39",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "58df4e22dc195800111e04bb",
+    "CamName": "TTH 26.5",
+    "Disctrict": "Quận Tân Bình",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/58df4e22dc195800111e04bb",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5b632a79fd4edb0019c7dc0f",
+    "CamName": "TTH 133",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "662a89ae1afb9c00172d26ad",
+    "CamName": "TTH 314.1",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "63bd1f21bfd3d90017ec3d04",
+    "CamName": "TTH 245",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5d8cd886766c880017188956",
+    "CamName": "TTH 153",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth_axis",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "662b50841afb9c00172d880d",
+    "CamName": "TTH 342",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "63ae7829bfd3d90017e8f1ac",
+    "CamName": "TTH 188.2",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "587c782db807da0011e33d3b",
+    "CamName": "TTH 33.3",
+    "Disctrict": "Quận 2",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/587c782db807da0011e33d3b",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "63b661a3bfd3d90017eaa520",
+    "CamName": "TTH 242.4",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5874644cb807da0011e33cd5",
+    "CamName": "TTH 21.9",
+    "Disctrict": "Quận Thủ Đức",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/5874644cb807da0011e33cd5",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5deb576d1dc17d7c5515ad16",
+    "CamName": "ITS 8.4",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "662b55111afb9c00172d8e2e",
+    "CamName": "TTH 353",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "6623ee666f998a001b252726",
+    "CamName": "TTH 284",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "6623ed9b6f998a001b2526cd",
+    "CamName": "TTH 282.1",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "66b1c1bf779f740018673ef2",
+    "CamName": "TTH 411",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "6623e7f06f998a001b25244a",
+    "CamName": "TTH 270",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5d8cd70e766c88001718894e",
+    "CamName": "TTH 149",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth_axis",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5d8cd3b7766c880017188942",
+    "CamName": "TTH 143",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth_axis",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "6623e8da6f998a001b2524a6",
+    "CamName": "TTH 273",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "63b54909bfd3d90017ea77e4",
+    "CamName": "TTH 211.2",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "63b54aedbfd3d90017ea79c3",
+    "CamName": "TTH 220.2",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "63b54ad1bfd3d90017ea7974",
+    "CamName": "TTH 220.1",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "63b54898bfd3d90017ea77ae",
+    "CamName": "TTH 209",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "63b54938bfd3d90017ea77f6",
+    "CamName": "TTH 212",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "63b548c3bfd3d90017ea77c0",
+    "CamName": "TTH 210",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5d9de4de766c880017188cbb",
+    "CamName": "TTH 1.8",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "58b571c817139d0010f35d5d",
+    "CamName": "TTH 34.11",
+    "Disctrict": "Quận Phú Nhuận",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/58b571c817139d0010f35d5d",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5a6060e08576340017d0660f",
+    "CamName": "TTH 24.7",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "662a89211afb9c00172d2636",
+    "CamName": "TTH 312",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "59414c883dcfc400106f260b",
+    "CamName": "TTH 38.9",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "662b51761afb9c00172d88ef",
+    "CamName": "TTH 346",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "662a86a11afb9c00172d2410",
+    "CamName": "TTH 304",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "56de42f611f398ec0c481294",
+    "CamName": "TTH 14.2",
+    "Disctrict": "Quận 1",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/56de42f611f398ec0c481294",
+    "ManagementUnit": "Management Center of Sai Gon River Tunnel"
+  },
+  {
+    "CamId": "5d8cd7bb766c880017188952",
+    "CamName": "TTH 151",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth_axis",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5a823ba75058170011f6ea9e",
+    "CamName": "TTH 100.1",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "6623f51a6f998a001b252900",
+    "CamName": "TTH 301",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "649da72ca6068200171a6dbb",
+    "CamName": "TTH 247",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "662b4d781afb9c00172d8571",
+    "CamName": "TTH 330",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "66b1c311779f740018674083",
+    "CamName": "TTH 413.1",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "6623e88c6f998a001b25248b",
+    "CamName": "TTH 272",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5abbb6d698d8fc001102dfc8",
+    "CamName": "TTH 249.1",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5a8269c45058170011f6eae4",
+    "CamName": "TTH 124.1",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5deb576d1dc17d7c5515ad04",
+    "CamName": "ITS 3.51",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "662b58bd1afb9c00172d9119",
+    "CamName": "TTH 362",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "662b86c41afb9c00172dd31c",
+    "CamName": "TTH 406",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "58744f1fb807da0011e33cbd",
+    "CamName": "TTH 43.1",
+    "Disctrict": "Quận 8",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/58744f1fb807da0011e33cbd",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "6623f14b6f998a001b2527f0",
+    "CamName": "TTH 293",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "6623ef2b6f998a001b252753",
+    "CamName": "TTH 286",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "662b51d21afb9c00172d89bf",
+    "CamName": "TTH 348",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "662b5b8c1afb9c00172d92ca",
+    "CamName": "TTH 369",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "662b52131afb9c00172d8a23",
+    "CamName": "TTH 349",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5a82602c5058170011f6ead9",
+    "CamName": "TTH 119.1",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "662b5adc1afb9c00172d925b",
+    "CamName": "TTH 366.1",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "662b5c141afb9c00172d93d7",
+    "CamName": "TTH 372",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "63b3c59fbfd3d90017e9ace8",
+    "CamName": "TTH 207",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "662b51201afb9c00172d889a",
+    "CamName": "TTH 345",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "662b5c981afb9c00172d94c0",
+    "CamName": "TTH 373",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "589add0fb3bf7600110283ae",
+    "CamName": "TTH 46.2",
+    "Disctrict": "Quận 12",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/589add0fb3bf7600110283ae",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "58b5510817139d0010f35d4e",
+    "CamName": "TTH 21.15",
+    "Disctrict": "Quận Thủ Đức",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/58b5510817139d0010f35d4e",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5875d4f8b807da0011e33d1a",
+    "CamName": "TTH 42.4",
+    "Disctrict": "Quận 8",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/5875d4f8b807da0011e33d1a",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5d8cd98d766c88001718895a",
+    "CamName": "TTH 155",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth_axis",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5d9ddec9766c880017188c9c",
+    "CamName": "TTH 173",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "63ae75debfd3d90017e8f082",
+    "CamName": "TTH 181.1",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5deb576d1dc17d7c5515ad0a",
+    "CamName": "ITS 6.52",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "58af8b69bd82540010390c28",
+    "CamName": "TTH 35.4",
+    "Disctrict": "Quận 3",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/58af8b69bd82540010390c28",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5d8cda2e766c88001718895e",
+    "CamName": "TTH 157",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth_axis",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "6623e7526f998a001b252407",
+    "CamName": "TTH 296",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "662b58401afb9c00172d90f5",
+    "CamName": "TTH 360",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "6623e31e6f998a001b252250",
+    "CamName": "TTH 255",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "662a88a01afb9c00172d25d1",
+    "CamName": "TTH 311",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "63b66089bfd3d90017eaa4bd",
+    "CamName": "TTH 241",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5a825b7d5058170011f6ead4",
+    "CamName": "TTH 117.3",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "662a8b061afb9c00172d27d7",
+    "CamName": "TTH 316",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "56df8198c062921100c143dd",
+    "CamName": "TTH 32.3",
+    "Disctrict": "Quận Thủ Đức",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/56df8198c062921100c143dd",
+    "ManagementUnit": "Management Center of Sai Gon River Tunnel"
+  },
+  {
+    "CamId": "56f8d743025e9511002786c5",
+    "CamName": "TTH 29.2",
+    "Disctrict": "Quận Tân Bình",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/56f8d743025e9511002786c5",
+    "ManagementUnit": "Management Center of Sai Gon River Tunnel"
+  },
+  {
+    "CamId": "5a823bd55058170011f6eaa0",
+    "CamName": "TTH 100.2",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5b8b2323ca057700116405d0",
+    "CamName": "TTH 29.4",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "662a896e1afb9c00172d2674",
+    "CamName": "TTH 313",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "587ee2aeb807da0011e33d52",
+    "CamName": "TTH 44.1",
+    "Disctrict": "Quận Phú Nhuận",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/587ee2aeb807da0011e33d52",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "6623f5876f998a001b25291a",
+    "CamName": "TTH 302.1",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5d8cdb4b766c880017188966",
+    "CamName": "TTH 161",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5ad068b198d8fc001102e278",
+    "CamName": "TTH 118.1",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5a606a958576340017d06621",
+    "CamName": "TTH 44.8",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "6623e5776f998a001b252337",
+    "CamName": "TTH 262",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "6623f4df6f998a001b2528eb",
+    "CamName": "TTH 300",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "56de42f611f398ec0c48127f",
+    "CamName": "TTH 2.1",
+    "Disctrict": "Quận 2",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/56de42f611f398ec0c48127f",
+    "ManagementUnit": "Management Center of Sai Gon River Tunnel"
+  },
+  {
+    "CamId": "56de42f611f398ec0c48127e",
+    "CamName": "TTH 1.2",
+    "Disctrict": "Quận 2",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/56de42f611f398ec0c48127e",
+    "ManagementUnit": "Management Center of Sai Gon River Tunnel"
+  },
+  {
+    "CamId": "56de42f611f398ec0c48127d",
+    "CamName": "TTH 1.1",
+    "Disctrict": "Quận 2",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/56de42f611f398ec0c48127d",
+    "ManagementUnit": "Management Center of Sai Gon River Tunnel"
+  },
+  {
+    "CamId": "56de42f611f398ec0c481282",
+    "CamName": "TTH 3.2",
+    "Disctrict": "Quận 2",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/56de42f611f398ec0c481282",
+    "ManagementUnit": "Management Center of Sai Gon River Tunnel"
+  },
+  {
+    "CamId": "66b1c1f2779f740018673f0d",
+    "CamName": "TTH 412",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "63b660f8bfd3d90017eaa4ea",
+    "CamName": "TTH 242.2",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "56de42f611f398ec0c481280",
+    "CamName": "TTH 2.2",
+    "Disctrict": "Quận 2",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/56de42f611f398ec0c481280",
+    "ManagementUnit": "Management Center of Sai Gon River Tunnel"
+  },
+  {
+    "CamId": "5d9de3c2766c880017188cb3",
+    "CamName": "TTH 1.5",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5d9dde1f766c880017188c98",
+    "CamName": "TTH 171",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5d9ddf49766c880017188ca0",
+    "CamName": "TTH 175",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "56de42f611f398ec0c48129f",
+    "CamName": "TTH 22.2",
+    "Disctrict": "Quận 2",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/56de42f611f398ec0c48129f",
+    "ManagementUnit": "Khu quản lý giao thông đô thị số 2"
+  },
+  {
+    "CamId": "5d9de43b766c880017188cb6",
+    "CamName": "TTH 1.6",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "649da495a6068200171a6cb6",
+    "CamName": "TTH 230.3",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "662a8a661afb9c00172d2762",
+    "CamName": "TTH 315",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "597bf0b8faa7ea0011c7c293",
+    "CamName": "TTH 98",
+    "Disctrict": "Management Center of Sai Gon River Tunnel",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": "Management Center of Sai Gon River Tunnel"
+  },
+  {
+    "CamId": "5a823e425058170011f6eaa4",
+    "CamName": "TTH 102.1",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "662a8c381afb9c00172d28b6",
+    "CamName": "TTH 318",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "63ae7966bfd3d90017e8f240",
+    "CamName": "TTH 193",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "63ae7938bfd3d90017e8f226",
+    "CamName": "TTH 192",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "662b52a31afb9c00172d8b01",
+    "CamName": "TTH 350",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "662a87df1afb9c00172d2522",
+    "CamName": "TTH 307",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "662a873b1afb9c00172d2483",
+    "CamName": "TTH 305.1",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "662a87641afb9c00172d24b0",
+    "CamName": "TTH 305.2",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5a6082698576340017d06678",
+    "CamName": "IDICO-QL1 16",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "65e0556b6b18080018db665e",
+    "CamName": "TTH 252",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "662b4faa1afb9c00172d875e",
+    "CamName": "TTH 339",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "662b84771afb9c00172dd076",
+    "CamName": "TTH 396",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "591c6833a6bfb500119400a3",
+    "CamName": "TTH 48.8",
+    "Disctrict": "Huyện Nhà Bè",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/591c6833a6bfb500119400a3",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5b5995a3fd4edb0019c7d9ab",
+    "CamName": "TTH 15.2",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "56de42f611f398ec0c481293",
+    "CamName": "TTH 14.1",
+    "Disctrict": "Quận 5",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/56de42f611f398ec0c481293",
+    "ManagementUnit": "Management Center of Sai Gon River Tunnel"
+  },
+  {
+    "CamId": "56de42f611f398ec0c48128d",
+    "CamName": "TTH 2a",
+    "Disctrict": "Quận 5",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/56de42f611f398ec0c48128d",
+    "ManagementUnit": "Khu quản lý giao thông đô thị số 1"
+  },
+  {
+    "CamId": "56de42f611f398ec0c481297",
+    "CamName": "TTH 13.2",
+    "Disctrict": "Quận 5",
+    "SnapshotUrl": "http://camera.thongtingiaothong.vn/api/snapshot/56de42f611f398ec0c481297",
+    "ManagementUnit": "Management Center of Sai Gon River Tunnel"
+  },
+  {
+    "CamId": "56de42f611f398ec0c481295",
+    "CamName": "TTH 15.1",
+    "Disctrict": "Management Center of Sai Gon River Tunnel",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": "Management Center of Sai Gon River Tunnel"
+  },
+  {
+    "CamId": "5a824ee15058170011f6eab6",
+    "CamName": "TTH 116.1",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5deb576d1dc17d7c5515ad0e",
+    "CamName": "ITS 7.6",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "662b7d0c1afb9c00172dc6a6",
+    "CamName": "TTH 375",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "597bf277faa7ea0011c7c29f",
+    "CamName": "TTH 99",
+    "Disctrict": "Management Center of Sai Gon River Tunnel",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": "Management Center of Sai Gon River Tunnel"
+  },
+  {
+    "CamId": "662b80b91afb9c00172dcb5b",
+    "CamName": "TTH 382",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  },
+  {
+    "CamId": "5b19d34faf4ff60011d6ea52",
+    "CamName": "TTH 120.2",
+    "Disctrict": "N/A",
+    "SnapshotUrl": "tth",
+    "ManagementUnit": false
+  }
+]
