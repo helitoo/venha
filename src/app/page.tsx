@@ -1,5 +1,6 @@
 import React, { Suspense } from "react";
 import { getAllCameras, getDistricts } from "@/lib/cameras";
+import { getAggregatedWeatherFloodState } from "@/lib/server-weather";
 import { CameraProvider } from "@/context/CameraContext";
 import { WeatherFloodProvider } from "@/context/WeatherFloodContext";
 import CameraViewer from "@/components/CameraViewer";
@@ -9,6 +10,9 @@ export const dynamic = "force-dynamic";
 export default async function HomePage() {
   const cameras = getAllCameras();
   const districts = getDistricts();
+
+  // Preload initial weather & flood state on the server (0ms cold start SSR)
+  const serverState = await getAggregatedWeatherFloodState().catch(() => null);
 
   return (
     <Suspense
@@ -20,7 +24,11 @@ export default async function HomePage() {
       }
     >
       <CameraProvider initialCameras={cameras} districts={districts}>
-        <WeatherFloodProvider>
+        <WeatherFloodProvider
+          initialWeatherMap={serverState?.weatherMap}
+          initialFloodMap={serverState?.floodMap}
+          initialLastUpdated={serverState?.lastUpdated}
+        >
           <CameraViewer />
         </WeatherFloodProvider>
       </CameraProvider>

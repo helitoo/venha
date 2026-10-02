@@ -1,20 +1,26 @@
 import { NextRequest, NextResponse } from "next/server";
-import { CameraWeatherState, WeatherCategory } from "@/types/camera";
+import { getAggregatedWeatherFloodState, getWmoCategory } from "@/lib/server-weather";
+import { CameraWeatherState } from "@/types/camera";
 
 export const dynamic = "force-dynamic";
 
-// Map WMO code to category according to requirements
-export function getWmoCategory(code: number): WeatherCategory {
-  if (code === 61 || code === 63 || code === 65) {
-    return "droplet"; // <Droplet />
+export async function GET() {
+  try {
+    const state = await getAggregatedWeatherFloodState();
+    return NextResponse.json({
+      success: true,
+      count: Object.keys(state.weatherMap).length,
+      results: state.weatherMap,
+      floodMap: state.floodMap,
+      lastUpdated: state.lastUpdated,
+    });
+  } catch (error: any) {
+    console.error("Weather GET API error:", error);
+    return NextResponse.json(
+      { success: false, error: error?.message || "Internal server error" },
+      { status: 500 }
+    );
   }
-  if (code === 80 || code === 81 || code === 82) {
-    return "cloud-rain"; // <CloudRain />
-  }
-  if (code === 95 || code === 96 || code === 99) {
-    return "tornado"; // <Tornado />
-  }
-  return "leaf"; // <Leaf />
 }
 
 interface CoordItem {
@@ -25,11 +31,18 @@ interface CoordItem {
 
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json();
+    const body = await request.json().catch(() => ({}));
     const items: CoordItem[] = body.items || [];
 
     if (!Array.isArray(items) || items.length === 0) {
-      return NextResponse.json({ success: true, results: {} });
+      const state = await getAggregatedWeatherFloodState();
+      return NextResponse.json({
+        success: true,
+        count: Object.keys(state.weatherMap).length,
+        results: state.weatherMap,
+        floodMap: state.floodMap,
+        lastUpdated: state.lastUpdated,
+      });
     }
 
     // Chunk coordinates into batches of 100 to prevent URL length limits
@@ -54,7 +67,7 @@ export async function POST(request: NextRequest) {
             headers: {
               "User-Agent": "Venha-Flood-Monitor/1.0",
             },
-            next: { revalidate: 0 },
+            next: { revalidate: 60 },
           });
 
           if (!res.ok) {
@@ -63,8 +76,6 @@ export async function POST(request: NextRequest) {
           }
 
           const data = await res.json();
-
-          // If only 1 item in chunk, Open-Meteo returns a single object instead of array
           const weatherArray = Array.isArray(data) ? data : [data];
 
           weatherArray.forEach((wObj: any, index: number) => {
@@ -72,7 +83,8 @@ export async function POST(request: NextRequest) {
             if (!cam) return;
 
             const current = wObj?.current || {};
-            const weatherCode = typeof current.weather_code === "number" ? current.weather_code : 0;
+            const weatherCode =
+              typeof current.weather_code === "number" ? current.weather_code : 0;
             const category = getWmoCategory(weatherCode);
 
             resultMap[cam.camId] = {

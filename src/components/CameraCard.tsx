@@ -109,7 +109,10 @@ export default function CameraCard({ camera, onSelect }: CameraCardProps) {
                 fill="none"
               />
             </svg>
-            <span className="absolute text-[9px] font-semibold text-white">
+            <span
+              suppressHydrationWarning
+              className="absolute text-[9px] font-semibold text-white"
+            >
               {isFetching ? (
                 <RefreshCw className="w-2.5 h-2.5 animate-spin" />
               ) : (
