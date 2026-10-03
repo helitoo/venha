@@ -121,7 +121,7 @@ export default function CameraWeatherCard() {
   if (severeFloodCount > 0) {
     mascotSpeech =
       mascotType === "duck"
-        ? `Cứu bé zới! Đang có ${severeFloodCount} tuyến đường ngập sâu trên 40cm, né các điểm này gấp bạn ơi! 🦆🚨`
+        ? `Đang có ${severeFloodCount} tuyến đường ngập sâu trên 40cm! Bạn đi cẩn thận thật nhiều nhé 🦆🚨`
         : `Ngập sâu meow! Toàn thành phố có ${severeFloodCount} điểm ngập nặng, mở bản đồ kiểm tra kỹ trước khi đi nha sen! 🐱🌊`;
   } else if (moderateFloodCount > 0) {
     mascotSpeech =

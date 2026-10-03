@@ -39,6 +39,7 @@ import type * as LeafletType from "leaflet";
 import CameraWeatherCard from "./CameraWeatherCard";
 import FloodHotspotsModal from "./FloodHotspotsModal";
 import RoutePlannerModal from "./RoutePlannerModal";
+import AboutProjectModal from "./AboutProjectModal";
 import { RouteAnalysis, RoutePlanResult, SavedLocation } from "@/types/route";
 import { PRESET_LOCATIONS, planSafeRoute } from "@/lib/routing";
 import { isFrequentFloodCamera } from "@/data/floodHotspots";
@@ -130,7 +131,22 @@ export default function CameraMapView({ onSelectCamera }: CameraMapViewProps) {
   const [visibleCount, setVisibleCount] = useState(0);
   const [showHotspotsModal, setShowHotspotsModal] = useState(false);
   const [showTimelineModal, setShowTimelineModal] = useState(false);
+  const [showAboutModal, setShowAboutModal] = useState(false);
+  const [zoomLevel, setZoomLevel] = useState(13);
+  const [showZoomSlider, setShowZoomSlider] = useState(false);
   const routeLayersRef = useRef<LeafletType.LayerGroup | null>(null);
+
+  // Check if first-time visitor to display welcome & terms intro dialog
+  useEffect(() => {
+    try {
+      const hasSeen = localStorage.getItem("venha_intro_modal_seen_v1");
+      if (!hasSeen) {
+        setShowAboutModal(true);
+      }
+    } catch (e) {
+      console.warn("localStorage check error:", e);
+    }
+  }, []);
 
   // Filter cameras that have valid Lat & Lng
   const mapCameras = useMemo(() => {
@@ -643,13 +659,13 @@ export default function CameraMapView({ onSelectCamera }: CameraMapViewProps) {
         const trafficMeta = trafficInfo.meta;
 
         if (visual.floodLevel === "LEVEL_3") {
-          camTip = mascotType === "duck" ? "Ngập sâu trên 40cm, né gấp nha! 🦆🚨" : "Ngập sâu ướt lông rồi, quay đầu meow! 🐱🚨";
+          camTip = mascotType === "duck" ? "Ngập sâu trên 40cm, đi thật chậm và cẩn thận nhé! 🦆🚨" : "Ngập sâu rồi sen, đi chậm và cẩn thận nha meow! 🐱🚨";
         } else if (visual.floodLevel === "LEVEL_2") {
           camTip = mascotType === "duck" ? "Nước ngập nửa bánh xe, đi chậm nha! 🦆⚠️" : "Ngập vừa 15-40cm, lái vững tay meow! 🐱🛵";
         } else if (visual.floodLevel === "LEVEL_1") {
           camTip = mascotType === "duck" ? "Đường ngập nhẹ mắt cá chân! 🦆⚠️" : "Ngập nhẹ mép vỉa hè, đi chậm kẻo té meow! 🐱💦";
         } else if (trafficDensity === "jam") {
-          camTip = mascotType === "duck" ? "Khu vực này kẹt xe khá đông, né đoạn này đi nha! 🦆🛑" : "Đường đang kẹt xe rồi, né đoạn này đi meow! 🐱🛑";
+          camTip = mascotType === "duck" ? "Khu vực này đang kẹt xe, đi cẩn thận nhé! 🦆🛑" : "Đường đang kẹt xe rồi, giữ bình tĩnh và cẩn thận nha meow! 🐱🛑";
         } else if (trafficDensity === "high") {
           camTip = mascotType === "duck" ? "Đoạn này xe đông di chuyển chậm, chạy cẩn thận nha! 🦆🚗" : "Đường đông xe lắm, chạy cẩn thận meow! 🐱🚗";
         } else if (camMood === "rain" || isRainZone) {
@@ -892,6 +908,7 @@ export default function CameraMapView({ onSelectCamera }: CameraMapViewProps) {
         : [10.7769, 106.7009];
 
       const initialZoom = userLocation ? 15 : 13;
+      setZoomLevel(initialZoom);
 
       const map = L.map(mapContainerRef.current, {
         center: defaultCenter,
@@ -905,13 +922,6 @@ export default function CameraMapView({ onSelectCamera }: CameraMapViewProps) {
       if (userLocation) {
         updateUserLocationMarker(userLocation.lat, userLocation.lng);
       }
-
-      // Add Zoom control at bottom-right
-      L.control
-        .zoom({
-          position: "bottomright",
-        })
-        .addTo(map);
 
       // Base Tile Layer (Google Maps Standard with Live Traffic)
       const initialTileLayer = L.tileLayer(
@@ -929,7 +939,7 @@ export default function CameraMapView({ onSelectCamera }: CameraMapViewProps) {
       markersLayerRef.current = markersLayer;
       mapInstanceRef.current = map;
 
-      // Attach Viewport Culling Events (moveend, zoomend)
+      // Attach Viewport Culling Events (moveend, zoomend) & Zoom State Tracking
       let timer: NodeJS.Timeout | null = null;
       const onMapMove = () => {
         if (timer) clearTimeout(timer);
@@ -938,8 +948,15 @@ export default function CameraMapView({ onSelectCamera }: CameraMapViewProps) {
         }, 80);
       };
 
+      map.on("zoom", () => {
+        setZoomLevel(Math.round(map.getZoom()));
+      });
+
       map.on("moveend", onMapMove);
-      map.on("zoomend", onMapMove);
+      map.on("zoomend", () => {
+        setZoomLevel(Math.round(map.getZoom()));
+        onMapMove();
+      });
 
       // Attempt Geolocation to locate, add user location pin, save location & zoom to nearby cameras
       if ("geolocation" in navigator) {
@@ -1054,7 +1071,7 @@ export default function CameraMapView({ onSelectCamera }: CameraMapViewProps) {
                 onClick={() => setIsRouteMode(true)}
                 className="flex-1 cursor-pointer select-none truncate text-sm text-slate-500 dark:text-slate-400 font-medium"
               >
-                Tìm kiếm đường đi né ngập...
+                Tìm kiếm đường đi
               </div>
 
               <div className="h-5 w-[1px] bg-slate-200 dark:bg-slate-700 shrink-0" />
@@ -1103,6 +1120,15 @@ export default function CameraMapView({ onSelectCamera }: CameraMapViewProps) {
               </div>
             </div>
 
+            {/* About & Project Intro Button */}
+            <button
+              onClick={() => setShowAboutModal(true)}
+              title="Giới thiệu, Mục đích & Điều khoản dự án"
+              className="p-2.5 rounded-2xl bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 shadow-xl hover:bg-blue-50 dark:hover:bg-slate-800 hover:text-blue-600 dark:hover:text-blue-400 transition active:scale-95 cursor-pointer"
+            >
+              <Info className="w-4 h-4" />
+            </button>
+
             {/* Theme Toggle */}
             <button
               onClick={toggleTheme}
@@ -1139,7 +1165,7 @@ export default function CameraMapView({ onSelectCamera }: CameraMapViewProps) {
                     🚗 {activeRoutePlan?.routes[selectedRouteIdx] ? `${Math.round(activeRoutePlan.routes[selectedRouteIdx].durationSeconds / 60)} phút (${(activeRoutePlan.routes[selectedRouteIdx].distanceMeters / 1000).toFixed(1)} km)` : "Đang tìm đường..."}
                   </span>
                   <span className="text-[10px] text-emerald-600 dark:text-emerald-400 font-medium">
-                    🟢 Lộ trình né ngập an toàn
+                    🟢 Lộ trình an toàn khô ráo
                   </span>
                 </div>
               </div>
@@ -1172,7 +1198,7 @@ export default function CameraMapView({ onSelectCamera }: CameraMapViewProps) {
                   </div>
                   <div>
                     <h3 className="text-xs sm:text-sm font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
-                      Chỉ đường né ngập
+                      Chỉ đường an toàn
                     </h3>
                   </div>
                 </div>
@@ -1369,7 +1395,7 @@ export default function CameraMapView({ onSelectCamera }: CameraMapViewProps) {
               {isCalculatingRoute ? (
                 <div className="py-4 text-center text-xs text-slate-500 dark:text-slate-400 flex items-center justify-center gap-2">
                   <RefreshCw className="w-4 h-4 animate-spin text-blue-600" />
-                  <span>Đang quét camera & tính lộ trình né ngập trên bản đồ...</span>
+                  <span>Đang quét camera & tính lộ trình an toàn trên bản đồ...</span>
                 </div>
               ) : activeRoutePlan ? (
                 <div className="space-y-2.5 pt-1">
@@ -1489,25 +1515,64 @@ export default function CameraMapView({ onSelectCamera }: CameraMapViewProps) {
       />
 
       {/* 3. RIGHT FLOATING UTILITIES */}
-      <div className="absolute right-4 top-32 sm:top-36 z-[990] flex flex-col gap-2">
+      <div className="absolute right-4 top-28 sm:top-32 z-[990] flex flex-col items-end gap-2">
+        {/* GPS Location Button (Placed First to avoid slider overlap) */}
         <button
           onClick={handleResetCenter}
           title="Định vị & phóng to vị trí hiện tại của tôi"
-          className="p-3 rounded-2xl bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 shadow-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition hover:scale-105 active:scale-95"
+          className="p-2.5 rounded-xl bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 shadow-lg hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-blue-600 dark:hover:text-blue-400 transition hover:scale-105 active:scale-95 cursor-pointer"
         >
-          <Crosshair className="w-5 h-5 text-blue-500" />
+          <Crosshair className="w-4 h-4 text-blue-500" />
         </button>
-        <button
-          onClick={handleFitAll}
-          title="Xem toàn bộ vị trí camera"
-          className="p-3 rounded-2xl bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 shadow-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition hover:scale-105 active:scale-95"
-        >
-          <Maximize2 className="w-5 h-5" />
-        </button>
+
+        {/* Zoom Toggle Button + Horizontal Slider Popover */}
+        <div className="relative flex flex-col items-end">
+          <button
+            onClick={() => setShowZoomSlider((v) => !v)}
+            title={`Thu phóng bản đồ · Mức ${zoomLevel}`}
+            className={`p-2.5 rounded-xl bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border shadow-lg transition hover:scale-105 active:scale-95 cursor-pointer flex items-center gap-1.5 text-xs font-bold ${
+              showZoomSlider
+                ? "border-blue-400 text-blue-600 dark:text-blue-400"
+                : "border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:border-blue-300 dark:hover:border-blue-700"
+            }`}
+          >
+            <Search className="w-4 h-4" />
+            <span className="font-mono tabular-nums">{zoomLevel}×</span>
+          </button>
+
+          {/* Horizontal Zoom Slider Panel */}
+          {showZoomSlider && (
+            <div
+              className="absolute right-0 top-full mt-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-2xl p-3 flex items-center gap-2.5 animate-in fade-in slide-in-from-top-2 duration-200 z-[1000]"
+              style={{ minWidth: 200 }}
+            >
+              <span className="text-[10px] font-bold text-slate-400 dark:text-slate-500 shrink-0">
+                {10}×
+              </span>
+              <input
+                type="range"
+                min={10}
+                max={19}
+                step={1}
+                value={zoomLevel}
+                onChange={(e) => {
+                  const z = Number(e.target.value);
+                  setZoomLevel(z);
+                  mapInstanceRef.current?.setZoom(z);
+                }}
+                className="horizontal-zoom-slider flex-1"
+                title={`Mức thu phóng: ${zoomLevel}×`}
+              />
+              <span className="text-[10px] font-bold text-slate-400 dark:text-slate-500 shrink-0">
+                {19}×
+              </span>
+            </div>
+          )}
+        </div>
       </div>
 
       {/* 4. MAP LEGEND & FLOOD SCALE (BOTTOM-CENTER) */}
-      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-[900] hidden lg:flex items-center gap-4 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md px-4 py-2 rounded-2xl border border-slate-200 dark:border-slate-800 text-[11px] text-slate-600 dark:text-slate-300 shadow-xl flex-wrap">
+      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-[900] hidden lg:flex items-center gap-4 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md px-4 py-2 rounded-xl border border-slate-200 dark:border-slate-800 text-[11px] text-slate-600 dark:text-slate-300 shadow-xl flex-wrap">
         {/* Flood Severity Colors */}
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-1 font-medium">
@@ -1584,6 +1649,12 @@ export default function CameraMapView({ onSelectCamera }: CameraMapViewProps) {
         onSelectCamera={(cam) => {
           if (onSelectCamera) onSelectCamera(cam);
         }}
+      />
+
+      {/* 8. ABOUT PROJECT & TERMS OF SERVICE MODAL */}
+      <AboutProjectModal
+        isOpen={showAboutModal}
+        onClose={() => setShowAboutModal(false)}
       />
     </div>
   );

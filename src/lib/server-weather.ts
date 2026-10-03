@@ -217,16 +217,16 @@ export async function computeAggregatedWeatherState(): Promise<{
 
         // TẦNG 1: Weather & Rain Gating
         // Khô ráo hoặc Mưa nhỏ/phùn (WMO 51-57, 61, 63) VÀ KHÔNG PHẢI điểm ngập thường xuyên
-        // -> Tự động gán LEVEL_0 an toàn: ⚡ 0 Token - 0 API Call - 0 Fetch
+        // -> Tự động gán LEVEL_1 nếu mưa, LEVEL_0 nếu khô ráo: ⚡ 0 Token - 0 API Call - 0 Fetch
         if (!isHeavyOrStorm && !isHotspot) {
           fullFloodMap[m.CamId] = {
             camId: m.CamId,
-            floodLevel: "LEVEL_0",
+            floodLevel: isLightRainOrDrizzle ? "LEVEL_1" : "LEVEL_0",
             isRaining: isLightRainOrDrizzle,
             rainIntensity: isLightRainOrDrizzle ? "light" : "none",
             roadCondition: isLightRainOrDrizzle ? "wet" : "dry",
             description: isLightRainOrDrizzle
-              ? "Mưa nhỏ / Mưa phùn nhẹ - Tuyến đường thông suốt, không ngập"
+              ? "Đường ướt do mưa - Mặt đường trơn trượt, đọng nước nhẹ mép đường"
               : "Thời tiết thông thoáng - Tuyến đường khô ráo, không ngập",
             analyzedAt: now,
           };

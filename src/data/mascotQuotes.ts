@@ -39,7 +39,7 @@ export const TIME_BASED_QUOTES: Record<string, QuoteConfig[]> = {
     },
     {
       defaultText: "Kiểm tra xem lộ trình về nhà có đoạn nào đang kẹt cứng không nha.",
-      duckVariant: "5h chiều rồi! Bật map lên soi đoạn nào đỏ rực thì quẹo hẻm né gấp nha 🦆🗺️",
+      duckVariant: "5h chiều rồi! Bật map lên xem tình hình đường về, đi cẩn thận nha bạn ơi 🦆🗺️",
       catVariant: "Sen ơi! Đường về có kẹt không đó? Mau về cưng nựng meow đi nè 🐱🐾",
     },
     {
@@ -114,24 +114,24 @@ export const TIME_BASED_QUOTES: Record<string, QuoteConfig[]> = {
 export const MOOD_BASED_QUOTES: Record<MascotMood, QuoteConfig[]> = {
   flood: [
     {
-      defaultText: "BÁO ĐỘNG NGẬP: Đoạn này nước dâng cao rồi! Quay đầu tìm đường khác gấp nha 🚨",
-      duckVariant: "Cứu bé zới! Ngập sâu cỡ này đến Vịt bơi còn muốn chìm, quay đầu né gấp nha bạn ơi 🦆🌊🚨",
-      catVariant: "CỨU MEOW VỚI! Ướt sũng hết lông rồi, đừng phi xe vào biển nước này kẻo thành tàu ngầm đó 🐱🚨💦",
+      defaultText: "Cảnh báo ngập: Đoạn này nước dâng cao rồi, bạn đi cẩn thận thật nhiều nhé! 🚨",
+      duckVariant: "Ngập sâu lắm rồi bạn ơi! Vịt nhắc nhở: đi thật chậm và giữ vững tay lái nha 🦆🌊",
+      catVariant: "Nước dâng cao rồi sen ơi! Meow nhắc nhở đi thật chậm và quan sát cẩn thận nhé 🐱💦",
     },
     {
       defaultText: "Đường ngập sâu nguy hiểm! Tuyệt đối không cố chạy qua kẻo chết máy xe nhé ⚠️",
-      duckVariant: "Nước ngập lút ống xả rồi! Tấp vào lề đợi nước rút làm ly trà sữa rồi hẵng về nha 🦆🧋",
-      catVariant: "Ngập nặng quá trời! Sen tay lái yếu thì né đường này ra nghe hông meow 🐱🚫",
+      duckVariant: "Nước ngập lút ống xả rồi! Tấp vào lề đợi nước rút rồi đi tiếp thật cẩn thận nha 🦆🧋",
+      catVariant: "Ngập nặng quá trời! Sen đi đường này nhớ thật cẩn thận và giữ vững tay lái nhé meow 🐱🚫",
     },
     {
       defaultText: "Cảnh báo sóng nước từ xe lớn có thể làm ngã xe máy, hãy di chuyển cẩn thận!",
-      duckVariant: "Mấy anh xe buýt chạy qua tạo sóng thần cao nửa mét luôn đó, tấp vào lề ngay 🦆🌊",
-      catVariant: "Sóng vỗ dập dồn như đi biển meow! Đừng cố vượt qua kẻo đẩy bộ cả cây số nha 🐱⚠️",
+      duckVariant: "Xe lớn chạy qua tạo sóng cao, đi chậm giữ vững tay lái nha bạn 🦆🌊",
+      catVariant: "Sóng nước từ xe lớn nguy hiểm meow! Đi cẩn thận và quan sát thật kỹ nhé sen 🐱⚠️",
     },
     {
       defaultText: "Nước ngập che khuất ổ gà và nắp cống, hãy đi theo vệt xe phía trước!",
-      duckVariant: "Dưới nước không biết có ổ gà nào không, chạy chậm theo xe trước cho chắc ăn 🦆🕳️",
-      catVariant: "Né mấy mép đường trũng ra nha sen, nguy hiểm lắm đó meow 🐱👀",
+      duckVariant: "Dưới nước không biết có ổ gà nào không, đi chậm và quan sát thật kỹ nha 🦆🕳️",
+      catVariant: "Mép đường trũng nguy hiểm lắm nha sen, đi chậm và thật cẩn thận nhé meow 🐱👀",
     },
     {
       defaultText: "Nếu xe bị chết máy trong vùng ngập, tuyệt đối không cố đề máy lại!",
@@ -157,7 +157,7 @@ export const MOOD_BASED_QUOTES: Record<MascotMood, QuoteConfig[]> = {
     },
     {
       defaultText: "Mưa gió hãy tránh đứng dưới các gốc cây cổ thụ to đề phòng gãy cành!",
-      duckVariant: "Trời mưa kèm gió to thì né mấy hàng cây cổ thụ với biển quảng cáo lớn ra nha 🦆🌳",
+      duckVariant: "Trời mưa kèm gió to, chú ý mấy hàng cây cổ thụ với biển quảng cáo nha bạn 🦆🌳",
       catVariant: "Gió giật mạnh lắm meow, chạy đều ga và chú ý cành cây rơi nhé 🐱🍃",
     },
   ],

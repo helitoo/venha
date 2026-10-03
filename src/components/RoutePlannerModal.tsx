@@ -480,7 +480,7 @@ export default function RoutePlannerModal({
             </div>
             <div>
               <h2 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
-                Chi Tiết Lộ Trình Né Ngập
+                Chi Tiết Lộ Trình An Toàn
                 <span className="px-2 py-0.5 rounded-full bg-cyan-500/15 text-cyan-700 dark:text-cyan-300 text-[10px] font-bold">
                   Bản Đồ & Camera Trực Tiếp
                 </span>

@@ -50,6 +50,33 @@ export default function CameraModal({ camera, onClose }: CameraModalProps) {
   );
 }
 
+const CLIENT_CACHE_KEY_PREFIX = "venha_cam_flood_";
+const CLIENT_CACHE_TTL_MS = 10 * 60 * 1000; // 10 minutes
+
+function getClientFloodCache(camId: string): CameraFloodAnalysis | null {
+  if (typeof window === "undefined") return null;
+  try {
+    const raw = localStorage.getItem(`${CLIENT_CACHE_KEY_PREFIX}${camId}`);
+    if (!raw) return null;
+    const item = JSON.parse(raw);
+    if (Date.now() - (item.analyzedAt || 0) < CLIENT_CACHE_TTL_MS) {
+      return item;
+    }
+  } catch {
+    // ignore
+  }
+  return null;
+}
+
+function setClientFloodCache(camId: string, data: CameraFloodAnalysis) {
+  if (typeof window === "undefined") return;
+  try {
+    localStorage.setItem(`${CLIENT_CACHE_KEY_PREFIX}${camId}`, JSON.stringify(data));
+  } catch {
+    // ignore
+  }
+}
+
 function CameraModalContent({
   camera,
   onClose,
@@ -69,9 +96,11 @@ function CameraModalContent({
   const weather = getWeatherInfo(camera.CamId);
   const contextFlood = getFloodInfo(camera.CamId);
 
-  // Local state for on-demand AI analysis & UI interactions
+  // Local state for on-demand AI analysis & UI interactions with instant Client-Side Cache
   const [isAnalyzingAI, setIsAnalyzingAI] = useState(false);
-  const [customFloodResult, setCustomFloodResult] = useState<CameraFloodAnalysis | null>(null);
+  const [customFloodResult, setCustomFloodResult] = useState<CameraFloodAnalysis | null>(() =>
+    getClientFloodCache(camera.CamId)
+  );
   const [copiedLink, setCopiedLink] = useState(false);
   const [currentTimeStr, setCurrentTimeStr] = useState("");
 
@@ -129,6 +158,7 @@ function CameraModalContent({
       const data = await res.json();
       if (data.success && data.result) {
         setCustomFloodResult(data.result);
+        setClientFloodCache(camera.CamId, data.result);
       }
     } catch (err) {
       console.error("[CameraModal] On-demand AI scan error:", err);
@@ -136,6 +166,22 @@ function CameraModalContent({
       setIsAnalyzingAI(false);
     }
   }, [camera.CamId, isAnalyzingAI, weather]);
+
+  // Auto-scan on camera open if no fresh scan exists (within 10 minutes)
+  const hasAutoScannedRef = React.useRef(false);
+  useEffect(() => {
+    if (hasAutoScannedRef.current) return;
+    const now = Date.now();
+    const isStaleOrMissing =
+      !effectiveFlood ||
+      !effectiveFlood.analyzedAt ||
+      now - effectiveFlood.analyzedAt > 10 * 60 * 1000;
+
+    if (isStaleOrMissing && !isAnalyzingAI) {
+      hasAutoScannedRef.current = true;
+      handleTriggerAI();
+    }
+  }, [effectiveFlood, handleTriggerAI, isAnalyzingAI]);
 
   // Copy URL
   const handleCopyLink = () => {
@@ -197,7 +243,7 @@ function CameraModalContent({
       <div className="fixed inset-0 -z-10" onClick={onClose} />
 
       {/* Main Modal Card (Light & Dark Theme adaptive) */}
-      <div className="relative bg-white dark:bg-slate-900 border border-slate-200 dark:border-cyan-500/40 w-full max-w-4xl rounded-3xl overflow-hidden shadow-2xl flex flex-col my-auto transition-all max-h-[92vh]">
+      <div className="relative bg-white dark:bg-slate-900 border border-slate-200 dark:border-cyan-500/40 w-full max-w-4xl rounded-2xl overflow-hidden shadow-2xl flex flex-col my-auto transition-all max-h-[92vh]">
         {/* 1. MODAL HEADER */}
         <div className="flex items-center justify-between px-5 py-3.5 border-b border-slate-200 dark:border-slate-800 bg-slate-50/90 dark:bg-slate-950/70">
           <div className="flex flex-col min-w-0 pr-3">
@@ -495,21 +541,12 @@ function CameraModalContent({
                   </span>
                 </div>
               </div>
-
-              <div className="flex items-center gap-2 text-[11px] text-slate-600 dark:text-slate-300">
-                <span className="px-2 py-0.5 rounded-md bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 font-medium shadow-xs">
-                  🛵 ~75% Xe máy
-                </span>
-                <span className="px-2 py-0.5 rounded-md bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 font-medium shadow-xs">
-                  🚗 ~25% Ô tô
-                </span>
-              </div>
             </div>
           </div>
 
           {/* C. MASCOT COMMENTARY CARD */}
-          <div className="bg-amber-50/70 dark:bg-slate-900/60 border border-amber-200/70 dark:border-slate-800 rounded-2xl p-3.5 flex items-center gap-3 shadow-sm">
-            <div className="w-12 h-12 rounded-xl bg-white dark:bg-slate-800 border border-amber-200 dark:border-amber-500/20 p-1 shrink-0 flex items-center justify-center shadow-sm">
+          <div className="bg-amber-50/70 dark:bg-slate-900/60 border border-amber-200/70 dark:border-slate-800 rounded-xl p-3.5 flex items-center gap-3 shadow-sm">
+            <div className="w-12 h-12 rounded-lg bg-white dark:bg-slate-800 border border-amber-200 dark:border-amber-500/20 p-1 shrink-0 flex items-center justify-center shadow-sm">
               <img src={mascotAvatar} alt="Mascot" className="w-full h-full object-contain" />
             </div>
             <div className="flex-1">

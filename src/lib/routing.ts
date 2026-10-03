@@ -355,7 +355,7 @@ export async function planSafeRoute(
 
       mascotQuote = `"${badRoadName} đang ngập ${floodDepthText}, ${mascotName} gợi ý bạn đi vòng qua ${altRoute.name} ${diffDistStr} nhưng khô ráo!"`;
       altRoute.isRecommended = true;
-      altRoute.recommendationReason = `Tuyến đường né ngập tối ưu (Khô ráo hơn tuyến chính)`;
+      altRoute.recommendationReason = `Tuyến đường an toàn hơn (Ít ngập hơn tuyến chính)`;
     }
   }
 
