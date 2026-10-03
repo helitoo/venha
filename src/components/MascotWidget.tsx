@@ -155,6 +155,9 @@ function MascotWeatherCanvas({ mood }: { mood: MascotMood }) {
 }
 
 export default function MascotWidget() {
+  const [mounted, setMounted] = React.useState(false);
+  const widgetRef = React.useRef<HTMLDivElement | null>(null);
+
   const {
     mascotType,
     toggleMascotType,
@@ -166,7 +169,35 @@ export default function MascotWidget() {
     setIsSpeechBubbleOpen,
   } = useMascotContext();
 
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Handle outside click to close speech bubble
+  React.useEffect(() => {
+    if (!isSpeechBubbleOpen) return;
+
+    const handleOutsideClick = (e: MouseEvent | TouchEvent) => {
+      if (widgetRef.current && !widgetRef.current.contains(e.target as Node)) {
+        setIsSpeechBubbleOpen(false);
+      }
+    };
+
+    // Use capture phase so Leaflet or other containers with stopPropagation won't block it
+    document.addEventListener("pointerdown", handleOutsideClick, { capture: true });
+    document.addEventListener("touchstart", handleOutsideClick, { capture: true });
+
+    return () => {
+      document.removeEventListener("pointerdown", handleOutsideClick, { capture: true });
+      document.removeEventListener("touchstart", handleOutsideClick, { capture: true });
+    };
+  }, [isSpeechBubbleOpen, setIsSpeechBubbleOpen]);
+
   const imgSrc = getMascotImage();
+
+  if (!mounted) {
+    return null;
+  }
 
   // Background gradient class based on mood
   const moodGradientClass =
@@ -179,16 +210,19 @@ export default function MascotWidget() {
       : "from-amber-950/30 via-slate-900/90 to-blue-950/60 border-amber-400/30 shadow-amber-900/20";
 
   return (
-    <div className="absolute bottom-3 left-3 sm:bottom-6 sm:left-4 z-[990] flex flex-col items-start gap-2 select-none pointer-events-auto">
+    <div
+      ref={widgetRef}
+      className="absolute bottom-3 left-3 sm:bottom-6 sm:left-4 z-[990] flex flex-col items-start gap-2 select-none pointer-events-auto"
+    >
       {/* 1. DUOLINGO-STYLE SPEECH BUBBLE */}
       {isSpeechBubbleOpen && (
         <div className="relative max-w-[calc(100vw-100px)] sm:max-w-[320px] bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border border-slate-200 dark:border-slate-800 rounded-2xl p-2.5 sm:p-3 shadow-2xl animate-in fade-in slide-in-from-bottom-3 duration-300">
           <div className="flex items-start justify-between gap-1.5 mb-1">
-            <div className="flex items-center gap-1.5">
-              <span className="text-[11px] sm:text-xs font-bold">
+            <div className="flex items-center gap-1.5 flex-nowrap min-w-0">
+              <span className="text-[11px] sm:text-xs font-bold shrink-0 whitespace-nowrap">
                 {mascotType === "duck" ? "🦆 Bé Vịt" : "🐱 Bé Mèo"}
               </span>
-              <span className="text-[9px] sm:text-[10px] px-1.5 py-0.5 rounded-full font-bold bg-blue-500/15 text-blue-500 dark:text-blue-400">
+              <span className="text-[9px] sm:text-[10px] px-1.5 py-0.5 rounded-full font-bold bg-blue-500/15 text-blue-500 dark:text-blue-400 shrink-0 whitespace-nowrap">
                 {mascotMood === "flood"
                   ? "🚨 Cảnh báo"
                   : mascotMood === "rain"
@@ -199,7 +233,7 @@ export default function MascotWidget() {
               </span>
             </div>
 
-            <div className="flex items-center gap-0.5">
+            <div className="flex items-center gap-0.5 shrink-0">
               <button
                 onClick={cycleNextQuote}
                 title="Đổi câu nói khác"
@@ -219,6 +253,7 @@ export default function MascotWidget() {
 
           <p
             onClick={cycleNextQuote}
+            suppressHydrationWarning
             className="text-[11px] sm:text-[13px] leading-relaxed font-semibold text-slate-800 dark:text-slate-100 cursor-pointer hover:opacity-85 transition"
           >
             &ldquo;{currentQuote}&rdquo;

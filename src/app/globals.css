@@ -11,19 +11,60 @@
   }
   body {
     @apply bg-background text-foreground;
+    overflow: hidden !important;
+    height: 100% !important;
+    width: 100% !important;
+    margin: 0;
+    padding: 0;
+    touch-action: pan-x pan-y;
   }
   html {
     @apply font-sans;
+    overflow: hidden !important;
+    height: 100% !important;
+    width: 100% !important;
   }
 }
 
-/* Custom scrollbar for tag lists */
+/* Universal Rule: Badges, Tags, Tabs must never wrap to new line */
+.badge,
+[class*="badge"],
+[role="tab"],
+.tab-item,
+[data-badge],
+.tag-badge {
+  white-space: nowrap !important;
+  flex-shrink: 0 !important;
+}
+
+/* Custom scrollbar for tag lists and modals */
 .scrollbar-none::-webkit-scrollbar {
   display: none;
 }
 .scrollbar-none {
   -ms-overflow-style: none;
   scrollbar-width: none;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.35);
+  border-radius: 9999px;
+}
+.dark ::-webkit-scrollbar-thumb {
+  background: rgba(71, 85, 105, 0.5);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(148, 163, 184, 0.6);
+}
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: rgba(71, 85, 105, 0.7);
 }
 
 /* Custom Leaflet Map Tooltips & Popups */
@@ -104,6 +145,7 @@
 .leaflet-container {
   font-family: inherit !important;
   background-color: #0f172a !important;
+  overflow: hidden !important;
 }
 
 /* Dark mode for roadmap tiles */

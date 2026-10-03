@@ -6,7 +6,7 @@ import { MascotMood } from "@/types/mascot";
 import { useCameraContext, useCameraStream } from "@/context/CameraContext";
 import { useWeatherFloodContext } from "@/context/WeatherFloodContext";
 import { useMascotContext } from "@/context/MascotContext";
-import { getGoogleTrafficMeta, getCameraTrafficDensity } from "@/lib/google-traffic";
+import { getCameraTrafficDensity } from "@/lib/google-traffic";
 import { getMascotEmotionTitle } from "@/data/mascotQuotes";
 import { GEMINI_FLOOD_TTL_MINUTES } from "@/config/constants";
 import {
@@ -20,16 +20,15 @@ import {
   Camera,
   ShieldAlert,
   Sparkles,
-  Bot,
   Copy,
   Check,
   Clock,
   Compass,
-  Zap,
   CheckCircle2,
   Car,
   Activity,
-  Gauge,
+  AlertTriangle,
+  Video,
 } from "lucide-react";
 
 interface CameraModalProps {
@@ -84,7 +83,6 @@ function CameraModalContent({
   camera,
   onClose,
   refreshInterval,
-  setRefreshInterval,
 }: {
   camera: CameraItem;
   onClose: () => void;
@@ -106,6 +104,7 @@ function CameraModalContent({
   );
   const [copiedLink, setCopiedLink] = useState(false);
   const [currentTimeStr, setCurrentTimeStr] = useState("");
+  const [imgLoadError, setImgLoadError] = useState(false);
 
   const effectiveFlood: CameraFloodAnalysis | undefined = customFloodResult || contextFlood;
 
@@ -255,40 +254,56 @@ function CameraModalContent({
 
   const mascotAvatar = getMascotImage(mascotMoodForModal);
 
-  return (
-    <div className="fixed inset-0 z-[99999] bg-slate-950/70 backdrop-blur-xl flex items-center justify-center p-3 sm:p-5 overflow-y-auto animate-fadeIn select-none">
-      {/* Backdrop click to close */}
-      <div className="fixed inset-0 -z-10" onClick={onClose} />
+  const handleManualRefresh = () => {
+    setImgLoadError(false);
+    refresh();
+  };
 
-      {/* Main Modal Card (Light & Dark Theme adaptive) */}
-      <div className="relative bg-white dark:bg-slate-900 border border-slate-200 dark:border-cyan-500/40 w-full max-w-4xl rounded-2xl overflow-hidden shadow-2xl flex flex-col my-auto transition-all max-h-[92vh]">
-        {/* 1. MODAL HEADER */}
-        <div className="flex items-center justify-between px-5 py-3.5 border-b border-slate-200 dark:border-slate-800 bg-slate-50/90 dark:bg-slate-950/70">
-          <div className="flex flex-col min-w-0 pr-3">
+  const isStreamFailed = (stream.hasError || imgLoadError) && !stream.currentImgSrc;
+
+  return (
+    <>
+      {/* 1. Backdrop Overlay (Click outside to close) */}
+      <div
+        className="fixed inset-0 z-[99990] bg-black/40 dark:bg-black/60 backdrop-blur-[2px] transition-opacity duration-300 animate-fadeIn"
+        onClick={onClose}
+        aria-label="Đóng cửa sổ"
+      />
+
+      {/* 2. Side Right Bar (Laptop/Desktop) OR Fullscreen Modal (Mobile) */}
+      <div
+        className="fixed inset-0 md:inset-auto md:top-3 md:bottom-3 md:right-3 lg:top-4 lg:bottom-4 lg:right-4 z-[99995] w-full md:w-[480px] lg:w-[500px] xl:w-[520px] max-w-full md:max-w-[520px] bg-white dark:bg-slate-900 md:rounded-3xl border-0 md:border md:border-slate-200/90 md:dark:border-slate-800 shadow-2xl flex flex-col animate-in fade-in slide-in-from-bottom-6 md:slide-in-from-right duration-300 overflow-hidden font-sans select-none"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* MODAL HEADER */}
+        <div className="flex items-center justify-between px-4 sm:px-5 py-3.5 border-b border-slate-200 dark:border-slate-800 bg-slate-50/90 dark:bg-slate-950/70 shrink-0">
+          <div className="flex flex-col min-w-0 pr-2">
             <h2 className="text-sm sm:text-base font-bold text-slate-900 dark:text-white flex items-center gap-2 truncate">
               <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse shrink-0" />
               <span className="truncate">{camera.CamName}</span>
             </h2>
-            <div className="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400 mt-1 flex-wrap">
-              <span className="flex items-center gap-1 font-medium text-slate-700 dark:text-slate-300">
+            <div className="flex items-center gap-1.5 sm:gap-2 text-xs text-slate-500 dark:text-slate-400 mt-1 flex-nowrap overflow-x-auto scrollbar-none">
+              <span className="flex items-center gap-1 font-medium text-slate-700 dark:text-slate-300 shrink-0 whitespace-nowrap">
                 <MapPin className="w-3.5 h-3.5 text-rose-500 shrink-0" />
-                {camera.District || camera.Disctrict || "TP.HCM"}
+                <span>{camera.District || camera.Disctrict || "TP.HCM"}</span>
               </span>
-              <span>•</span>
-              <span className="font-mono text-[11px] text-slate-500 dark:text-slate-400">ID: {camera.CamId}</span>
+              <span className="text-slate-300 dark:text-slate-700 shrink-0">•</span>
+              <span className="font-mono text-[11px] text-slate-500 dark:text-slate-400 shrink-0 whitespace-nowrap">
+                ID: {camera.CamId}
+              </span>
 
               {weather && (
                 <>
-                  <span>•</span>
-                  <span className="flex items-center gap-1 text-cyan-600 dark:text-cyan-400 font-medium">
+                  <span className="text-slate-300 dark:text-slate-700 shrink-0">•</span>
+                  <span className="flex items-center gap-1 text-cyan-600 dark:text-cyan-400 font-medium shrink-0 whitespace-nowrap">
                     {weather.category === "tornado" ? (
-                      <Tornado className="w-3.5 h-3.5 text-purple-500" />
+                      <Tornado className="w-3.5 h-3.5 text-purple-500 shrink-0" />
                     ) : weather.category === "cloud-rain" ? (
-                      <CloudRain className="w-3.5 h-3.5 text-cyan-500" />
+                      <CloudRain className="w-3.5 h-3.5 text-cyan-500 shrink-0" />
                     ) : weather.category === "droplet" ? (
-                      <Droplet className="w-3.5 h-3.5 text-blue-500" />
+                      <Droplet className="w-3.5 h-3.5 text-blue-500 shrink-0" />
                     ) : (
-                      <Camera className="w-3.5 h-3.5 text-emerald-500" />
+                      <Camera className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
                     )}
                     <span>WMO: {weather.weatherCode}</span>
                   </span>
@@ -297,10 +312,10 @@ function CameraModalContent({
 
               {currentTimeStr && (
                 <>
-                  <span className="hidden sm:inline">•</span>
-                  <span className="hidden sm:flex items-center gap-1 text-[11px] font-mono text-slate-500 dark:text-slate-400">
-                    <Clock className="w-3 h-3 text-slate-400 dark:text-slate-500" />
-                    {currentTimeStr}
+                  <span className="text-slate-300 dark:text-slate-700 shrink-0">•</span>
+                  <span className="flex items-center gap-1 text-[11px] font-mono text-slate-500 dark:text-slate-400 shrink-0 whitespace-nowrap">
+                    <Clock className="w-3 h-3 text-slate-400 dark:text-slate-500 shrink-0" />
+                    <span>{currentTimeStr}</span>
                   </span>
                 </>
               )}
@@ -311,138 +326,174 @@ function CameraModalContent({
             <button
               onClick={onClose}
               title="Đóng cửa sổ (phím Esc)"
-              className="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800/80 dark:hover:bg-slate-700 text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white transition active:scale-95 border border-slate-200 dark:border-slate-700/60"
+              className="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800/80 dark:hover:bg-slate-700 text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white transition active:scale-95 border border-slate-200 dark:border-slate-700/60 cursor-pointer shrink-0"
             >
               <X className="w-5 h-5" />
             </button>
           </div>
         </div>
 
-        {/* 2. SCROLLABLE CONTENT BODY */}
-        <div className="overflow-y-auto flex-1 p-4 sm:p-5 space-y-4">
-          {/* A. SNAPSHOT STREAM VIEWPORT */}
-          <div className="relative aspect-video bg-black rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-inner group">
-            {stream.isInitialLoading && !stream.currentImgSrc && (
-              <div className="absolute inset-0 flex flex-col items-center justify-center text-slate-400 gap-2">
-                <RefreshCw className="w-8 h-8 animate-spin text-cyan-400" />
-                <span className="text-xs font-medium">Đang tải luồng camera trực tiếp...</span>
+        {/* SCROLLABLE CONTENT BODY */}
+        <div className="overflow-y-auto flex-1 p-3.5 sm:p-4 space-y-3.5">
+          {/* A. SNAPSHOT STREAM VIEWPORT WITH SKELETON & ERROR FALLBACK */}
+          <div className="relative aspect-video bg-slate-950 rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-inner group flex items-center justify-center">
+            {/* Skeleton Loading State */}
+            {stream.isInitialLoading && !stream.currentImgSrc && !isStreamFailed && (
+              <div className="absolute inset-0 bg-slate-900/90 animate-pulse flex flex-col items-center justify-center text-slate-400 gap-2 z-10">
+                <div className="w-12 h-12 rounded-2xl bg-slate-800 flex items-center justify-center text-cyan-400 animate-bounce">
+                  <Video className="w-6 h-6" />
+                </div>
+                <div className="flex items-center gap-2 text-xs font-semibold text-slate-300">
+                  <RefreshCw className="w-3.5 h-3.5 animate-spin text-cyan-400" />
+                  <span>Đang nạp luồng camera trực tiếp...</span>
+                </div>
               </div>
             )}
 
-            {stream.currentImgSrc && (
+            {/* Error Fallback with Retry */}
+            {isStreamFailed ? (
+              <div className="absolute inset-0 bg-slate-900/95 flex flex-col items-center justify-center text-center p-4 gap-2 z-20">
+                <div className="w-12 h-12 rounded-2xl bg-rose-500/10 text-rose-500 flex items-center justify-center border border-rose-500/20">
+                  <AlertTriangle className="w-6 h-6" />
+                </div>
+                <div>
+                  <h4 className="text-xs sm:text-sm font-bold text-slate-200">
+                    Không có tín hiệu camera
+                  </h4>
+                  <p className="text-[11px] text-slate-400 mt-0.5">
+                    Hệ thống máy chủ giao thông tạm ngắt hoặc đường truyền bận
+                  </p>
+                </div>
+                <button
+                  onClick={handleManualRefresh}
+                  className="mt-1 px-3.5 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold flex items-center gap-1.5 shadow-md shadow-blue-600/30 transition active:scale-95 cursor-pointer"
+                >
+                  <RefreshCw className={`w-3.5 h-3.5 ${stream.isFetching ? "animate-spin" : ""}`} />
+                  <span>Thử tải lại</span>
+                </button>
+              </div>
+            ) : null}
+
+            {/* Live Camera Snapshot Image */}
+            {stream.currentImgSrc && !isStreamFailed && (
               <img
                 src={stream.currentImgSrc}
                 alt={camera.CamName}
-                className="w-full h-full object-contain transition-opacity duration-200"
+                onError={() => setImgLoadError(true)}
+                className="w-full h-full object-cover transition-opacity duration-300"
               />
             )}
 
             {/* Top-left LIVE Badge */}
-            <div className="absolute top-3 left-3 flex items-center gap-2 pointer-events-none">
-              <span className="px-2.5 py-1 rounded-full bg-red-600/90 text-white text-[11px] font-bold flex items-center gap-1.5 shadow-lg backdrop-blur-md">
+            <div className="absolute top-2.5 left-2.5 flex items-center gap-1.5 pointer-events-none z-10 flex-nowrap">
+              <span className="px-2.5 py-0.5 rounded-full bg-red-600/90 text-white text-[10px] sm:text-[11px] font-bold flex items-center gap-1.5 shadow-lg backdrop-blur-md shrink-0 whitespace-nowrap">
                 <span className="w-2 h-2 rounded-full bg-white animate-ping" />
                 TRỰC TIẾP
               </span>
-              <span className="px-2.5 py-1 rounded-full bg-slate-900/80 text-slate-200 text-[11px] font-medium backdrop-blur-md hidden sm:inline-block">
+              <span className="px-2 py-0.5 rounded-full bg-slate-900/80 text-slate-200 text-[10px] font-medium backdrop-blur-md shrink-0 whitespace-nowrap">
                 {camera.District || "TP.HCM"}
               </span>
             </div>
 
             {/* Top-right In-Viewport Refresh Button */}
-            <div className="absolute top-3 right-3 flex items-center gap-1.5">
+            <div className="absolute top-2.5 right-2.5 flex items-center gap-1.5 z-10">
               {stream.isFetching && (
-                <div className="bg-black/70 backdrop-blur-md px-2.5 py-1 rounded-full text-[11px] text-cyan-400 flex items-center gap-1.5 font-medium">
+                <div className="bg-black/75 backdrop-blur-md px-2.5 py-1 rounded-full text-[10px] text-cyan-400 flex items-center gap-1.5 font-medium shrink-0 whitespace-nowrap shadow-md">
                   <RefreshCw className="w-3 h-3 animate-spin" />
-                  <span>Đang cập nhật...</span>
+                  <span>Cập nhật...</span>
                 </div>
               )}
               <button
-                onClick={refresh}
+                onClick={handleManualRefresh}
                 title="Làm mới ảnh ngay"
-                className="p-2 rounded-full bg-black/60 hover:bg-black/80 backdrop-blur-md text-slate-200 hover:text-white transition active:scale-90 border border-white/10"
+                className="p-2 rounded-full bg-black/60 hover:bg-black/80 backdrop-blur-md text-slate-200 hover:text-white transition active:scale-90 border border-white/10 cursor-pointer shrink-0"
               >
-                <RefreshCw className={`w-4 h-4 ${stream.isFetching ? "animate-spin" : ""}`} />
+                <RefreshCw className={`w-3.5 h-3.5 ${stream.isFetching ? "animate-spin" : ""}`} />
               </button>
             </div>
           </div>
 
-          {/* B. PROMINENT ROAD ANALYSIS PANEL (Neutral branding) */}
-          <div className="relative rounded-2xl p-4 bg-gradient-to-br from-slate-50 via-white to-blue-50/60 dark:from-slate-950 dark:via-slate-900 dark:to-blue-950/60 border border-slate-200 dark:border-cyan-500/30 shadow-lg">
+          {/* B. DIAGNOSTIC ROAD & FLOOD METRICS */}
+          <div className="relative rounded-2xl p-3 sm:p-3.5 bg-gradient-to-br from-slate-50 via-white to-blue-50/60 dark:from-slate-950 dark:via-slate-900 dark:to-blue-950/60 border border-slate-200 dark:border-cyan-500/30 shadow-md">
             {/* Panel Header */}
-            <div className="flex items-center justify-between pb-3 mb-3 border-b border-slate-200 dark:border-slate-800/80 flex-wrap gap-2">
-              <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-600 dark:text-cyan-400">
-                  <Sparkles className="w-4 h-4 animate-pulse" />
+            <div className="flex items-center justify-between pb-2.5 mb-2.5 border-b border-slate-200 dark:border-slate-800/80 flex-wrap gap-2">
+              <div className="flex items-center gap-2 min-w-0">
+                <div className="w-7 h-7 rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-600 dark:text-cyan-400 shrink-0">
+                  <Sparkles className="w-3.5 h-3.5 animate-pulse" />
                 </div>
-                <div>
-                  <h3 className="text-xs sm:text-sm font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
-                    Đánh giá mặt đường & ngập úng
-                    <span className="px-1.5 py-0.5 rounded-full bg-cyan-500/15 text-cyan-700 dark:text-cyan-300 text-[10px] font-bold">
+                <div className="min-w-0">
+                  <h3 className="text-xs sm:text-sm font-bold text-slate-900 dark:text-white flex items-center gap-1.5 flex-nowrap">
+                    <span className="truncate">Đánh giá mặt đường & ngập</span>
+                    <span className="px-1.5 py-0.5 rounded-full bg-cyan-500/15 text-cyan-700 dark:text-cyan-300 text-[9px] sm:text-[10px] font-bold shrink-0 whitespace-nowrap">
                       Thời gian thực
                     </span>
                   </h3>
-                  <p className="text-[11px] text-slate-500 dark:text-slate-400">
-                    Tự động nhận diện nước ngập & dấu hiệu trời mưa trên mặt đường
-                  </p>
                 </div>
               </div>
 
-              {/* Update Timestamp Status Badge */}
-              <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-cyan-50 dark:bg-cyan-950/60 border border-cyan-200/80 dark:border-cyan-900/60 text-cyan-700 dark:text-cyan-300 text-xs font-semibold shadow-xs">
+              {/* Timestamp Badge */}
+              <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-cyan-50 dark:bg-cyan-950/60 border border-cyan-200/80 dark:border-cyan-900/60 text-cyan-700 dark:text-cyan-300 text-[11px] font-semibold shrink-0 whitespace-nowrap">
                 {isAnalyzingAI ? (
                   <>
-                    <RefreshCw className="w-3.5 h-3.5 animate-spin text-cyan-600 dark:text-cyan-400" />
+                    <RefreshCw className="w-3 h-3 animate-spin text-cyan-600 dark:text-cyan-400 shrink-0" />
                     <span>Đang cập nhật...</span>
                   </>
                 ) : (
                   <>
-                    <Clock className="w-3.5 h-3.5 text-cyan-600 dark:text-cyan-400" />
+                    <Clock className="w-3 h-3 text-cyan-600 dark:text-cyan-400 shrink-0" />
                     <span>
-                      Cập nhật: {effectiveFlood?.analyzedAt ? new Date(effectiveFlood.analyzedAt).toLocaleTimeString("vi-VN", { hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false }) : "Thời gian thực"}
+                      {effectiveFlood?.analyzedAt
+                        ? new Date(effectiveFlood.analyzedAt).toLocaleTimeString("vi-VN", {
+                            hour: "2-digit",
+                            minute: "2-digit",
+                            second: "2-digit",
+                            hour12: false,
+                          })
+                        : "Thời gian thực"}
                     </span>
                   </>
                 )}
               </div>
             </div>
 
-            {/* Diagnostic Metrics Grid (4 Columns: Rain, Flood, Road Surface, Traffic Density) */}
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-3 mb-3">
-              {/* Metric 1: Rain Tracking (Theo dõi Mưa) */}
-              <div className="bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-xl p-3 flex flex-col justify-between shadow-sm">
-                <span className="text-[11px] font-medium text-slate-500 dark:text-slate-400 flex items-center gap-1">
-                  <CloudRain className="w-3.5 h-3.5 text-cyan-600 dark:text-cyan-400" />
-                  Nhận diện Trời Mưa
+            {/* Diagnostic Metrics Grid (2x2 Grid) */}
+            <div className="grid grid-cols-2 gap-2 mb-2.5">
+              {/* Metric 1: Rain */}
+              <div className="bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-xl p-2.5 flex flex-col justify-between shadow-2xs">
+                <span className="text-[10px] font-medium text-slate-500 dark:text-slate-400 flex items-center gap-1 shrink-0 whitespace-nowrap">
+                  <CloudRain className="w-3 h-3 text-cyan-600 dark:text-cyan-400 shrink-0" />
+                  <span>Trời mưa</span>
                 </span>
-                <div className="mt-1.5 flex items-center gap-2">
+                <div className="mt-1 flex items-center gap-1.5">
                   <span
-                    className={`w-2.5 h-2.5 rounded-full ${
+                    className={`w-2 h-2 rounded-full shrink-0 ${
                       effectiveFlood?.isRaining ? "bg-cyan-500 animate-ping" : "bg-slate-400"
                     }`}
                   />
-                  <span className="text-xs font-bold text-slate-800 dark:text-slate-100">
+                  <span className="text-xs font-bold text-slate-800 dark:text-slate-100 shrink-0 whitespace-nowrap">
                     {effectiveFlood?.isRaining ? "🌧️ Đang có mưa" : "☀️ Không mưa"}
                   </span>
                 </div>
-                <span className="text-[10px] text-slate-500 dark:text-slate-400 mt-1 capitalize">
+                <span className="text-[9px] text-slate-500 dark:text-slate-400 mt-0.5 truncate">
                   {effectiveFlood?.rainIntensity === "heavy"
-                    ? "Mưa to / giông bão"
+                    ? "Mưa to / giông"
                     : effectiveFlood?.rainIntensity === "moderate"
                     ? "Mưa rào vừa"
                     : effectiveFlood?.rainIntensity === "light"
-                    ? "Mưa phùn / hạt nhỏ"
-                    : "Thời tiết khô ráo"}
+                    ? "Mưa phùn nhẹ"
+                    : "Khô ráo"}
                 </span>
               </div>
 
-              {/* Metric 2: Flood Level (Cấp độ Ngập) */}
-              <div className="bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-xl p-3 flex flex-col justify-between shadow-sm">
-                <span className="text-[11px] font-medium text-slate-500 dark:text-slate-400 flex items-center gap-1">
-                  <ShieldAlert className="w-3.5 h-3.5 text-amber-500 dark:text-amber-400" />
-                  Mức độ Ngập lụt
+              {/* Metric 2: Flood Level */}
+              <div className="bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-xl p-2.5 flex flex-col justify-between shadow-2xs">
+                <span className="text-[10px] font-medium text-slate-500 dark:text-slate-400 flex items-center gap-1 shrink-0 whitespace-nowrap">
+                  <ShieldAlert className="w-3 h-3 text-amber-500 dark:text-amber-400 shrink-0" />
+                  <span>Mức độ ngập</span>
                 </span>
-                <div className="mt-1.5 flex items-center gap-2">
+                <div className="mt-1 flex items-center gap-1.5">
                   <span
-                    className={`w-2.5 h-2.5 rounded-full ${
+                    className={`w-2 h-2 rounded-full shrink-0 ${
                       effectiveFlood?.floodLevel === "LEVEL_3"
                         ? "bg-rose-500 animate-pulse"
                         : effectiveFlood?.floodLevel === "LEVEL_2"
@@ -452,119 +503,86 @@ function CameraModalContent({
                         : "bg-emerald-500"
                     }`}
                   />
-                  <span className="text-xs font-bold text-slate-800 dark:text-slate-100 truncate">
+                  <span className="text-xs font-bold text-slate-800 dark:text-slate-100 shrink-0 whitespace-nowrap">
                     {effectiveFlood?.floodLevel === "LEVEL_3"
-                      ? "Level 3: Ngập nặng"
+                      ? "🔴 Ngập nặng (>40cm)"
                       : effectiveFlood?.floodLevel === "LEVEL_2"
-                      ? "Level 2: Ngập vừa"
+                      ? "🟠 Ngập vừa"
                       : effectiveFlood?.floodLevel === "LEVEL_1"
-                      ? "Level 1: Ngập nhẹ"
-                      : "Level 0: Không ngập"}
+                      ? "🟡 Ngập nhẹ"
+                      : "🟢 Không ngập"}
                   </span>
                 </div>
-                <span className="text-[10px] text-slate-500 dark:text-slate-400 mt-1 truncate">
+                <span className="text-[9px] text-slate-500 dark:text-slate-400 mt-0.5 truncate">
                   {effectiveFlood?.floodLevel === "LEVEL_0"
                     ? "Giao thông an toàn"
-                    : "Chú ý gầm thấp"}
+                    : "Chú ý tay lái"}
                 </span>
               </div>
 
-              {/* Metric 3: Road Condition (Mặt đường) */}
-              <div className="bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-xl p-3 flex flex-col justify-between shadow-sm">
-                <span className="text-[11px] font-medium text-slate-500 dark:text-slate-400 flex items-center gap-1">
-                  <Compass className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
-                  Tình trạng mặt đường
+              {/* Metric 3: Road Surface */}
+              <div className="bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-xl p-2.5 flex flex-col justify-between shadow-2xs">
+                <span className="text-[10px] font-medium text-slate-500 dark:text-slate-400 flex items-center gap-1 shrink-0 whitespace-nowrap">
+                  <Compass className="w-3 h-3 text-emerald-600 dark:text-emerald-400 shrink-0" />
+                  <span>Mặt đường</span>
                 </span>
-                <div className="mt-1.5 flex items-center gap-2">
-                  <span className="text-xs font-bold text-slate-800 dark:text-slate-100 truncate">
+                <div className="mt-1 flex items-center gap-1.5">
+                  <span className="text-xs font-bold text-slate-800 dark:text-slate-100 shrink-0 whitespace-nowrap">
                     {effectiveFlood?.roadCondition === "flooded"
                       ? "🌊 Bị ngập nước"
                       : effectiveFlood?.roadCondition === "wet"
-                      ? "💧 Ẩm ướt / Trơn trượt"
-                      : "✨ Khô ráo, sạch sẽ"}
+                      ? "💧 Ẩm ướt"
+                      : "✨ Khô ráo"}
                   </span>
                 </div>
-                <span className="text-[10px] text-slate-500 dark:text-slate-400 mt-1 truncate">
+                <span className="text-[9px] text-slate-500 dark:text-slate-400 mt-0.5 truncate">
                   {effectiveFlood?.roadCondition === "flooded"
                     ? "Cảnh báo ngập đọng"
                     : effectiveFlood?.roadCondition === "wet"
                     ? "Chú ý mặt đường trơn"
-                    : "Giao thông thông suốt"}
+                    : "Thông suốt"}
                 </span>
               </div>
 
-              {/* Metric 4: Traffic Density (Mật độ xe) */}
-              <div className="bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-xl p-3 flex flex-col justify-between shadow-sm">
-                <span className="text-[11px] font-medium text-slate-500 dark:text-slate-400 flex items-center justify-between">
+              {/* Metric 4: Traffic Density */}
+              <div className="bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-xl p-2.5 flex flex-col justify-between shadow-2xs">
+                <span className="text-[10px] font-medium text-slate-500 dark:text-slate-400 flex items-center justify-between shrink-0 whitespace-nowrap">
                   <span className="flex items-center gap-1">
-                    <Car className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
-                    Mật độ xe
+                    <Car className="w-3 h-3 text-blue-600 dark:text-blue-400 shrink-0" />
+                    <span>Mật độ xe</span>
                   </span>
-                  <span className="text-[9px] font-mono text-slate-400">
+                  <span className="text-[9px] font-mono text-slate-400 shrink-0">
                     {trafficMeta.speedEstimate}
                   </span>
                 </span>
-
-                <div className="mt-1.5 flex items-center gap-1.5 flex-wrap">
-                  <span className={`w-2.5 h-2.5 rounded-full ${trafficMeta.dotColor}`} />
-                  <span className="text-xs font-bold text-slate-800 dark:text-slate-100 truncate">
+                <div className="mt-1 flex items-center gap-1.5">
+                  <span className={`w-2 h-2 rounded-full shrink-0 ${trafficMeta.dotColor}`} />
+                  <span className="text-xs font-bold text-slate-800 dark:text-slate-100 shrink-0 whitespace-nowrap">
                     {trafficMeta.label}
                   </span>
                 </div>
-
-                {/* Density Bar */}
-                <div className="mt-1.5 space-y-1">
-                  <div className="w-full bg-slate-100 dark:bg-slate-800 h-1.5 rounded-full overflow-hidden">
-                    <div
-                      className={`h-full rounded-full transition-all duration-500 ${trafficMeta.barColor} ${trafficMeta.barPercent}`}
-                    />
-                  </div>
-                  <span className="text-[10px] text-slate-500 dark:text-slate-400 block truncate">
-                    {trafficMeta.speedLabel}
-                  </span>
+                <div className="mt-1 w-full bg-slate-100 dark:bg-slate-800 h-1.5 rounded-full overflow-hidden">
+                  <div
+                    className={`h-full rounded-full transition-all duration-500 ${trafficMeta.barColor} ${trafficMeta.barPercent}`}
+                  />
                 </div>
               </div>
             </div>
 
-            {/* Diagnosis Quote Box */}
-            <div className="bg-slate-100 dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800/80 rounded-xl p-3 flex items-start gap-3">
-              <CheckCircle2 className="w-5 h-5 text-cyan-600 dark:text-cyan-400 shrink-0 mt-0.5" />
-              <div className="flex-1">
+            {/* AI Diagnosis Quote */}
+            <div className="bg-slate-100 dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800/80 rounded-xl p-2.5 flex items-start gap-2">
+              <CheckCircle2 className="w-4 h-4 text-cyan-600 dark:text-cyan-400 shrink-0 mt-0.5" />
+              <div className="flex-1 min-w-0">
                 <p className="text-xs text-slate-800 dark:text-slate-200 font-medium leading-relaxed">
                   {effectiveFlood?.description || "Tuyến đường thông thoáng, không phát hiện ngập úng."}
                 </p>
-                <div className="flex items-center gap-3 mt-1.5 text-[10px] text-slate-500 dark:text-slate-400">
-                  <span>Hệ thống: Giám sát camera giao thông thời gian thực</span>
-                  <span>•</span>
-                  <span>Đo lưu lượng: Thời gian thực</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Traffic Flow & Density Breakdown Banner */}
-            <div className="mt-2.5 p-3 rounded-xl bg-blue-50/70 dark:bg-blue-950/30 border border-blue-200/80 dark:border-blue-900/40 flex items-center justify-between flex-wrap gap-2 text-xs">
-              <div className="flex items-center gap-2">
-                <div className="p-1.5 rounded-lg bg-blue-100 dark:bg-blue-900/60 text-blue-600 dark:text-blue-300">
-                  <Activity className="w-4 h-4" />
-                </div>
-                <div>
-                  <span className="font-bold text-slate-800 dark:text-slate-200">
-                    Lưu lượng xe:
-                  </span>{" "}
-                  <span className={`px-2 py-0.5 rounded-md font-bold ${trafficMeta.pillClass}`}>
-                    {trafficMeta.label}
-                  </span>
-                  <span className="text-slate-500 dark:text-slate-400 ml-1">
-                    (~{trafficMeta.speedEstimate})
-                  </span>
-                </div>
               </div>
             </div>
           </div>
 
           {/* C. MASCOT COMMENTARY CARD */}
           <div
-            className={`border rounded-xl p-3.5 flex items-center gap-3 shadow-sm transition-all ${
+            className={`border rounded-2xl p-3 flex items-center gap-3 shadow-2xs transition-all ${
               mascotMoodForModal === "sleep"
                 ? "bg-indigo-50/80 dark:bg-indigo-950/40 border-indigo-200/80 dark:border-indigo-900/50"
                 : mascotMoodForModal === "flood"
@@ -575,7 +593,7 @@ function CameraModalContent({
             }`}
           >
             <div
-              className={`w-12 h-12 rounded-lg p-1 shrink-0 flex items-center justify-center shadow-sm border ${
+              className={`w-11 h-11 rounded-xl p-0.5 shrink-0 flex items-center justify-center shadow-xs border ${
                 mascotMoodForModal === "sleep"
                   ? "bg-indigo-100/80 dark:bg-indigo-900/60 border-indigo-200 dark:border-indigo-700/60"
                   : "bg-white dark:bg-slate-800 border-amber-200 dark:border-amber-500/20"
@@ -583,9 +601,9 @@ function CameraModalContent({
             >
               <img src={mascotAvatar} alt="Mascot" className="w-full h-full object-contain" />
             </div>
-            <div className="flex-1">
+            <div className="flex-1 min-w-0">
               <div
-                className={`text-[11px] font-bold flex items-center gap-1.5 ${
+                className={`text-[10px] font-bold flex items-center gap-1.5 flex-nowrap ${
                   mascotMoodForModal === "sleep"
                     ? "text-indigo-600 dark:text-indigo-300"
                     : mascotMoodForModal === "flood"
@@ -595,7 +613,7 @@ function CameraModalContent({
                     : "text-amber-600 dark:text-amber-400"
                 }`}
               >
-                <span>
+                <span className="truncate">
                   {getMascotEmotionTitle(mascotType, {
                     floodLevel: effectiveFlood?.floodLevel,
                     isRaining: effectiveFlood?.isRaining,
@@ -606,7 +624,7 @@ function CameraModalContent({
                   })}
                 </span>
                 <span
-                  className={`text-[10px] px-1.5 py-0.2 rounded-full ${
+                  className={`text-[9px] px-1.5 py-0.2 rounded-full shrink-0 whitespace-nowrap ${
                     mascotMoodForModal === "sleep"
                       ? "bg-indigo-500/20 text-indigo-800 dark:text-indigo-200"
                       : "bg-amber-500/20 text-amber-800 dark:text-amber-300"
@@ -615,48 +633,58 @@ function CameraModalContent({
                   {mascotMoodForModal === "sleep" ? "🌙 Nhắc nhở" : "Lời khuyên"}
                 </span>
               </div>
-              <p className="text-xs text-slate-700 dark:text-slate-300 mt-0.5 leading-snug">{mascotTip}</p>
+              <p className="text-xs text-slate-700 dark:text-slate-300 mt-0.5 leading-snug">
+                {mascotTip}
+              </p>
             </div>
           </div>
         </div>
 
-        {/* 3. MODAL ACTIONS FOOTER */}
-        <div className="p-3 sm:px-5 sm:py-3.5 bg-slate-50 dark:bg-slate-950/80 border-t border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2.5 text-xs text-slate-600 dark:text-slate-300">
-          <div className="flex items-center justify-center sm:justify-start gap-2 text-slate-500 dark:text-slate-400">
+        {/* MODAL ACTIONS FOOTER */}
+        <div className="p-3 sm:px-4 sm:py-3 bg-slate-50 dark:bg-slate-950/80 border-t border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2.5 text-xs text-slate-600 dark:text-slate-300 shrink-0">
+          <div className="flex items-center justify-center sm:justify-start gap-1.5 text-slate-500 dark:text-slate-400 shrink-0 whitespace-nowrap">
             <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shrink-0" />
-            <span className="text-[10px] sm:text-[11px] font-medium">Tự động nạp ảnh mới mỗi {refreshInterval}s</span>
+            <span className="text-[10px] sm:text-[11px] font-medium shrink-0 whitespace-nowrap">
+              Tự nạp ảnh mỗi {refreshInterval}s
+            </span>
           </div>
 
-          <div className="grid grid-cols-3 sm:flex items-center gap-1.5 sm:gap-2">
+          <div className="grid grid-cols-3 sm:flex items-center gap-1.5 sm:gap-2 flex-nowrap">
             <button
               onClick={handleCopyLink}
               title="Sao chép link chia sẻ camera này"
-              className="flex items-center justify-center gap-1 px-2.5 sm:px-3 py-2 sm:py-1.5 rounded-xl bg-white hover:bg-slate-100 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-semibold transition active:scale-95 border border-slate-200 dark:border-slate-700 shadow-sm text-[11px] sm:text-xs"
+              className="flex items-center justify-center gap-1 px-2.5 py-2 sm:py-1.5 rounded-xl bg-white hover:bg-slate-100 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-semibold transition active:scale-95 border border-slate-200 dark:border-slate-700 shadow-2xs text-[11px] sm:text-xs cursor-pointer shrink-0 whitespace-nowrap"
             >
-              {copiedLink ? <Check className="w-3.5 h-3.5 text-emerald-500 shrink-0" /> : <Copy className="w-3.5 h-3.5 shrink-0" />}
-              <span className="truncate">{copiedLink ? "Đã chép" : "Sao chép"}</span>
+              {copiedLink ? (
+                <Check className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
+              ) : (
+                <Copy className="w-3.5 h-3.5 shrink-0" />
+              )}
+              <span className="shrink-0 whitespace-nowrap">{copiedLink ? "Đã chép" : "Sao chép"}</span>
             </button>
 
             <button
-              onClick={refresh}
-              className="flex items-center justify-center gap-1 px-2.5 sm:px-3.5 py-2 sm:py-1.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-semibold transition shadow-md shadow-blue-600/20 active:scale-95 text-[11px] sm:text-xs"
+              onClick={handleManualRefresh}
+              className="flex items-center justify-center gap-1 px-2.5 sm:px-3 py-2 sm:py-1.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-semibold transition shadow-md shadow-blue-600/20 active:scale-95 text-[11px] sm:text-xs cursor-pointer shrink-0 whitespace-nowrap"
             >
-              <RefreshCw className={`w-3.5 h-3.5 shrink-0 ${stream.isFetching ? "animate-spin" : ""}`} />
-              <span className="truncate">Làm mới</span>
+              <RefreshCw
+                className={`w-3.5 h-3.5 shrink-0 ${stream.isFetching ? "animate-spin" : ""}`}
+              />
+              <span className="shrink-0 whitespace-nowrap">Làm mới</span>
             </button>
 
             <a
               href={`/camera/${camera.CamId}`}
               target="_blank"
               rel="noreferrer"
-              className="flex items-center justify-center gap-1 px-2.5 sm:px-3.5 py-2 sm:py-1.5 rounded-xl bg-white hover:bg-slate-100 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 font-semibold transition border border-slate-200 dark:border-slate-700 shadow-sm text-[11px] sm:text-xs"
+              className="flex items-center justify-center gap-1 px-2.5 sm:px-3 py-2 sm:py-1.5 rounded-xl bg-white hover:bg-slate-100 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 font-semibold transition border border-slate-200 dark:border-slate-700 shadow-2xs text-[11px] sm:text-xs cursor-pointer shrink-0 whitespace-nowrap"
             >
               <ExternalLink className="w-3.5 h-3.5 shrink-0" />
-              <span className="truncate">Trang riêng</span>
+              <span className="shrink-0 whitespace-nowrap">Trang riêng</span>
             </a>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }

@@ -115,11 +115,41 @@ export default function CameraDetailClient({
 
           {/* Big Live Stream Canvas */}
           <div className="relative aspect-video w-full bg-slate-950 flex items-center justify-center overflow-hidden">
+            {stream.isFetching && (
+              <div className="absolute top-3 right-3 bg-black/70 backdrop-blur-md px-3 py-1 rounded-full text-xs text-cyan-400 flex items-center gap-1.5 font-medium z-10">
+                <RefreshCw className="w-3 h-3 animate-spin" />
+                <span>Đang tải lại...</span>
+              </div>
+            )}
+
             <img
               src={`/api/proxy?id=${encodeURIComponent(camera.CamId)}&t=${refreshKey}`}
               alt={camera.CamName}
+              onError={(e) => {
+                const target = e.currentTarget;
+                target.style.display = "none";
+                const errBox = target.nextElementSibling as HTMLElement;
+                if (errBox) errBox.style.display = "flex";
+              }}
               className="w-full h-full object-contain"
             />
+
+            <div style={{ display: "none" }} className="absolute inset-0 flex-col items-center justify-center text-center p-6 bg-slate-900 text-slate-400 gap-3">
+              <div className="w-12 h-12 rounded-2xl bg-rose-500/10 text-rose-500 flex items-center justify-center">
+                <Video className="w-6 h-6" />
+              </div>
+              <div>
+                <strong className="block text-sm font-bold text-slate-200">Không thể tải luồng hình ảnh</strong>
+                <span className="text-xs text-slate-400 mt-1 block">Tín hiệu camera đang tạm ngắt hoặc đường truyền bận</span>
+              </div>
+              <button
+                onClick={handleManualRefresh}
+                className="px-4 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs flex items-center gap-1.5 shadow-md shadow-blue-600/30 transition active:scale-95 cursor-pointer"
+              >
+                <RefreshCw className="w-3.5 h-3.5" />
+                <span>Tải lại ảnh</span>
+              </button>
+            </div>
           </div>
 
           {/* Card Footer */}

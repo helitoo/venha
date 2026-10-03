@@ -18,6 +18,7 @@ import {
   ChevronUp,
   MapPin,
   Waves,
+  X,
 } from "lucide-react";
 
 interface OpenMeteoData {
@@ -53,7 +54,74 @@ export function getWmoWeatherInfo(code: number): {
   return { label: "Thời tiết ổn định", category: "sun" };
 }
 
-export default function CameraWeatherCard() {
+interface CameraWeatherCardProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+export function CameraWeatherHeaderButton({ onClick }: { onClick: () => void }) {
+  const { rainyCameraIds, severeFloodCount } = useWeatherFloodContext();
+  const [weatherData, setWeatherData] = useState<OpenMeteoData | null>(null);
+
+  useEffect(() => {
+    async function loadQuick() {
+      try {
+        const res = await fetch(
+          "https://api.open-meteo.com/v1/forecast?latitude=10.7769&longitude=106.7009&current=temperature_2m,weather_code,precipitation&timezone=auto"
+        );
+        if (res.ok) {
+          const data = await res.json();
+          if (data.current) {
+            setWeatherData({
+              temperature: Math.round((data.current.temperature_2m ?? 30) * 10) / 10,
+              apparentTemperature: Math.round((data.current.temperature_2m ?? 30) * 10) / 10,
+              relativeHumidity: 75,
+              precipitation: data.current.precipitation ?? 0,
+              rain: 0,
+              windSpeed: 8,
+              surfacePressure: 1010,
+              weatherCode: data.current.weather_code ?? 0,
+            });
+          }
+        }
+      } catch {
+        // ignore
+      }
+    }
+    loadQuick();
+  }, []);
+
+  const wmo = getWmoWeatherInfo(weatherData?.weatherCode ?? 0);
+  const isRain =
+    severeFloodCount > 0 ||
+    rainyCameraIds.length > 0 ||
+    wmo.category === "rain" ||
+    wmo.category === "storm";
+
+  return (
+    <button
+      onClick={onClick}
+      title="Xem dự báo thời tiết & triều cường TP.HCM"
+      className="px-2 sm:px-3 py-1.5 sm:py-2 rounded-2xl bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border border-cyan-500/30 text-slate-800 dark:text-slate-100 shadow-xl flex items-center gap-1.5 sm:gap-2 hover:bg-cyan-50/60 dark:hover:bg-slate-800 transition active:scale-95 group shrink-0 cursor-pointer"
+    >
+      <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-xl bg-cyan-500/10 dark:bg-cyan-500/20 text-cyan-600 dark:text-cyan-400 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
+        {isRain ? (
+          <CloudRain className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-cyan-500 animate-pulse" />
+        ) : (
+          <Sun className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-500 animate-spin-slow" />
+        )}
+      </div>
+      <div className="flex items-center gap-1 font-bold text-[11px] sm:text-xs">
+        <span className="hidden md:inline font-semibold text-slate-500 dark:text-slate-400">TP.HCM</span>
+        <span className="font-mono text-cyan-600 dark:text-cyan-400">
+          {weatherData ? `${weatherData.temperature}°C` : "--°C"}
+        </span>
+      </div>
+    </button>
+  );
+}
+
+export default function CameraWeatherCard({ isOpen, onClose }: CameraWeatherCardProps) {
   const { mascotType, getMascotImage } = useMascotContext();
   const {
     severeFloodCount,
@@ -62,10 +130,19 @@ export default function CameraWeatherCard() {
     rainyCameraIds,
   } = useWeatherFloodContext();
 
-  const [isOpen, setIsOpen] = useState(false);
   const [weatherData, setWeatherData] = useState<OpenMeteoData | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [hasError, setHasError] = useState<boolean>(false);
+
+  // Close on Escape key
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isOpen, onClose]);
 
   // TP. Hồ Chí Minh Center Coordinate (10.7769, 106.7009)
   const targetLat = 10.7769;
@@ -108,8 +185,10 @@ export default function CameraWeatherCard() {
   }, [targetLat, targetLng]);
 
   useEffect(() => {
-    fetchOpenMeteo();
-  }, [fetchOpenMeteo]);
+    if (isOpen) {
+      fetchOpenMeteo();
+    }
+  }, [isOpen, fetchOpenMeteo]);
 
   const wmo = getWmoWeatherInfo(weatherData?.weatherCode ?? 0);
   const mascotImg = getMascotImage(
@@ -145,58 +224,19 @@ export default function CameraWeatherCard() {
         : `Nắng nóng quá meow! Kiếm chỗ râm mát chạy xe cẩn thận nha sen 🐱🧊`;
   }
 
-  // 1. COLLAPSED MINI PILL BUTTON (BOTTOM-RIGHT)
-  if (!isOpen) {
-    return (
-      <div className="absolute bottom-3 right-3 sm:bottom-6 sm:right-4 z-[990] font-sans pointer-events-auto">
-        <button
-          onClick={() => setIsOpen(true)}
-          title="Nhấn để mở Dự Báo Thời Tiết & Triều Cường TP.HCM"
-          className="group flex items-center gap-2 sm:gap-2.5 px-2.5 py-2 sm:px-3.5 sm:py-2.5 rounded-2xl bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border border-slate-200 dark:border-slate-800 shadow-2xl hover:shadow-cyan-500/10 hover:border-cyan-500/40 transition-all duration-300 active:scale-95 text-slate-800 dark:text-slate-100"
-        >
-          <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-cyan-500/10 dark:bg-cyan-500/20 text-cyan-600 dark:text-cyan-400 flex items-center justify-center shrink-0">
-            {wmo.category === "rain" || (weatherData && weatherData.precipitation > 0) ? (
-              <CloudRain className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-cyan-500 animate-pulse" />
-            ) : wmo.category === "storm" ? (
-              <CloudLightning className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-purple-500 animate-bounce" />
-            ) : (
-              <Sun className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-500 animate-spin-slow" />
-            )}
-          </div>
-          <div className="flex flex-col text-left">
-            <div className="flex items-center gap-1 sm:gap-1.5">
-              <span className="text-[11px] sm:text-xs font-bold leading-tight">
-                Dự báo TP.HCM
-              </span>
-              <span className="text-[11px] sm:text-xs font-mono font-bold text-cyan-600 dark:text-cyan-400">
-                {weatherData ? `${weatherData.temperature}°C` : "--°C"}
-              </span>
-            </div>
-            <div className="text-[9px] sm:text-[10px] text-slate-500 dark:text-slate-400 font-medium flex items-center gap-1 mt-0.5">
-              <span className="truncate max-w-[85px] sm:max-w-[110px]">{wmo.label.split(",")[0]}</span>
-              <span>•</span>
-              <span className="text-blue-600 dark:text-blue-400 font-semibold group-hover:underline flex items-center">
-                Mở <ChevronUp className="w-3 h-3 ml-0.5 inline-block" />
-              </span>
-            </div>
-          </div>
-        </button>
-      </div>
-    );
-  }
+  if (!isOpen) return null;
 
-  // 2. EXPANDED TP.HCM WEATHER FORECAST CARD
   return (
-    <>
-      {/* Mobile Backdrop to click-outside-to-close */}
+    <div
+      className="fixed inset-0 z-[2000] flex items-center justify-center p-3 sm:p-5 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200 font-sans cursor-pointer"
+      onClick={onClose}
+    >
       <div
-        className="fixed inset-0 bg-black/40 backdrop-blur-xs sm:hidden z-[995] pointer-events-auto"
-        onClick={() => setIsOpen(false)}
-      />
-
-      <div className="fixed inset-x-3 bottom-3 sm:inset-x-auto sm:right-4 sm:bottom-6 z-[1000] w-auto sm:w-[380px] max-h-[82vh] overflow-y-auto bg-white/98 dark:bg-slate-900/98 backdrop-blur-2xl border border-slate-200 dark:border-slate-800 rounded-3xl shadow-2xl overflow-hidden animate-in fade-in slide-in-from-bottom-6 duration-300 font-sans pointer-events-auto">
+        className="w-full max-w-md bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh] cursor-default animate-in fade-in zoom-in-95 duration-200"
+        onClick={(e) => e.stopPropagation()}
+      >
         {/* Header */}
-        <div className="p-3.5 sm:p-4 pb-2 border-b border-slate-200/80 dark:border-slate-800 flex items-start justify-between gap-2">
+        <div className="p-3.5 sm:p-4 pb-2 border-b border-slate-200/80 dark:border-slate-800 flex items-start justify-between gap-2 bg-gradient-to-r from-blue-50/40 to-cyan-50/40 dark:from-slate-900 dark:to-slate-850">
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-1.5 text-[10px] sm:text-[11px] font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wider">
               <Thermometer className="w-3.5 h-3.5" />
@@ -213,11 +253,11 @@ export default function CameraWeatherCard() {
 
           <div className="flex items-center gap-1">
             <button
-              onClick={() => setIsOpen(false)}
-              title="Thu gọn bảng dự báo thời tiết"
-              className="p-1.5 rounded-xl text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+              onClick={onClose}
+              title="Đóng bảng dự báo thời tiết"
+              className="p-1.5 rounded-xl text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition cursor-pointer"
             >
-              <ChevronDown className="w-5 h-5" />
+              <X className="w-4 h-4" />
             </button>
           </div>
         </div>
@@ -244,13 +284,47 @@ export default function CameraWeatherCard() {
       {/* Main Weather Metrics */}
       <div className="p-4 space-y-3">
         {isLoading ? (
-          <div className="py-6 flex flex-col items-center justify-center text-slate-400 text-xs">
-            <RefreshCw className="w-6 h-6 animate-spin text-blue-500 mb-2" />
-            <span>Đang nạp dữ liệu khí tượng Open-Meteo...</span>
+          <div className="space-y-3 animate-pulse">
+            {/* Temperature & WMO Skeleton */}
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2.5">
+                <div className="w-12 h-12 rounded-2xl bg-slate-200 dark:bg-slate-800 shrink-0" />
+                <div className="space-y-1.5">
+                  <div className="w-24 h-6 rounded-lg bg-slate-200 dark:bg-slate-800" />
+                  <div className="w-32 h-3.5 rounded-md bg-slate-200 dark:bg-slate-800" />
+                </div>
+              </div>
+              <div className="space-y-1.5 text-right">
+                <div className="w-16 h-3 rounded bg-slate-200 dark:bg-slate-800 ml-auto" />
+                <div className="w-10 h-5 rounded bg-slate-200 dark:bg-slate-800 ml-auto" />
+              </div>
+            </div>
+
+            {/* Weather Detail Grid Skeleton */}
+            <div className="grid grid-cols-2 gap-2">
+              <div className="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800/50 h-14" />
+              <div className="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800/50 h-14" />
+              <div className="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800/50 h-14" />
+              <div className="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800/50 h-14" />
+            </div>
+
+            {/* Overview Banner Skeleton */}
+            <div className="p-3 rounded-2xl bg-slate-100 dark:bg-slate-800/60 h-16" />
           </div>
         ) : hasError ? (
-          <div className="py-4 text-center text-xs text-rose-500">
-            Không thể tải dữ liệu thời tiết. Vui lòng bấm thử lại.
+          <div className="p-4 rounded-2xl bg-rose-50/80 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-900/50 flex flex-col items-center justify-center text-center gap-2 text-xs text-rose-700 dark:text-rose-300">
+            <ShieldAlert className="w-6 h-6 text-rose-500" />
+            <div>
+              <strong className="block font-bold">Không thể nạp dữ liệu khí tượng Open-Meteo</strong>
+              <span className="text-[11px] text-slate-500 dark:text-slate-400">Kiểm tra kết nối mạng hoặc thử lại sau</span>
+            </div>
+            <button
+              onClick={() => fetchOpenMeteo()}
+              className="mt-1 px-3 py-1.5 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs flex items-center gap-1.5 shadow-sm transition active:scale-95 cursor-pointer"
+            >
+              <RefreshCw className="w-3.5 h-3.5" />
+              <span>Thử lại ngay</span>
+            </button>
           </div>
         ) : (
           <>
@@ -376,15 +450,14 @@ export default function CameraWeatherCard() {
           </button>
 
           <button
-            onClick={() => setIsOpen(false)}
-            className="py-2 px-3 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 font-semibold text-xs transition flex items-center justify-center gap-1"
+            onClick={onClose}
+            className="py-2 px-3 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 font-semibold text-xs transition flex items-center justify-center gap-1 cursor-pointer"
           >
-            <ChevronDown className="w-3.5 h-3.5" />
-            <span>Thu gọn</span>
+            <span>Đóng</span>
           </button>
         </div>
       </div>
     </div>
-    </>
+  </div>
   );
 }

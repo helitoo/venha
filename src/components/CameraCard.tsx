@@ -68,24 +68,24 @@ export default function CameraCard({ camera, onSelect }: CameraCardProps) {
         )}
 
         {/* Live Badge & Fetching Status managed by Context */}
-        <div className="absolute top-2 left-2 flex items-center gap-1.5 bg-black/60 backdrop-blur-md px-2 py-0.5 rounded-full text-[10px] font-medium text-white z-20">
+        <div className="absolute top-2 left-2 flex items-center gap-1.5 bg-black/60 backdrop-blur-md px-2 py-0.5 rounded-full text-[10px] font-medium text-white z-20 shrink-0 whitespace-nowrap">
           {isFetching ? (
             <>
-              <RefreshCw className="w-2.5 h-2.5 text-blue-400 animate-spin" />
-              <span className="text-blue-300 font-mono">LOADING</span>
+              <RefreshCw className="w-2.5 h-2.5 text-blue-400 animate-spin shrink-0" />
+              <span className="text-blue-300 font-mono shrink-0 whitespace-nowrap">LOADING</span>
             </>
           ) : (
             <>
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping" />
-              <span className="w-2 h-2 rounded-full bg-emerald-500 -ml-2.5" />
-              <span>LIVE</span>
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping shrink-0" />
+              <span className="w-2 h-2 rounded-full bg-emerald-500 -ml-2.5 shrink-0" />
+              <span className="shrink-0 whitespace-nowrap">LIVE</span>
             </>
           )}
         </div>
 
         {/* Circular Countdown Timer */}
         {refreshInterval > 0 && (
-          <div className="absolute top-2 right-2 flex items-center justify-center bg-black/60 backdrop-blur-md rounded-full w-7 h-7 z-20">
+          <div className="absolute top-2 right-2 flex items-center justify-center bg-black/60 backdrop-blur-md rounded-full w-7 h-7 z-20 shrink-0">
             <svg className="w-6 h-6 transform -rotate-90">
               <circle
                 cx="12"
@@ -111,7 +111,7 @@ export default function CameraCard({ camera, onSelect }: CameraCardProps) {
             </svg>
             <span
               suppressHydrationWarning
-              className="absolute text-[9px] font-semibold text-white"
+              className="absolute text-[9px] font-semibold text-white shrink-0 whitespace-nowrap"
             >
               {isFetching ? (
                 <RefreshCw className="w-2.5 h-2.5 animate-spin" />
@@ -131,12 +131,12 @@ export default function CameraCard({ camera, onSelect }: CameraCardProps) {
         >
           {camera.CamName}
         </h3>
-        <div className="flex items-center justify-between mt-1 text-[11px] text-slate-500 dark:text-slate-400">
-          <div className="flex items-center gap-1">
+        <div className="flex items-center justify-between mt-1 text-[11px] text-slate-500 dark:text-slate-400 gap-1.5 flex-nowrap">
+          <div className="flex items-center gap-1 min-w-0">
             <MapPin className="w-3 h-3 text-slate-400 shrink-0" />
             <span className="truncate max-w-[130px]">{camera.District || "TP.HCM"}</span>
           </div>
-          <span className="text-[10px] bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded font-mono text-slate-600 dark:text-slate-400">
+          <span className="text-[10px] bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded font-mono text-slate-600 dark:text-slate-400 shrink-0 whitespace-nowrap">
             ID: {camera.CamId.slice(-6)}
           </span>
         </div>

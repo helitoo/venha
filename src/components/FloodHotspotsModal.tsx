@@ -76,11 +76,29 @@ export default function FloodHotspotsModal({
     });
   };
 
+  // Close on Escape key
+  React.useEffect(() => {
+    if (!isOpen) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        onClose();
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isOpen, onClose]);
+
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-[2000] flex items-center justify-center p-3 sm:p-5 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200 font-sans">
-      <div className="w-full max-w-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+    <div
+      className="fixed inset-0 z-[2000] flex items-center justify-center p-3 sm:p-5 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200 font-sans cursor-pointer"
+      onClick={onClose}
+    >
+      <div
+        className="w-full max-w-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh] cursor-default"
+        onClick={(e) => e.stopPropagation()}
+      >
         {/* Header */}
         <div className="p-4 sm:p-5 border-b border-slate-200 dark:border-slate-800 flex items-start justify-between gap-3 bg-gradient-to-r from-blue-50/50 to-indigo-50/50 dark:from-slate-900 dark:to-slate-850">
           <div className="flex items-center gap-3">
@@ -131,10 +149,10 @@ export default function FloodHotspotsModal({
 
           {/* Quick Cause Badges & District Selector */}
           <div className="flex items-center justify-between gap-2 flex-wrap">
-            <div className="flex items-center gap-1.5 flex-wrap">
+            <div className="flex items-center gap-1.5 flex-nowrap overflow-x-auto scrollbar-none pb-0.5 max-w-full">
               <button
                 onClick={() => setFilterCause("all")}
-                className={`px-2.5 py-1 rounded-lg text-xs font-semibold transition ${
+                className={`px-2.5 py-1 rounded-lg text-xs font-semibold transition shrink-0 whitespace-nowrap cursor-pointer ${
                   filterCause === "all"
                     ? "bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 shadow-sm"
                     : "bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-700 hover:bg-slate-100"
@@ -144,33 +162,33 @@ export default function FloodHotspotsModal({
               </button>
               <button
                 onClick={() => setFilterCause("tide")}
-                className={`px-2.5 py-1 rounded-lg text-xs font-semibold flex items-center gap-1 transition ${
+                className={`px-2.5 py-1 rounded-lg text-xs font-semibold flex items-center gap-1 transition shrink-0 whitespace-nowrap cursor-pointer ${
                   filterCause === "tide"
                     ? "bg-cyan-600 text-white shadow-sm"
                     : "bg-white dark:bg-slate-800 text-cyan-600 dark:text-cyan-400 border border-cyan-200 dark:border-cyan-800 hover:bg-cyan-50 dark:hover:bg-slate-800"
                 }`}
               >
-                <Waves className="w-3 h-3" /> Triều cường
+                <Waves className="w-3 h-3 shrink-0" /> <span className="shrink-0 whitespace-nowrap">Triều cường</span>
               </button>
               <button
                 onClick={() => setFilterCause("rain")}
-                className={`px-2.5 py-1 rounded-lg text-xs font-semibold flex items-center gap-1 transition ${
+                className={`px-2.5 py-1 rounded-lg text-xs font-semibold flex items-center gap-1 transition shrink-0 whitespace-nowrap cursor-pointer ${
                   filterCause === "rain"
                     ? "bg-blue-600 text-white shadow-sm"
                     : "bg-white dark:bg-slate-800 text-blue-600 dark:text-blue-400 border border-blue-200 dark:border-blue-800 hover:bg-blue-50 dark:hover:bg-slate-800"
                 }`}
               >
-                <CloudRain className="w-3 h-3" /> Mưa lớn
+                <CloudRain className="w-3 h-3 shrink-0" /> <span className="shrink-0 whitespace-nowrap">Mưa lớn</span>
               </button>
               <button
                 onClick={() => setFilterCause("both")}
-                className={`px-2.5 py-1 rounded-lg text-xs font-semibold flex items-center gap-1 transition ${
+                className={`px-2.5 py-1 rounded-lg text-xs font-semibold flex items-center gap-1 transition shrink-0 whitespace-nowrap cursor-pointer ${
                   filterCause === "both"
                     ? "bg-orange-600 text-white shadow-sm"
                     : "bg-white dark:bg-slate-800 text-orange-600 dark:text-orange-400 border border-orange-200 dark:border-orange-800 hover:bg-orange-50 dark:hover:bg-slate-800"
                 }`}
               >
-                <AlertTriangle className="w-3 h-3" /> Cả hai
+                <AlertTriangle className="w-3 h-3 shrink-0" /> <span className="shrink-0 whitespace-nowrap">Cả hai</span>
               </button>
             </div>
 
@@ -178,7 +196,7 @@ export default function FloodHotspotsModal({
             <select
               value={selectedDistrict}
               onChange={(e) => setSelectedDistrict(e.target.value)}
-              className="text-xs px-2.5 py-1 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-200 focus:outline-none"
+              className="text-xs px-2.5 py-1 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-200 focus:outline-none shrink-0"
             >
               <option value="all">Tất cả quận/huyện</option>
               {districts.filter((d) => d !== "all").map((d) => (
@@ -193,9 +211,19 @@ export default function FloodHotspotsModal({
         {/* Hotspots List */}
         <div className="flex-1 overflow-y-auto p-4 space-y-2.5 divide-y divide-slate-100 dark:divide-slate-800/60 max-h-[55vh]">
           {filteredHotspots.length === 0 ? (
-            <div className="text-center py-10 text-slate-400">
-              <Info className="w-8 h-8 mx-auto mb-2 opacity-50" />
-              <p className="text-xs">Không tìm thấy tuyến đường phù hợp với bộ lọc.</p>
+            <div className="text-center py-10 text-slate-400 space-y-2">
+              <Info className="w-8 h-8 mx-auto opacity-50" />
+              <p className="text-xs font-medium">Không tìm thấy tuyến đường phù hợp với bộ lọc.</p>
+              <button
+                onClick={() => {
+                  setSearchQuery("");
+                  setFilterCause("all");
+                  setSelectedDistrict("all");
+                }}
+                className="px-3 py-1 rounded-lg bg-slate-100 dark:bg-slate-800 text-blue-600 dark:text-blue-400 text-xs font-bold hover:bg-slate-200 cursor-pointer"
+              >
+                Xóa bộ lọc tìm kiếm
+              </button>
             </div>
           ) : (
             filteredHotspots.map((item) => {
@@ -207,15 +235,15 @@ export default function FloodHotspotsModal({
                   className="pt-2.5 first:pt-0 flex items-start justify-between gap-3 group hover:bg-slate-50/80 dark:hover:bg-slate-800/40 p-2.5 rounded-2xl transition"
                 >
                   <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 flex-wrap">
-                      <span className="text-sm font-bold text-slate-900 dark:text-slate-100 group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition">
+                    <div className="flex items-center gap-1.5 flex-nowrap overflow-x-auto scrollbar-none">
+                      <span className="text-sm font-bold text-slate-900 dark:text-slate-100 group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition truncate">
                         {item.street}
                       </span>
-                      <span className="text-xs px-2 py-0.5 rounded-md bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 font-medium">
+                      <span className="text-xs px-2 py-0.5 rounded-md bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 font-medium shrink-0 whitespace-nowrap">
                         {item.district}
                       </span>
                       <span
-                        className={`text-[10px] px-2 py-0.5 rounded-md font-semibold border ${
+                        className={`text-[10px] px-2 py-0.5 rounded-md font-semibold border shrink-0 whitespace-nowrap ${
                           item.cause === "tide"
                             ? "bg-cyan-50 dark:bg-cyan-950/40 text-cyan-700 dark:text-cyan-300 border-cyan-200 dark:border-cyan-800"
                             : item.cause === "rain"
@@ -226,7 +254,7 @@ export default function FloodHotspotsModal({
                         {item.causeLabel}
                       </span>
                       {item.severity === "Cao" && (
-                        <span className="text-[10px] px-1.5 py-0.5 rounded bg-rose-50 dark:bg-rose-950/40 text-rose-600 dark:text-rose-400 border border-rose-200 dark:border-rose-900/40 font-bold">
+                        <span className="text-[10px] px-1.5 py-0.5 rounded bg-rose-50 dark:bg-rose-950/40 text-rose-600 dark:text-rose-400 border border-rose-200 dark:border-rose-900/40 font-bold shrink-0 whitespace-nowrap">
                           Ngập sâu
                         </span>
                       )}

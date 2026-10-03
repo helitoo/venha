@@ -192,9 +192,9 @@ export function MascotProvider({ children }: { children: React.ReactNode }) {
     [mascotType, mascotMood]
   );
 
-  // 6. Dynamic Real-time Speech Quote
-  const [currentQuote, setCurrentQuote] = useState<string>(() =>
-    pickDynamicQuote("duck", "sunny")
+  // 6. Dynamic Real-time Speech Quote (deterministic initial state to avoid SSR hydration mismatch)
+  const [currentQuote, setCurrentQuote] = useState<string>(
+    "Kiểm tra camera và lộ trình trước khi ra đường để về nhà an toàn nha! 🦆🛵"
   );
   const [isSpeechBubbleOpen, setIsSpeechBubbleOpen] = useState(true);
 

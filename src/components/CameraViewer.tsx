@@ -9,14 +9,14 @@ export default function CameraViewer() {
   const { selectedCamera, setSelectedCamera } = useCameraContext();
 
   return (
-    <div className="relative w-screen h-screen overflow-hidden bg-slate-950">
+    <div className="fixed inset-0 w-full h-full h-[100dvh] overflow-hidden bg-slate-950 select-none">
       {/* Fullscreen Map View */}
       <CameraMapView onSelectCamera={(cam) => setSelectedCamera(cam)} />
 
       {/* Floating Mascot Companion Widget (Bottom-Left) */}
       <MascotWidget />
 
-      {/* Fullscreen Camera Live Modal */}
+      {/* Floating Side Right Bar (Laptop) / Fullscreen Live Modal (Mobile) */}
       <CameraModal
         camera={selectedCamera}
         onClose={() => setSelectedCamera(null)}

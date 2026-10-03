@@ -31,13 +31,15 @@ import {
   X,
   ChevronDown,
   ChevronUp,
+  ChevronRight,
+  Menu,
   Briefcase,
   Home,
   ExternalLink,
 } from "lucide-react";
 import "leaflet/dist/leaflet.css";
 import type * as LeafletType from "leaflet";
-import CameraWeatherCard from "./CameraWeatherCard";
+import CameraWeatherCard, { CameraWeatherHeaderButton } from "./CameraWeatherCard";
 import FloodHotspotsModal from "./FloodHotspotsModal";
 import RoutePlannerModal from "./RoutePlannerModal";
 import AboutProjectModal from "./AboutProjectModal";
@@ -111,11 +113,13 @@ export default function CameraMapView({ onSelectCamera }: CameraMapViewProps) {
     weatherMap,
     floodMap,
     countdown,
+    triggerManualCheck,
     getMarkerVisualState,
   } = useWeatherFloodContext();
 
   const {
     mascotType,
+    toggleMascotType,
     userLocation,
     saveUserLocation,
     getMascotImage,
@@ -134,6 +138,37 @@ export default function CameraMapView({ onSelectCamera }: CameraMapViewProps) {
   const [showHotspotsModal, setShowHotspotsModal] = useState(false);
   const [showTimelineModal, setShowTimelineModal] = useState(false);
   const [showAboutModal, setShowAboutModal] = useState(false);
+  const [showWeatherModal, setShowWeatherModal] = useState(false);
+  const [showMenuDropdown, setShowMenuDropdown] = useState(false);
+  const menuRef = useRef<HTMLDivElement | null>(null);
+
+  // Close hamburger menu on outside click or Escape key
+  useEffect(() => {
+    if (!showMenuDropdown) return;
+
+    const handleOutsideClick = (e: MouseEvent | TouchEvent) => {
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+        setShowMenuDropdown(false);
+      }
+    };
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setShowMenuDropdown(false);
+      }
+    };
+
+    document.addEventListener("pointerdown", handleOutsideClick, { capture: true });
+    document.addEventListener("touchstart", handleOutsideClick, { capture: true });
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("pointerdown", handleOutsideClick, { capture: true });
+      document.removeEventListener("touchstart", handleOutsideClick, { capture: true });
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [showMenuDropdown]);
+
   const [zoomLevel, setZoomLevel] = useState(13);
   const [showZoomSlider, setShowZoomSlider] = useState(false);
   const routeLayersRef = useRef<LeafletType.LayerGroup | null>(null);
@@ -634,218 +669,8 @@ export default function CameraMapView({ onSelectCamera }: CameraMapViewProps) {
           </div>
         `;
 
-        // Weather text description
-        let weatherLabel = "Bình thường";
-        if (visual.weatherCategory === "tornado") weatherLabel = "Giông bão";
-        else if (visual.weatherCategory === "cloud-rain") weatherLabel = "Mưa rào";
-        else if (visual.weatherCategory === "droplet") weatherLabel = "Mưa / Mưa phùn";
-
-        // Flood text badge
-        const isRainZone =
-          visual.weatherCategory === "droplet" ||
-          visual.weatherCategory === "cloud-rain" ||
-          visual.weatherCategory === "tornado";
-
-        let floodBadge = `<span class="px-1.5 py-0.5 rounded text-[9px] font-bold ${isRainZone
-          ? "bg-sky-500/20 text-sky-700 dark:text-sky-300 border border-sky-500/30"
-          : "bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 border border-emerald-500/30"
-          }">🟢 ${isRainZone ? "Bình thường (Đường ướt)" : "Bình thường (Khô ráo)"}</span>`;
-
-        if (visual.floodLevel === "LEVEL_3") {
-          floodBadge = `<span class="px-1.5 py-0.5 rounded text-[9px] font-bold bg-rose-500/30 text-rose-300 border border-rose-500/40">🔴 Level 3 (Ngập nặng)</span>`;
-        } else if (visual.floodLevel === "LEVEL_2") {
-          floodBadge = `<span class="px-1.5 py-0.5 rounded text-[9px] font-bold bg-orange-500/30 text-orange-300 border border-orange-500/40">🟠 Level 2 (Ngập vừa)</span>`;
-        } else if (visual.floodLevel === "LEVEL_1") {
-          floodBadge = `<span class="px-1.5 py-0.5 rounded text-[9px] font-bold bg-amber-500/30 text-amber-300 border border-amber-500/40">🟡 Level 1 (Ngập nhẹ)</span>`;
-        }
-
-        // Mascot Tip & Real-time Traffic Tracking
-        let camTip = "Đường khô ráo, chạy êm ru!";
-        const isHotspot = isFrequentFloodCamera(cam);
-        const flood = floodMap[cam.CamId];
-        const trafficInfo = getCameraTrafficDensity(cam, flood);
-        const trafficDensity = trafficInfo.level;
-        const trafficMeta = trafficInfo.meta;
-
-        if (visual.floodLevel === "LEVEL_3") {
-          camTip = mascotType === "duck" ? "Ngập sâu trên 40cm, đi thật chậm và cẩn thận nhé! 🦆🚨" : "Ngập sâu rồi sen, đi chậm và cẩn thận nha meow! 🐱🚨";
-        } else if (visual.floodLevel === "LEVEL_2") {
-          camTip = mascotType === "duck" ? "Nước ngập nửa bánh xe, đi chậm nha! 🦆⚠️" : "Ngập vừa 15-40cm, lái vững tay meow! 🐱🛵";
-        } else if (visual.floodLevel === "LEVEL_1") {
-          camTip = mascotType === "duck" ? "Đường ngập nhẹ mắt cá chân! 🦆⚠️" : "Ngập nhẹ mép vỉa hè, đi chậm kẻo té meow! 🐱💦";
-        } else if (trafficDensity === "jam") {
-          camTip = mascotType === "duck" ? "Khu vực này đang kẹt xe, đi cẩn thận nhé! 🦆🛑" : "Đường đang kẹt xe rồi, giữ bình tĩnh và cẩn thận nha meow! 🐱🛑";
-        } else if (trafficDensity === "high") {
-          camTip = mascotType === "duck" ? "Đoạn này xe đông di chuyển chậm, chạy cẩn thận nha! 🦆🚗" : "Đường đông xe lắm, chạy cẩn thận meow! 🐱🚗";
-        } else if (camMood === "rain" || isRainZone) {
-          camTip = mascotType === "duck" ? "Trời đang mưa, đường trơn chạy chậm nha! 🦆🌧️" : "Đường trơn ướt, giữ đều ga an toàn meow! 🐱☔";
-        }
-
-        const mascotEmotionHeader = getMascotEmotionTitle(mascotType, {
-          floodLevel: visual.floodLevel,
-          isRaining: flood?.isRaining || isRainZone,
-          rainIntensity: flood?.rainIntensity,
-          weatherCategory: visual.weatherCategory,
-          trafficDensity: trafficDensity,
-          roadCondition: flood?.roadCondition,
-          mood: camMood,
-        });
-
-        const aiDesc =
-          flood?.description ||
-          (isHotspot
-            ? "Điểm trũng triều cường - Tuyến đường thông suốt"
-            : "Thời tiết thông thoáng - Tuyến đường khô ráo, không ngập");
-
         // Non-intrusive compact hover tooltip (just camera name)
-        const hoverTooltip = `<div class="font-bold text-xs truncate max-w-[220px]">${cam.CamName}</div>`;
-
-        // Rich Comprehensive Popup Card on Single Click (Card compact: 275px-325px)
-        const popupContent = `
-          <div class="w-[275px] xs:w-[295px] sm:w-[325px] max-w-[calc(100vw-36px)] bg-white/98 dark:bg-slate-900/98 text-slate-900 dark:text-white backdrop-blur-2xl border border-slate-200/90 dark:border-slate-800 rounded-2xl p-2.5 sm:p-3 shadow-2xl overflow-hidden font-sans select-none pointer-events-auto">
-            <!-- 1. Live Camera Preview (16:9 Image) -->
-            <div
-              onclick="event.stopPropagation(); window.__venha_open_cam__ && window.__venha_open_cam__('${cam.CamId}');"
-              class="relative w-full aspect-video rounded-xl overflow-hidden bg-slate-950 mb-2 border border-slate-200/80 dark:border-slate-800 shadow-inner group cursor-pointer"
-              title="Nhấn vào ảnh để xem chi tiết phóng to"
-            >
-              <img
-                id="cam-img-${cam.CamId}"
-                src="/api/proxy?id=${encodeURIComponent(cam.CamId)}"
-                alt="${cam.CamName}"
-                loading="lazy"
-                class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
-              />
-              <div style="display:none;" class="absolute inset-0 items-center justify-center text-[10px] text-slate-400 bg-slate-900">
-                Không có tín hiệu camera
-              </div>
-              
-              <!-- Badges on image -->
-              <div class="absolute top-2 left-2 flex items-center gap-1 pointer-events-none z-10">
-                <div class="px-2 py-0.5 rounded-full bg-black/75 backdrop-blur-md text-[9px] font-bold text-white flex items-center gap-1 shadow-md">
-                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping"></span>
-                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 -ml-1.5"></span>
-                  LIVE
-                </div>
-                ${isHotspot ? `<span class="px-2 py-0.5 rounded-full bg-cyan-600/90 backdrop-blur-md text-[9px] font-bold text-white flex items-center gap-1 shadow-md">🌊 Hay ngập</span>` : ''}
-              </div>
-
-              <!-- Hover hint overlay -->
-              <div class="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-all duration-200 flex items-center justify-center pointer-events-none">
-                <div class="opacity-0 group-hover:opacity-100 transition-opacity duration-200 px-3 py-1 rounded-full bg-blue-600/95 backdrop-blur-md text-white text-[11px] font-bold flex items-center gap-1 shadow-xl transform translate-y-1 group-hover:translate-y-0">
-                  <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/><path d="M11 8v6"/><path d="M8 11h6"/></svg>
-                  <span>Phóng to</span>
-                </div>
-              </div>
-            </div>
-
-            <!-- 2. Camera Title & District Header -->
-            <div class="flex items-center justify-between gap-2 mb-2">
-              <div class="min-w-0 flex-1">
-                <h4 class="text-xs sm:text-sm font-bold leading-snug truncate text-slate-900 dark:text-slate-100" title="${cam.CamName}">${cam.CamName}</h4>
-                <div class="text-[10px] text-slate-500 dark:text-slate-400 font-medium flex items-center gap-1 mt-0.5">
-                  <span>📍 ${cam.District || "TP.HCM"}</span>
-                  <span class="text-slate-300 dark:text-slate-700">•</span>
-                  <span class="text-slate-500 dark:text-slate-400">Trực tiếp</span>
-                </div>
-              </div>
-            </div>
-
-            <!-- 3. 2x2 Diagnostic Metrics Grid (Trời mưa, Cấp độ ngập, Mặt đường, Mật độ xe) -->
-            <div class="grid grid-cols-2 gap-1.5 mb-2">
-              <!-- Item 1: Trời mưa -->
-              <div class="p-1.5 rounded-lg bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-800/80 flex items-center gap-1.5">
-                <div class="w-6 h-6 rounded-md bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 flex items-center justify-center shrink-0">
-                  <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"/><path d="M16 14v6"/><path d="M8 14v6"/><path d="M12 16v6"/></svg>
-                </div>
-                <div class="min-w-0 flex-1">
-                  <div class="text-[8px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-tight">Trời mưa</div>
-                  <div class="text-[10px] font-bold text-slate-800 dark:text-slate-200 truncate">
-                    ${flood?.isRaining ? '🌧️ Có mưa' : '☀️ Không mưa'}
-                  </div>
-                </div>
-              </div>
-
-              <!-- Item 2: Cấp độ Ngập lụt -->
-              <div class="p-1.5 rounded-lg bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-800/80 flex items-center gap-1.5">
-                <div class="w-6 h-6 rounded-md ${visual.floodLevel === 'LEVEL_3' ? 'bg-rose-500/15 text-rose-600' : visual.floodLevel === 'LEVEL_2' ? 'bg-orange-500/15 text-orange-600' : visual.floodLevel === 'LEVEL_1' ? 'bg-amber-500/15 text-amber-600' : 'bg-emerald-500/15 text-emerald-600'} flex items-center justify-center shrink-0">
-                  <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                </div>
-                <div class="min-w-0 flex-1">
-                  <div class="text-[8px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-tight">Mức độ ngập</div>
-                  <div class="text-[10px] font-bold text-slate-800 dark:text-slate-200 truncate">
-                    ${visual.floodLevel === 'LEVEL_3' ? '🔴 Ngập nặng' : visual.floodLevel === 'LEVEL_2' ? '🟠 Ngập vừa' : visual.floodLevel === 'LEVEL_1' ? '🟡 Ngập nhẹ' : '🟢 Không ngập'}
-                  </div>
-                </div>
-              </div>
-
-              <!-- Item 3: Tình trạng Mặt đường -->
-              <div class="p-1.5 rounded-lg bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-800/80 flex items-center gap-1.5">
-                <div class="w-6 h-6 rounded-md bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0">
-                  <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
-                </div>
-                <div class="min-w-0 flex-1">
-                  <div class="text-[8px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-tight">Mặt đường</div>
-                  <div class="text-[10px] font-bold text-slate-800 dark:text-slate-200 truncate">
-                    ${flood?.roadCondition === 'flooded' ? '🌊 Bị ngập' : flood?.roadCondition === 'wet' ? '💧 Ẩm ướt' : '✨ Khô ráo'}
-                  </div>
-                </div>
-              </div>
-
-              <!-- Item 4: Mật độ xe -->
-              <div class="p-1.5 rounded-lg bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-800/80 flex items-center gap-1.5">
-                <div class="w-6 h-6 rounded-md bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center shrink-0">
-                  <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><path d="M9 17h6"/><circle cx="17" cy="17" r="2"/></svg>
-                </div>
-                <div class="min-w-0 flex-1">
-                  <div class="text-[8px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-tight">Mật độ xe</div>
-                  <div class="text-[10px] font-bold text-slate-800 dark:text-slate-200 truncate">
-                    🚗 ${trafficMeta.label}
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- 4. Mascot Warning & Advice -->
-            <div class="p-2 rounded-xl bg-blue-50/70 dark:bg-slate-800/60 border border-slate-200/70 dark:border-slate-800 flex items-center gap-2.5 mb-2 shadow-xs">
-              <div class="w-11 h-11 rounded-xl overflow-hidden bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 p-0.5 shrink-0 shadow-xs flex items-center justify-center">
-                <img src="${camMascotImg}" class="w-full h-full object-contain" alt="Mascot" />
-              </div>
-              <div class="flex-1 min-w-0">
-                <div class="text-[9px] font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wide">
-                  ${mascotEmotionHeader}
-                </div>
-                <p class="text-[11px] font-semibold text-slate-800 dark:text-slate-100 truncate mt-0.5 leading-snug">
-                  ${camTip}
-                </p>
-              </div>
-            </div>
-
-            <!-- 5. 2 Action Buttons with Icons (Làm mới & Chi tiết phóng to) -->
-            <div class="grid grid-cols-2 gap-2 pt-2 border-t border-slate-200/80 dark:border-slate-800">
-              <!-- Nút 1: Làm mới (Icon RefreshCw) -->
-              <button
-                onclick="event.stopPropagation(); window.__venha_refresh_cam__ && window.__venha_refresh_cam__('${cam.CamId}', this);"
-                class="py-2 px-2.5 rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 text-[11px] font-semibold flex items-center justify-center gap-1 transition active:scale-95 cursor-pointer shadow-xs border border-slate-200/60 dark:border-slate-700/60"
-                title="Tải lại hình ảnh snapshot mới nhất"
-              >
-                <svg class="w-3 h-3 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M16 16h5v5"/></svg>
-                <span>Làm mới</span>
-              </button>
-
-              <!-- Nút 2: Chi tiết phóng to (Icon Eye / Zoom) -->
-              <button
-                onclick="event.stopPropagation(); window.__venha_open_cam__ && window.__venha_open_cam__('${cam.CamId}');"
-                class="py-2 px-2.5 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white text-[11px] font-bold flex items-center justify-center gap-1 transition active:scale-95 cursor-pointer shadow-md shadow-blue-600/30"
-                title="Mở dialog chi tiết lớn phóng to"
-              >
-                <svg class="w-3.5 h-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
-                <span>Chi tiết</span>
-              </button>
-            </div>
-          </div>
-        `;
+        const hoverTooltip = `<div class="font-bold text-xs truncate max-w-[220px] select-none">${cam.CamName}</div>`;
 
         const existingMarker = currentMarkers.get(cam.CamId);
 
@@ -862,10 +687,6 @@ export default function CameraMapView({ onSelectCamera }: CameraMapViewProps) {
               popupAnchor: [0, -12],
             });
             existingMarker.setIcon(customIcon);
-          }
-          if (markerAny._popupContent !== popupContent) {
-            markerAny._popupContent = popupContent;
-            existingMarker.setPopupContent(popupContent);
           }
           if (markerAny._hoverTooltip !== hoverTooltip) {
             markerAny._hoverTooltip = hoverTooltip;
@@ -885,7 +706,6 @@ export default function CameraMapView({ onSelectCamera }: CameraMapViewProps) {
           const markerAny = marker as any;
           markerAny._camData = cam;
           markerAny._visualKey = visualKey;
-          markerAny._popupContent = popupContent;
           markerAny._hoverTooltip = hoverTooltip;
 
           // Non-intrusive compact hover tooltip
@@ -895,23 +715,12 @@ export default function CameraMapView({ onSelectCamera }: CameraMapViewProps) {
             className: "compact-cam-tooltip",
           });
 
-          // Single Click (Click 1 lần): Mở Card hiển thị ảnh to kèm 3 nút icon
-          marker.bindPopup(popupContent, {
-            maxWidth: 340,
-            minWidth: 260,
-            offset: [0, -12],
-            className: "custom-cam-popup",
-            autoPan: true,
-            autoPanPadding: [15, 15],
-          });
-
-          // Double Click (Nhấn 2 lần): Mở thẳng Dialog Chi Tiết Lớn (CameraModal)
-          marker.on("dblclick", (e: any) => {
+          // Single Click: Mở Side Right Bar (Laptop) hoặc Fullscreen Modal (Mobile)
+          marker.on("click", (e: any) => {
             if (e && e.originalEvent) {
               e.originalEvent.stopPropagation();
               e.originalEvent.preventDefault?.();
             }
-            marker.closePopup();
             const targetCam = markerAny._camData || cam;
             if (onSelectCamera) {
               onSelectCamera(targetCam);
@@ -1100,7 +909,7 @@ export default function CameraMapView({ onSelectCamera }: CameraMapViewProps) {
   }, [mapCameras]);
 
   return (
-    <div className="relative w-screen h-screen overflow-hidden bg-slate-950 font-sans select-none">
+    <div className="relative w-full h-full h-[100dvh] overflow-hidden bg-slate-950 font-sans select-none">
       {/* 1. TOP FLOATING CONTROL BAR */}
       <div className="absolute top-3 left-3 right-3 sm:top-4 sm:left-4 sm:right-4 z-[1000] flex items-start justify-between pointer-events-none gap-2 sm:gap-3">
         {/* Left Section: Google Maps Search Bar + Directions Button */}
@@ -1138,67 +947,221 @@ export default function CameraMapView({ onSelectCamera }: CameraMapViewProps) {
           )}
         </div>
 
-        {/* Right Section: Card CAMERA GIAO THÔNG (top) + Điểm hay ngập (directly underneath) */}
-        <div className="flex flex-col items-end gap-1.5 sm:gap-2 pointer-events-auto shrink-0">
-          {/* Row 1: Camera Giao Thông Card + Theme Toggle */}
-          <div className="flex items-center gap-1.5 sm:gap-2">
-            <div className="bg-white/95 dark:bg-slate-900/95 backdrop-blur-md px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xl flex items-center gap-2 sm:gap-2.5">
-              <div className="w-7 h-7 sm:w-9 sm:h-9 rounded-xl bg-amber-500/10 dark:bg-amber-400/10 border border-amber-500/30 flex items-center justify-center p-0.5 shadow-md shadow-amber-500/10 shrink-0 overflow-hidden">
-                <img
-                  src="/logo-cat.png"
-                  alt="Logo"
-                  className="w-full h-full object-contain transform hover:scale-110 transition-transform duration-300"
-                />
-              </div>
-              <div className="flex flex-col text-left">
-                <span className="text-[11px] sm:text-xs font-bold tracking-wide text-slate-900 dark:text-slate-100 flex items-center gap-1">
-                  <span className="hidden sm:inline">CAMERA GIAO THÔNG</span>
-                  <span className="sm:hidden">CAM</span>
-                  <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping inline-block" />
+        {/* Right Section: Weather Button (Header) + Camera Status Card + Hamburger Menu */}
+        <div className="flex items-center gap-1.5 sm:gap-2 pointer-events-auto shrink-0 relative">
+          {/* 1. WEATHER FORECAST PILL BUTTON (Moved to Header) */}
+          <CameraWeatherHeaderButton onClick={() => setShowWeatherModal(true)} />
+
+          {/* 2. Camera Giao Thông Badge Card */}
+          <div className="bg-white/95 dark:bg-slate-900/95 backdrop-blur-md px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xl flex items-center gap-2 sm:gap-2.5">
+            <div className="w-7 h-7 sm:w-9 sm:h-9 rounded-xl bg-amber-500/10 dark:bg-amber-400/10 border border-amber-500/30 flex items-center justify-center p-0.5 shadow-md shadow-amber-500/10 shrink-0 overflow-hidden">
+              <img
+                src="/logo-cat.png"
+                alt="Logo"
+                className="w-full h-full object-contain transform hover:scale-110 transition-transform duration-300"
+              />
+            </div>
+            <div className="flex flex-col text-left">
+              <span className="text-[11px] sm:text-xs font-bold tracking-wide text-slate-900 dark:text-slate-100 flex items-center gap-1">
+                <span className="hidden sm:inline">CAMERA GIAO THÔNG</span>
+                <span className="sm:hidden">CAM</span>
+                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping inline-block" />
+              </span>
+              <div className="text-[9px] sm:text-[10px] text-slate-500 dark:text-slate-400 font-medium flex items-center gap-1">
+                <span>{visibleCount}/{mapCameras.length}</span>
+                <span className="hidden sm:inline">•</span>
+                <span
+                  suppressHydrationWarning
+                  className="hidden sm:inline font-mono text-cyan-600 dark:text-cyan-400 font-bold"
+                  title="Thời gian tự động đồng bộ thời tiết & cảnh báo ngập lụt toàn thành phố"
+                >
+                  Đồng bộ: {countdown}s
                 </span>
-                <div className="text-[9px] sm:text-[10px] text-slate-500 dark:text-slate-400 font-medium flex items-center gap-1">
-                  <span>{visibleCount}/{mapCameras.length}</span>
-                  <span className="hidden sm:inline">•</span>
-                  <span
-                    suppressHydrationWarning
-                    className="hidden sm:inline font-mono text-cyan-600 dark:text-cyan-400 font-bold"
-                    title="Thời gian tự động đồng bộ thời tiết & cảnh báo ngập lụt toàn thành phố"
-                  >
-                    Đồng bộ: {countdown}s
-                  </span>
-                </div>
               </div>
             </div>
-
-            {/* About & Project Intro Button */}
-            <button
-              onClick={() => setShowAboutModal(true)}
-              title="Giới thiệu, Mục đích & Điều khoản dự án"
-              className="p-2 sm:p-2.5 rounded-2xl bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 shadow-xl hover:bg-blue-50 dark:hover:bg-slate-800 hover:text-blue-600 dark:hover:text-blue-400 transition active:scale-95 cursor-pointer"
-            >
-              <Info className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-            </button>
-
-            {/* Theme Toggle */}
-            <button
-              onClick={toggleTheme}
-              title={isDarkMode ? "Chuyển sang chế độ Sáng" : "Chuyển sang chế độ Tối"}
-              className="p-2 sm:p-2.5 rounded-2xl bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 shadow-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition active:scale-95"
-            >
-              {isDarkMode ? <Sun className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-400" /> : <Moon className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-slate-700" />}
-            </button>
           </div>
 
-          {/* Row 2: Tidal & Frequent Flood Hotspots Button */}
-          <button
-            onClick={() => setShowHotspotsModal(true)}
-            className="px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-2xl bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border border-cyan-500/30 text-cyan-700 dark:text-cyan-300 shadow-xl flex items-center gap-1 text-[11px] sm:text-xs font-bold hover:bg-cyan-50 dark:hover:bg-slate-800 transition active:scale-95 group self-end"
-            title="Xem danh sách các tuyến đường thường xuyên ngập nước"
-          >
-            <Waves className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-cyan-500 animate-pulse group-hover:scale-110 transition-transform" />
-            <span className="font-semibold text-[10px] sm:text-xs">Điểm ngập</span>
-            <span className="px-1 sm:px-1.5 py-0.2 rounded-full bg-cyan-500/20 text-cyan-600 dark:text-cyan-400 text-[9px] sm:text-[10px] font-bold">25+</span>
-          </button>
+          {/* 3. HAMBURGER MENU BUTTON & DROPDOWN */}
+          <div className="relative">
+            <button
+              onClick={() => setShowMenuDropdown((prev) => !prev)}
+              title="Menu chức năng & tiện ích"
+              aria-label="Menu chức năng"
+              className={`p-2 sm:p-2.5 rounded-2xl backdrop-blur-md border shadow-xl transition active:scale-95 cursor-pointer flex items-center justify-center ${
+                showMenuDropdown
+                  ? "bg-blue-600 text-white border-blue-500 shadow-blue-500/30"
+                  : "bg-white/95 dark:bg-slate-900/95 border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"
+              }`}
+            >
+              {showMenuDropdown ? (
+                <X className="w-4 h-4 sm:w-4.5 sm:h-4.5" />
+              ) : (
+                <Menu className="w-4 h-4 sm:w-4.5 sm:h-4.5" />
+              )}
+            </button>
+
+            {/* HAMBURGER DROPDOWN MENU POPOVER */}
+            {showMenuDropdown && (
+              <div
+                ref={menuRef}
+                className="absolute top-full right-0 mt-2 w-64 sm:w-72 bg-white/98 dark:bg-slate-900/98 backdrop-blur-2xl border border-slate-200 dark:border-slate-800 rounded-3xl p-2.5 shadow-2xl z-[2000] flex flex-col gap-1 animate-in fade-in slide-in-from-top-2 duration-200 select-none text-slate-800 dark:text-slate-200"
+              >
+                {/* Dropdown Header */}
+                <div className="px-3 py-1.5 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
+                  <div className="flex items-center gap-1.5">
+                    <span className="font-bold text-xs text-slate-800 dark:text-slate-100">Tiện ích & Cài đặt</span>
+                    <span className="px-1.5 py-0.2 rounded-full bg-cyan-500/15 text-cyan-600 dark:text-cyan-400 text-[9px] font-bold">TP.HCM</span>
+                  </div>
+                </div>
+
+                {/* Dropdown Menu Items */}
+                <div className="flex flex-col gap-0.5 py-1">
+                  {/* 1. Điểm hay ngập nước */}
+                  <button
+                    onClick={() => {
+                      setShowMenuDropdown(false);
+                      setShowHotspotsModal(true);
+                    }}
+                    className="w-full flex items-center justify-between p-2 rounded-2xl hover:bg-cyan-50 dark:hover:bg-cyan-950/40 text-slate-700 dark:text-slate-300 hover:text-cyan-700 dark:hover:text-cyan-300 transition text-left group cursor-pointer"
+                  >
+                    <div className="flex items-center gap-2.5 min-w-0">
+                      <div className="w-8 h-8 rounded-xl bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
+                        <Waves className="w-4 h-4" />
+                      </div>
+                      <div className="min-w-0">
+                        <div className="text-xs font-bold leading-tight truncate">Điểm hay ngập nước</div>
+                        <div className="text-[10px] text-slate-400 truncate">25+ điểm triều cường & mưa</div>
+                      </div>
+                    </div>
+                    <span className="px-1.5 py-0.5 rounded-full bg-cyan-500/20 text-cyan-600 dark:text-cyan-400 text-[10px] font-bold shrink-0">25+</span>
+                  </button>
+
+                  {/* 2. Dự báo thời tiết TP.HCM */}
+                  <button
+                    onClick={() => {
+                      setShowMenuDropdown(false);
+                      setShowWeatherModal(true);
+                    }}
+                    className="w-full flex items-center justify-between p-2 rounded-2xl hover:bg-blue-50 dark:hover:bg-blue-950/40 text-slate-700 dark:text-slate-300 hover:text-blue-700 dark:hover:text-blue-300 transition text-left group cursor-pointer"
+                  >
+                    <div className="flex items-center gap-2.5 min-w-0">
+                      <div className="w-8 h-8 rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
+                        <Sun className="w-4 h-4 text-amber-500" />
+                      </div>
+                      <div className="min-w-0">
+                        <div className="text-xs font-bold leading-tight truncate">Dự báo khí tượng</div>
+                        <div className="text-[10px] text-slate-400 truncate">Nhiệt độ, mưa, độ ẩm, gió</div>
+                      </div>
+                    </div>
+                    <ChevronRight className="w-3.5 h-3.5 text-slate-400 group-hover:translate-x-0.5 transition-transform shrink-0" />
+                  </button>
+
+                  {/* 3. Tìm đường tránh ngập */}
+                  <button
+                    onClick={() => {
+                      setShowMenuDropdown(false);
+                      setIsRouteMode(true);
+                    }}
+                    className="w-full flex items-center justify-between p-2 rounded-2xl hover:bg-indigo-50 dark:hover:bg-indigo-950/40 text-slate-700 dark:text-slate-300 hover:text-indigo-700 dark:hover:text-indigo-300 transition text-left group cursor-pointer"
+                  >
+                    <div className="flex items-center gap-2.5 min-w-0">
+                      <div className="w-8 h-8 rounded-xl bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
+                        <Navigation className="w-4 h-4" />
+                      </div>
+                      <div className="min-w-0">
+                        <div className="text-xs font-bold leading-tight truncate">Tìm đường tránh ngập</div>
+                        <div className="text-[10px] text-slate-400 truncate">Tránh ngập & kiểm tra camera</div>
+                      </div>
+                    </div>
+                    <ChevronRight className="w-3.5 h-3.5 text-slate-400 group-hover:translate-x-0.5 transition-transform shrink-0" />
+                  </button>
+
+                  <div className="h-[1px] bg-slate-100 dark:bg-slate-800 my-1" />
+
+                  {/* 4. Đổi Giao diện Sáng / Tối */}
+                  <button
+                    onClick={() => {
+                      toggleTheme();
+                    }}
+                    className="w-full flex items-center justify-between p-2 rounded-2xl hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 transition text-left group cursor-pointer"
+                  >
+                    <div className="flex items-center gap-2.5 min-w-0">
+                      <div className="w-8 h-8 rounded-xl bg-amber-500/10 text-amber-500 dark:text-amber-400 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
+                        {isDarkMode ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-slate-700" />}
+                      </div>
+                      <div className="min-w-0">
+                        <div className="text-xs font-bold leading-tight truncate">Giao diện {isDarkMode ? "Tối" : "Sáng"}</div>
+                        <div className="text-[10px] text-slate-400 truncate">Chuyển sang chế độ {isDarkMode ? "Sáng" : "Tối"}</div>
+                      </div>
+                    </div>
+                    <span className="text-[10px] font-semibold text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-full shrink-0">
+                      {isDarkMode ? "🌙 Tối" : "☀️ Sáng"}
+                    </span>
+                  </button>
+
+                  {/* 5. Đổi Linh vật Bé Vịt / Bé Mèo */}
+                  <button
+                    onClick={() => {
+                      toggleMascotType();
+                    }}
+                    className="w-full flex items-center justify-between p-2 rounded-2xl hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 transition text-left group cursor-pointer"
+                  >
+                    <div className="flex items-center gap-2.5 min-w-0">
+                      <div className="w-8 h-8 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform text-base">
+                        {mascotType === "duck" ? "🦆" : "🐱"}
+                      </div>
+                      <div className="min-w-0">
+                        <div className="text-xs font-bold leading-tight truncate">Linh vật đồng hành</div>
+                        <div className="text-[10px] text-slate-400 truncate">Đang chọn: {mascotType === "duck" ? "Bé Vịt" : "Bé Mèo"}</div>
+                      </div>
+                    </div>
+                    <span className="text-[10px] font-semibold text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full shrink-0">
+                      Đổi sang {mascotType === "duck" ? "Mèo 🐱" : "Vịt 🦆"}
+                    </span>
+                  </button>
+
+                  {/* 6. Giới thiệu & Điều khoản */}
+                  <button
+                    onClick={() => {
+                      setShowMenuDropdown(false);
+                      setShowAboutModal(true);
+                    }}
+                    className="w-full flex items-center justify-between p-2 rounded-2xl hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 transition text-left group cursor-pointer"
+                  >
+                    <div className="flex items-center gap-2.5 min-w-0">
+                      <div className="w-8 h-8 rounded-xl bg-purple-500/10 text-purple-600 dark:text-purple-400 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
+                        <Info className="w-4 h-4" />
+                      </div>
+                      <div className="min-w-0">
+                        <div className="text-xs font-bold leading-tight truncate">Giới thiệu & Điều khoản</div>
+                        <div className="text-[10px] text-slate-400 truncate">Mục đích cộng đồng & bản quyền</div>
+                      </div>
+                    </div>
+                    <ChevronRight className="w-3.5 h-3.5 text-slate-400 group-hover:translate-x-0.5 transition-transform shrink-0" />
+                  </button>
+
+                  {/* 7. Đồng bộ thủ công */}
+                  <button
+                    onClick={() => {
+                      triggerManualCheck();
+                      setShowMenuDropdown(false);
+                    }}
+                    className="w-full flex items-center justify-between p-2 rounded-2xl hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 transition text-left group cursor-pointer"
+                  >
+                    <div className="flex items-center gap-2.5 min-w-0">
+                      <div className="w-8 h-8 rounded-xl bg-slate-500/10 text-slate-600 dark:text-slate-400 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
+                        <RefreshCw className="w-4 h-4" />
+                      </div>
+                      <div className="min-w-0">
+                        <div className="text-xs font-bold leading-tight truncate">Đồng bộ lại dữ liệu</div>
+                        <div className="text-[10px] text-slate-400 truncate">Cập nhật camera & ngập lụt</div>
+                      </div>
+                    </div>
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
@@ -1661,8 +1624,11 @@ export default function CameraMapView({ onSelectCamera }: CameraMapViewProps) {
         </div>
       </div>
 
-      {/* 5. OPEN-METEO TP. HỒ CHÍ MINH WEATHER FORECAST CARD (BOTTOM-RIGHT) */}
-      <CameraWeatherCard />
+      {/* 5. OPEN-METEO TP. HỒ CHÍ MINH WEATHER FORECAST MODAL */}
+      <CameraWeatherCard
+        isOpen={showWeatherModal}
+        onClose={() => setShowWeatherModal(false)}
+      />
 
       {/* 6. FLOOD HOTSPOTS MODAL */}
       <FloodHotspotsModal

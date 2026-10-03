@@ -25,6 +25,7 @@ import {
   Crosshair,
   Compass,
   Activity,
+  AlertTriangle,
 } from "lucide-react";
 import type * as LeafletType from "leaflet";
 
@@ -454,6 +455,19 @@ export default function RoutePlannerModal({
     const url = `https://www.google.com/maps/dir/?api=1&origin=${origin.lat},${origin.lng}&destination=${destination.lat},${destination.lng}&travelmode=driving`;
     window.open(url, "_blank");
   };
+
+  // Close on Escape key
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setActiveSearchField(null);
+        onClose();
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isOpen, onClose]);
 
   if (!isOpen) return null;
 
@@ -905,22 +919,32 @@ export default function RoutePlannerModal({
                     </div>
 
                     {/* Camera Live Snapshot Image */}
-                    <div className="relative aspect-video rounded-xl overflow-hidden bg-slate-950 mb-3 border border-slate-200 dark:border-slate-800 shadow-inner group">
+                    <div className="relative aspect-video rounded-xl overflow-hidden bg-slate-950 mb-3 border border-slate-200 dark:border-slate-800 shadow-inner group flex items-center justify-center">
                       <img
                         id={`preview-route-cam-${hoveredCam.camera.CamId}`}
                         src={`/api/proxy?id=${encodeURIComponent(hoveredCam.camera.CamId)}`}
                         alt={hoveredCam.camera.CamName}
+                        onError={(e) => {
+                          const target = e.currentTarget;
+                          target.style.display = "none";
+                          const errBox = target.nextElementSibling as HTMLElement;
+                          if (errBox) errBox.style.display = "flex";
+                        }}
                         className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                       />
+                      <div style={{ display: "none" }} className="absolute inset-0 flex-col items-center justify-center text-center p-3 bg-slate-900 text-slate-400 gap-1.5">
+                        <AlertTriangle className="w-5 h-5 text-amber-500" />
+                        <span className="text-[11px] font-medium text-slate-300">Không có tín hiệu camera</span>
+                      </div>
                       <div className="absolute top-2 left-2 flex items-center gap-1.5 pointer-events-none">
-                        <span className="px-2 py-0.5 rounded-full bg-black/75 backdrop-blur-md text-[9px] font-bold text-white flex items-center gap-1 border border-white/20">
+                        <span className="px-2 py-0.5 rounded-full bg-black/75 backdrop-blur-md text-[9px] font-bold text-white flex items-center gap-1 border border-white/20 shrink-0 whitespace-nowrap">
                           <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
                           LIVE CAMERA
                         </span>
                       </div>
 
                       <div className="absolute bottom-2 right-2 flex items-center gap-1">
-                        <span className="px-2 py-0.5 rounded-md bg-black/70 backdrop-blur-sm text-[9px] font-mono text-slate-200">
+                        <span className="px-2 py-0.5 rounded-md bg-black/70 backdrop-blur-sm text-[9px] font-mono text-slate-200 shrink-0 whitespace-nowrap">
                           Cách xuất phát: {(hoveredCam.distanceFromStartMeters / 1000).toFixed(1)} km
                         </span>
                       </div>
