@@ -1,25 +1,32 @@
 # 🚦 VENHA - HỆ THỐNG GIÁM SÁT CAMERA GIAO THÔNG & CHẨN ĐOÁN NGẬP LỤT TP. HỒ CHÍ MINH
 
-Hệ thống bản đồ trực quan hóa hơn **790+ Camera giao thông** thực tế tại TP. Hồ Chí Minh trên nền tảng bản đồ số tương tác cao, tích hợp dự báo thời tiết cục bộ thời gian thực và phân tích mức độ ngập úng đô thị thông minh bằng **Google Gemini Multimodal AI**.
+Hệ thống bản đồ số trực quan hóa hơn **790+ Camera giao thông** thực tế tại TP. Hồ Chí Minh, tích hợp dự báo thời tiết cục bộ, công cụ tìm kiếm lộ trình né ngập thông minh phong cách **Google Maps**, phân tích mật độ xe & chẩn đoán ngập úng đô thị bằng **Google Gemini Multimodal AI**.
 
 ---
 
 ## 🌟 TÍNH NĂNG NỔI BẬT
 
-- 🗺️ **Bản đồ Camera Full màn hình**: Tích hợp dữ liệu 796 camera giao thông với tọa độ GPS chính xác, hỗ trợ chuyển đổi lớp bản đồ Đường phố / Vệ tinh Google Maps.
-- ⚡ **0ms Cold-Start SSR Hydration**: Trạng thái thời tiết và cảnh báo ngập của toàn bộ 796 camera được nạp sẵn ngay từ máy chủ (Server Component), người dùng mở trang có dữ liệu ngay lập tức mà không cần fetch lại từ đầu.
+- 🗺️ **Bản đồ Camera Full màn hình**: Tích hợp dữ liệu hơn 796 camera giao thông với tọa độ GPS chính xác tại TP.HCM, hỗ trợ chuyển đổi lớp bản đồ Đường phố / Vệ tinh Google Maps và chế độ Sáng / Tối (Dark/Light mode).
+- 🛣️ **Tìm kiếm & Chỉ đường né ngập (Google Maps Style Directions)**:
+  - Thanh tìm kiếm và bảng điều khiển chỉ đường 3 cột chuẩn phong cách Google Maps (`○ Điểm xuất phát` $\rightarrow$ `⋮` $\rightarrow$ `📍 Điểm đến` + Nút đảo chiều `⇅`).
+  - Tìm kiếm địa điểm, địa chỉ chính xác tại TP.HCM kết hợp định vị GPS vị trí hiện tại.
+  - Tự động quét và phát hiện các điểm ngập nước trên lộ trình, đề xuất các tuyến đường vòng tránh ngập an toàn kèm thời gian di chuyển, khoảng cách (km) và liên kết mở nhanh trên Google Maps.
+- 🎯 **Lọc Camera thông minh theo Lộ trình (Route Corridor Filtering)**: Khi người dùng tìm đường, bản đồ tự động chuyển sang chế độ tập trung — **chỉ hiển thị các camera nằm dọc theo hành lang tuyến đường đi** (bán kính ~800m), ẩn bớt các camera ngoài luồng giúp giao diện thông thoáng, dễ quan sát.
+- 🚦 **Theo dõi Mật độ Giao thông & Kẹt xe (Traffic Density Engine)**:
+  - Tích hợp cơ sở dữ liệu hơn 60+ điểm nóng giao thông trọng điểm TP.HCM (Hàng Xanh, Lăng Cha Cả, An Sương, Cầu Bình Triệu, Cầu Kênh Tẻ, Vòng xoay Dân Chủ, Ngã sáu Gò Vấp...).
+  - Mô phỏng theo mô hình giờ cao điểm kết hợp Gemini Vision AI đếm xe trong khung hình để phân loại 4 mức độ: Thông thoáng (🟢), Đông đúc (🟡), Di chuyển chậm (🟠), Ùn ứ / Kẹt xe (🔴).
+- 🌊 **Danh mục 25+ Điểm Hay Ngập do Triều Cường & Mưa Lớn**: Nút truy cập nhanh danh sách các điểm rốn ngập kinh niên tại TP.HCM (Trần Xuân Soạn, Huỳnh Tấn Phát, Quốc lộ 13, Nguyễn Văn Hưởng, Ung Văn Khiêm, Thảo Điền, v.v.) kèm camera giám sát trực tiếp.
+- 🐱 **Trợ lý Mascot Mèo Mặc Áo Mưa & Favicon Nhận Diện**: Linh vật Mèo vui nhộn xuất hiện đưa ra lời khuyên thời tiết & gợi ý lộ trình an toàn theo thời gian thực.
+- ⚡ **0ms Cold-Start SSR Hydration**: Trạng thái thời tiết và cảnh báo ngập của toàn bộ 796 camera được nạp sẵn từ máy chủ, người dùng mở trang có dữ liệu ngay lập tức.
 - ⏱️ **Đồng bộ Countdown Toàn cầu (Global Epoch Time)**: Đồng hồ đếm lùi chu kỳ thời tiết & ngập lụt được tính toán theo mốc Unix Epoch tuyệt đối, đảm bảo mọi client trên thế giới luôn đếm đúng cùng một nhịp giây.
-- 🎯 **Lazy Fetching On-Demand (Tối ưu Client)**: Các node camera trên bản đồ hiển thị dạng marker gọn nhẹ; client **chỉ fetch ảnh khi người dùng thực sự mở xem một node camera** (bật thẻ xem nhanh ở góc màn hình hoặc mở modal phóng to), tiết kiệm tối đa băng thông và tài nguyên trình duyệt.
-- 🤖 **Server Proactive Fetching (Chủ động dự báo lũ)**: Máy chủ chủ động nạp ảnh camera tại các khu vực đang có mưa/bão để cung cấp cho Google Gemini AI phân tích mực nước và phân loại mức ngập lụt tự động.
-- 🛡️ **4 Tầng Phòng Vệ Tiết Kiệm Token AI**: Cơ chế Weather Gating, State TTL Cooldown (10 phút), Server Snapshot Stream Check và Micro-batching (35 ảnh/request) giúp triệt tiêu hoàn toàn việc lạm dụng API Gemini.
+- 🛡️ **4 Tầng Phòng Vệ Tiết Kiệm Token AI**: Weather Gating, State TTL Cooldown (10 phút), Server Snapshot Stream Check và Micro-batching (35 ảnh/request) giúp triệt tiêu hoàn toàn việc lạm dụng API Gemini.
 - 🌦️ **Dự báo thời tiết cục bộ Open-Meteo & Gom cụm Haversine**: Gom 796 camera theo bán kính không gian để lấy mẫu đại diện, giảm hơn 95% request mạng.
-- 🚀 **Tối ưu hóa Vercel Serverless**: Kiến trúc In-Memory SWR Cache kết hợp Serverless Edge Handlers giúp chia sẻ 1 kết quả tính toán cho hàng nghìn người dùng truy cập đồng thời.
 
 ---
 
 ## 🏛️ KIẾN TRÚC TỔNG QUAN HỆ THỐNG (SYSTEM ARCHITECTURE)
 
-Hệ thống hoạt động theo mô hình phân tách 2 luồng độc lập giữa **Server-side (Chủ động dự báo thời tiết & ngập lụt qua AI)** và **Client-side (Lazy Fetching hình ảnh khi mở node camera)**:
+Hệ thống hoạt động theo mô hình phân tách 2 luồng độc lập giữa **Server-side (Chủ động dự báo thời tiết & ngập lụt qua AI)** và **Client-side (Bản đồ tương tác, Chỉ đường & Lazy Fetching camera)**:
 
 ```mermaid
 flowchart TD
@@ -38,7 +45,7 @@ flowchart TD
         I -->|Mất kết nối / Không có ảnh| J["Gán LEVEL_0 / UNCLEAR (Mất tín hiệu)"]
         I -->|Có ảnh JPEG hợp lệ| K["Tầng 4: Micro-Batching (35 ảnh/req)<br/>Gửi sang Gemini Multimodal AI"]
         
-        K --> L["Nhận diện mức ngập LEVEL_0 / 1 / 2 / 3"]
+        K --> L["Nhận diện mức ngập LEVEL_0 / 1 / 2 / 3 & Đếm xe"]
         E --> M["Lưu State vào globalThis Singleton Cache"]
         G --> M
         J --> M
@@ -46,40 +53,58 @@ flowchart TD
         M --> N["SSR Hydration (0ms) / GET /api/weather"]
     end
 
-    subgraph CLIENT["2. LUỒNG CLIENT-SIDE (LAZY ON-DEMAND FETCHING)"]
-        N --> O["Client hiển thị 796 Node Camera trên Bản đồ"]
+    subgraph CLIENT["2. LUỒNG CLIENT-SIDE (BẢN ĐỒ, CHỈ ĐƯỜNG & LAZY FETCHING)"]
+        N --> O["Client hiển thị Bản đồ Camera tương tác"]
         P["Unix Epoch Time (Date.now())"] --> Q["Countdown Đồng bộ Toàn cầu (60s)"]
         Q -->|Khi chạm chu kỳ| R["Đồng bộ State Thời tiết & Ngập mới nhất"]
         R --> O
         
-        S["Người dùng click mở một Node Camera"] --> T["Mount useCameraStream(camId)"]
-        T --> U["Client FETCH ẢNH CAMERA qua /api/proxy?id={camId}"]
-        U --> V["Hiển thị Live Snapshot & Phân tích ngập trên Floating Card / Modal"]
-        W["Người dùng đóng Node Camera"] --> X["Unmount stream & Dừng fetch ảnh"]
+        S["Người dùng tìm đường (Google Maps UI)"] --> T["Tính toán lộ trình né ngập qua /api/directions"]
+        T --> U["Kích hoạt chế độ lọc camera hành lang (Route Corridor)"]
+        U --> O
+        
+        V["Người dùng click mở một Node Camera"] --> W["Mount useCameraStream(camId)"]
+        W --> X["Client FETCH ẢNH CAMERA qua /api/proxy?id={camId}"]
+        X --> Y["Hiển thị Live Snapshot, Mật độ xe & Mức ngập"]
     end
 ```
 
 ---
 
-## 🔄 1. CƠ CHẾ ĐỒNG BỘ THỜI TIẾT & COUNTDOWN TOÀN CẦU
+## 🛣️ 1. HỆ THỐNG CHỈ ĐƯỜNG NÉ NGẬP (GOOGLE MAPS STYLE)
 
-### A. Công thức đồng bộ Countdown theo Unix Epoch
-Thay vì dùng `setInterval` đếm lùi độc lập trong từng trình duyệt (gây lệch giây khi người dùng F5 hoặc mở tab ở các thời điểm khác nhau), hệ thống tính toán đồng hồ đếm ngược trực tiếp từ thời gian Epoch toàn cầu:
+Giao diện chỉ đường được thiết kế theo phong cách tối giản, hiện đại của Google Maps:
 
-$$\text{elapsed} = \lfloor \text{Date.now()} / 1000 \rfloor \pmod{\text{NEXT\_PUBLIC\_FLOOD\_INTERVAL}}$$
-$$\text{countdown} = \text{NEXT\_PUBLIC\_FLOOD\_INTERVAL} - \text{elapsed}$$
+```
+┌────────────────────────────────────────────────────────────┐
+│  [  ○  ]  [ Vị trí của bạn (Điểm đi)             ] [📍GPS] │
+│     ⋮                                                  │  [ ⇅ ]
+│  [  📍 ]  [ Nhập điểm đến...                     ] [ ✕ ]   │
+└────────────────────────────────────────────────────────────┘
+```
 
-* **Đặc tính:** Tất cả client tại mọi vị trí địa lý đều đếm lùi chính xác cùng 1 nhịp giây với máy chủ.
-* Khi `countdown === NEXT_PUBLIC_FLOOD_INTERVAL` (bắt đầu chu kỳ mới), client tự động gọi `GET /api/weather` để nhận bản cập nhật mới nhất.
-
-### B. Thuật toán Gom cụm Không gian Haversine (Spatial Clustering)
-* Áp dụng công thức khoảng cách mặt cầu Haversine để nhóm 796 camera thành các cụm đại diện bán kính không gian $R$:
-  $$d = 2R_{\text{earth}} \arcsin\left(\sqrt{\sin^2\left(\frac{\Delta\text{lat}}{2}\right) + \cos(\text{lat}_1)\cos(\text{lat}_2)\sin^2\left(\frac{\Delta\text{lng}}{2}\right)}\right)$$
-* Giảm số lượng điểm truy vấn Open-Meteo từ **796 điểm xuống các trạm đại diện theo cụm**, giảm tải hơn 95% request mạng và tránh bị giới hạn API rate limit.
+- **Lựa chọn lộ trình an toàn**: Hệ thống tính toán nhiều phương án đường đi, gắn nhãn trực quan `🟢 Khô ráo` hoặc `⚠️ Có ngập`, đồng thời đánh dấu tuyến đường `Khuyên dùng` tối ưu nhất.
+- **Hành lang lọc Camera (Corridor Filtering)**: Khi lộ trình được vẽ lên bản đồ, hệ thống tự động tính khoảng cách từ 796 camera đến đường đi (bằng giải thuật hình chiếu Haversine $d_{\bot} \le 800\text{ m}$). Chỉ những camera phục vụ việc theo dõi tuyến đường mới được hiển thị, loại bỏ hoàn toàn tình trạng rối mắt bởi quá nhiều icon.
 
 ---
 
-## 🧠 2. MÔ HÌNH 4 TẦNG PHÒNG VỆ CHỐNG LẠM DỤNG GEMINI AI
+## 🚦 2. ĐỘNG CƠ ĐÁNH GIÁ MẬT ĐỘ GIAO THÔNG (TRAFFIC DENSITY)
+
+Mật độ giao thông được tổng hợp từ 3 nguồn:
+1. **Mô hình Giờ Cao Điểm & 60+ Điểm Nóng**: Tự động tăng mức cảnh báo giao thông tại các trục đường chính và nút giao huyết mạch vào khung giờ cao điểm (Sáng: 07:00 - 09:00, Chiều: 17:00 - 19:30).
+2. **Thị giác Máy tính Google Gemini AI**: Đếm số lượng phương tiện thực tế từ khung hình camera (xe máy, ô tô, xe buýt).
+3. **Mối liên hệ Thời tiết & Ngập nước**: Tuyến đường ngập sâu sẽ tự động đẩy mật độ xe lên mức `Ùn ứ / Kẹt xe`.
+
+| Mức mật độ | Ký hiệu | Màu sắc | Mô tả tình trạng |
+| :--- | :---: | :---: | :--- |
+| **Thông thoáng** | `LOW` | 🟢 Xanh lục | Đường vắng, xe cộ lưu thông với tốc độ tối đa |
+| **Đông đúc** | `MODERATE` | 🟡 Vàng cam | Lưu lượng xe đông, di chuyển ổn định |
+| **Di chuyển chậm** | `HIGH` | 🟠 Cam đỏ | Mật độ xe dày đặc, tốc độ di chuyển chậm |
+| **Ùn ứ / Kẹt xe** | `JAM` | 🔴 Đỏ đậm | Xe cộ dừng đỗ kéo dài, di chuyển từng nhích |
+
+---
+
+## 🧠 3. MÔ HÌNH 4 TẦNG PHÒNG VỆ CHỐNG LẠM DỤNG GEMINI AI
 
 Để kiểm soát chặt chẽ chi phí token và tránh lạm dụng API Google Gemini, hệ thống triển khai kiến trúc **4 tầng phòng vệ (Defense-in-Depth)** kết hợp chủ động nạp ảnh trên máy chủ:
 
@@ -116,26 +141,12 @@ flowchart TD
 
 ---
 
-## 📸 3. CƠ CHẾ FETCH HÌNH ẢNH CAMERA: CLIENT & SERVER
-
-### A. Client-Side: Lazy On-Demand Fetching (Chỉ nạp khi mở Node)
-* **Bản đồ Leaflet nhẹ tối đa:** 796 camera trên bản đồ được hiển thị dưới dạng các node marker tròn trực quan (màu sắc cấp độ ngập + icon thời tiết). Trình duyệt **hoàn toàn không nạp ảnh cho các marker này**, tránh giật lag khung hình và tiết kiệm 100% băng thông nhàn rỗi.
-* **Kích hoạt khi mở Node:** Chỉ khi người dùng click vào một node camera trên bản đồ để mở **Thẻ xem trực tiếp (Active Floating Card)**, mở **Modal phóng to**, hoặc vào trang chi tiết `/camera/[id]`, hook `useCameraStream(camId)` mới kích hoạt yêu cầu nạp ảnh qua `/api/proxy?id={camId}`.
-* **Tự động hủy khi đóng:** Khi đóng thẻ xem hoặc đóng modal, luồng fetch ảnh của camera đó lập tức được hủy đăng ký (`unregisterActiveCamera`), đảm bảo không có request ngầm chạy lãng phí.
-
-### B. Server-Side: Proactive Fetching for AI Flood Forecasting (Chủ động dự báo ngập)
-* Trong mỗi chu kỳ revalidate / SWR của máy chủ ([`src/lib/server-weather.ts`](file:///d:/PROJECT/venha/venha/src/lib/server-weather.ts)), máy chủ **chủ động nạp ảnh snapshot** của các camera thuộc vùng mưa/giông bão thông qua module [`src/lib/server-camera.ts`](file:///d:/PROJECT/venha/venha/src/lib/server-camera.ts).
-* Các ảnh hợp lệ được gom thành từng batch và gửi sang Google Gemini AI để chẩn đoán mức ngập lụt đô thị theo 4 cấp độ thực tế.
-* **Xử lý Proxy & Negative Caching ([`src/app/api/proxy/route.ts`](file:///d:/PROJECT/venha/venha/src/app/api/proxy/route.ts)):** Khi cổng giao thông TP.HCM đóng socket hoặc ngắt kết nối TLS, hệ thống tự động đặt cờ hoãn 3 phút (negative backoff), triệt tiêu hoàn toàn hiện tượng spam log lỗi trên máy chủ và tự động trả về ảnh vector SVG *"Mất tín hiệu"*.
-
----
-
 ## 🎨 4. QUY TẮC MÀU SẮC & TRẠNG THÁI NODE CAMERA
 
 Node camera dạng tròn $24\times24\text{ px}$ thể hiện trực quan cấp độ ngập và ký hiệu thời tiết:
 
 | Trạng thái màu | Cấp độ ngập | Điều kiện kích hoạt | Ý nghĩa thực tế |
-| :--- | :---: | :--- | :--- |
+| :--- | :---: | :---: | :--- |
 | 🟢 **Màu xanh lá** (`#059669`) | **Level 0 (Mặc định)** | Thời tiết khô ráo, mưa nhỏ (61/63/65) hoặc tuyến đường không ngập | Tuyến đường thông suốt, an toàn |
 | 🟡 **Màu vàng cam** (`#f59e0b`) | **Level 1** | Sau khi phân tích AI xác nhận | Ngập nhẹ mép vỉa hè ($< 15\text{ cm}$) |
 | 🟠 **Màu cam đỏ** (`#ea580c`) | **Level 2** | Sau khi phân tích AI xác nhận | Ngập vừa nửa bánh xe ($15 - 40\text{ cm}$) |
@@ -151,11 +162,11 @@ Node camera dạng tròn $24\times24\text{ px}$ thể hiện trực quan cấp �
 
 ## ⚙️ 5. CẤU HÌNH BIẾN MÔI TRƯỜNG (.env)
 
-Tạo file `.env` tại thư mục gốc dự án:
+Tạo file `.env` hoặc `.env.local` tại thư mục gốc dự án:
 
 ```env
 # ==========================================
-# 1. Cấu hình Gemini AI (Phân tích ngập lụt)
+# 1. Cấu hình Gemini AI (Phân tích ngập lụt & Mật độ xe)
 # ==========================================
 GEMINI_API_KEY=your_gemini_api_key_here
 GEMINI_MODEL=gemma-4-26b-a4b-it
@@ -166,8 +177,8 @@ GEMINI_BATCH_SIZE=35
 # Thời gian lưu giữ kết quả phân tích AI trước khi quét lại (tính theo phút, mặc định 10 phút)
 GEMINI_FLOOD_TTL_MINUTES=10
 
-# Prompt phân tích ngập lụt (JSON Schema)
-GEMINI_FLOOD_PROMPT="Analyze street camera images for flood severity based on real-world reference levels:\nLEVEL_0: Dry road or minor wet patches.\nLEVEL_1: Ankle-deep / curb-level water (<15cm).\nLEVEL_2: Half motorcycle wheel / knee-deep water (15cm-40cm).\nLEVEL_3: Submerged motorcycle wheel / car hood-level water (>40cm).\nUNCLEAR: Blurry, dark, corrupted, or obstructed view.\nReturn concise JSON array matching schema."
+# Prompt phân tích ngập lụt & giao thông
+GEMINI_FLOOD_PROMPT="Analyze street camera images for flood severity and traffic density. Return concise JSON array matching schema."
 
 # ==========================================
 # 2. Cấu hình chu kỳ làm mới & đồng bộ
