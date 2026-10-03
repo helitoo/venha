@@ -1,13 +1,31 @@
 import { NextRequest, NextResponse } from "next/server";
-import { analyzeFloodWithGemini, CameraImageInput } from "@/lib/server-flood-analysis";
+import {
+  analyzeFloodWithGemini,
+  analyzeSingleCameraWithGemini,
+  CameraImageInput,
+} from "@/lib/server-flood-analysis";
 
 export const dynamic = "force-dynamic";
 
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json();
-    const items: CameraImageInput[] = body.items || [];
+    const body = await request.json().catch(() => ({}));
 
+    // 1. Single Camera On-Demand Analysis (e.g. from Camera Modal)
+    if (body.camId) {
+      const result = await analyzeSingleCameraWithGemini(
+        body.camId,
+        body.imageBase64,
+        body.weather
+      );
+      return NextResponse.json({
+        success: true,
+        result,
+      });
+    }
+
+    // 2. Batch Multimodal Analysis
+    const items: CameraImageInput[] = body.items || [];
     if (!Array.isArray(items) || items.length === 0) {
       return NextResponse.json({ success: true, results: [] });
     }
@@ -26,3 +44,4 @@ export async function POST(request: NextRequest) {
     );
   }
 }
+

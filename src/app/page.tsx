@@ -3,6 +3,7 @@ import { getAllCameras, getDistricts } from "@/lib/cameras";
 import { getAggregatedWeatherFloodState } from "@/lib/server-weather";
 import { CameraProvider } from "@/context/CameraContext";
 import { WeatherFloodProvider } from "@/context/WeatherFloodContext";
+import { MascotProvider } from "@/context/MascotContext";
 import CameraViewer from "@/components/CameraViewer";
 
 export const dynamic = "force-dynamic";
@@ -29,7 +30,9 @@ export default async function HomePage() {
           initialFloodMap={serverState?.floodMap}
           initialLastUpdated={serverState?.lastUpdated}
         >
-          <CameraViewer />
+          <MascotProvider>
+            <CameraViewer />
+          </MascotProvider>
         </WeatherFloodProvider>
       </CameraProvider>
     </Suspense>

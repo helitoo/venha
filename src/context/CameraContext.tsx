@@ -106,7 +106,7 @@ export function CameraProvider({
   );
   const [gridCols, setGridCols] = useState<2 | 3 | 4>(3);
   const [selectedCamera, setSelectedCamera] = useState<CameraItem | null>(null);
-  const [isDarkMode, setIsDarkMode] = useState<boolean>(true);
+  const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
 
   // Stream state dictionary managed inside Context
   const [streams, setStreams] = useState<Record<string, CameraStreamState>>({});
@@ -122,18 +122,31 @@ export function CameraProvider({
   const refreshIntervalRef = useRef<number>(refreshInterval);
   refreshIntervalRef.current = refreshInterval;
 
-  // Initialize theme
+  // Initialize theme (default to light mode, unless user explicitly saved "dark")
   useEffect(() => {
-    const isDark = document.documentElement.classList.contains("dark");
-    setIsDarkMode(isDark || true);
-    if (!document.documentElement.classList.contains("dark")) {
-      document.documentElement.classList.add("dark");
+    try {
+      const savedTheme = localStorage.getItem("venha_theme");
+      if (savedTheme === "dark") {
+        setIsDarkMode(true);
+        document.documentElement.classList.add("dark");
+      } else {
+        setIsDarkMode(false);
+        document.documentElement.classList.remove("dark");
+      }
+    } catch {
+      setIsDarkMode(false);
+      document.documentElement.classList.remove("dark");
     }
   }, []);
 
   const toggleTheme = useCallback(() => {
     setIsDarkMode((prev) => {
       const next = !prev;
+      try {
+        localStorage.setItem("venha_theme", next ? "dark" : "light");
+      } catch {
+        // ignore
+      }
       if (next) {
         document.documentElement.classList.add("dark");
       } else {

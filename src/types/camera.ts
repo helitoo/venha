@@ -41,6 +41,12 @@ export interface CameraFloodAnalysis {
   camId: string;
   floodLevel: FloodLevel;
   description?: string;
+  isRaining?: boolean;
+  rainIntensity?: "none" | "light" | "moderate" | "heavy";
+  roadCondition?: "dry" | "wet" | "flooded";
+  trafficDensity?: "low" | "moderate" | "high" | "jam";
+  trafficSpeed?: "fast" | "normal" | "slow" | "standstill";
+  confidence?: number;
   analyzedAt: number;
 }
 

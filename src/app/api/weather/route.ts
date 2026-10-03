@@ -85,11 +85,12 @@ export async function POST(request: NextRequest) {
             const current = wObj?.current || {};
             const weatherCode =
               typeof current.weather_code === "number" ? current.weather_code : 0;
-            const category = getWmoCategory(weatherCode);
+            const precipitation = current.precipitation ?? 0;
+            const category = getWmoCategory(weatherCode, precipitation);
 
             resultMap[cam.camId] = {
               weatherCode,
-              precipitation: current.precipitation ?? 0,
+              precipitation,
               rain: current.rain ?? 0,
               showers: current.showers ?? 0,
               category,

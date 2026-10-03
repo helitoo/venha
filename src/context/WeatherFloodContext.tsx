@@ -51,8 +51,10 @@ interface WeatherFloodContextType {
 
 const WeatherFloodContext = createContext<WeatherFloodContextType | null>(null);
 
-// Rain codes triggering severe rain / flood warning
-const RAINY_WEATHER_CODES = new Set([80, 81, 82, 95, 96, 99]);
+// All rainy / drizzle / storm weather codes
+export const RAINY_WEATHER_CODES = new Set([
+  51, 53, 55, 56, 57, 61, 63, 65, 66, 67, 80, 81, 82, 95, 96, 99,
+]);
 
 interface WeatherFloodProviderProps {
   initialWeatherMap?: Record<string, CameraWeatherState>;
@@ -168,7 +170,12 @@ export function WeatherFloodProvider({
   // List of rainy camera IDs
   const rainyCameraIds = useMemo(() => {
     return Object.entries(weatherMap)
-      .filter(([_, w]) => RAINY_WEATHER_CODES.has(w.weatherCode))
+      .filter(
+        ([_, w]) =>
+          RAINY_WEATHER_CODES.has(w.weatherCode) ||
+          (w.precipitation !== undefined && w.precipitation > 0.05) ||
+          (w.rain !== undefined && w.rain > 0)
+      )
       .map(([id]) => id);
   }, [weatherMap]);
 
@@ -248,12 +255,21 @@ export function WeatherFloodProvider({
               floodLevel: "LEVEL_1" as FloodLevel,
               isPulse: false,
             };
-          case "LEVEL_0": // Không ngập -> Xanh lá
+          case "LEVEL_0": // Không ngập (Xanh lá nếu khô ráo, Xanh lam biển nếu có mưa/mưa phùn)
+            const isRainCondition =
+              weatherCategory === "droplet" ||
+              weatherCategory === "cloud-rain" ||
+              weatherCategory === "tornado";
+
             return {
-              bgColor: "bg-emerald-600",
-              borderColor: "border-emerald-200",
-              shadowColor: "shadow-emerald-600/50",
-              ringColor: "ring-emerald-400/40",
+              bgColor: isRainCondition ? "bg-sky-600" : "bg-emerald-600",
+              borderColor: isRainCondition ? "border-sky-300" : "border-emerald-200",
+              shadowColor: isRainCondition
+                ? "shadow-sky-600/60"
+                : "shadow-emerald-600/50",
+              ringColor: isRainCondition
+                ? "ring-sky-400/50"
+                : "ring-emerald-400/40",
               textColor: "text-white",
               weatherCategory,
               floodLevel: "LEVEL_0" as FloodLevel,
@@ -262,12 +278,21 @@ export function WeatherFloodProvider({
         }
       }
 
-      // 2. Mặc định cho tất cả các node còn lại -> MÀU XANH LÁ (LEVEL_0)
+      // 2. Mặc định cho tất cả các node còn lại -> LEVEL_0
+      const isRainConditionDefault =
+        weatherCategory === "droplet" ||
+        weatherCategory === "cloud-rain" ||
+        weatherCategory === "tornado";
+
       return {
-        bgColor: "bg-emerald-600",
-        borderColor: "border-emerald-200",
-        shadowColor: "shadow-emerald-600/50",
-        ringColor: "ring-emerald-400/40",
+        bgColor: isRainConditionDefault ? "bg-sky-600" : "bg-emerald-600",
+        borderColor: isRainConditionDefault ? "border-sky-300" : "border-emerald-200",
+        shadowColor: isRainConditionDefault
+          ? "shadow-sky-600/60"
+          : "shadow-emerald-600/50",
+        ringColor: isRainConditionDefault
+          ? "ring-sky-400/50"
+          : "ring-emerald-400/40",
         textColor: "text-white",
         weatherCategory,
         floodLevel: "LEVEL_0" as FloodLevel,
