@@ -1,7 +1,9 @@
 import { getAllCameras } from "@/lib/cameras";
-import { fetchBatchCameraSnapshots } from "@/lib/server-camera";
-import { analyzeFloodWithGemini, CameraImageInput } from "@/lib/server-flood-analysis";
-import { isFrequentFloodCamera } from "@/data/floodHotspots";
+import {
+  FLOOD_SCAN_INTERVAL_SEC,
+  GEMINI_FLOOD_TTL_MINUTES,
+  WEATHER_SAMPLE_RADIUS_KM,
+} from "@/config/constants";
 import {
   CameraFloodAnalysis,
   CameraItem,
@@ -87,9 +89,7 @@ export async function computeAggregatedWeatherState(): Promise<{
   lastUpdated: number;
 }> {
   const allCameras = getAllCameras();
-  const sampleRadiusKm =
-    parseFloat(process.env.NEXT_PUBLIC_WEATHER_SAMPLE_RADIUS_KM || "2.5") ||
-    2.5;
+  const sampleRadiusKm = WEATHER_SAMPLE_RADIUS_KM;
 
   const validCams = allCameras.filter(
     (c) =>
@@ -190,201 +190,55 @@ export async function computeAggregatedWeatherState(): Promise<{
   const fullWeatherMap: Record<string, CameraWeatherState> = {};
   const fullFloodMap: Record<string, CameraFloodAnalysis> = {};
 
-  const floodTtlMinutes =
-    parseInt(process.env.GEMINI_FLOOD_TTL_MINUTES || "10", 10) || 10;
+  const floodTtlMinutes = GEMINI_FLOOD_TTL_MINUTES;
   const floodTtlMs = floodTtlMinutes * 60 * 1000;
-
-  const camsNeedingFloodAnalysis: CameraItem[] = [];
 
   clusters.forEach((cl) => {
     const repW = repResults[cl.representative.CamId];
     if (repW) {
-      // WMO Codes for Heavy Rain / Showers / Thunderstorms that warrant AI flood inspection:
-      // 65 (heavy rain), 80-82 (rain showers), 95-99 (thunderstorms)
-      const HEAVY_RAIN_OR_STORM_CODES = [65, 80, 81, 82, 95, 96, 99];
-      const isHeavyOrStorm =
-        HEAVY_RAIN_OR_STORM_CODES.includes(repW.weatherCode) ||
-        (repW.precipitation !== undefined && repW.precipitation >= 1.5);
-
-      const isLightRainOrDrizzle =
-        [51, 53, 55, 56, 57, 61, 63].includes(repW.weatherCode) ||
-        (repW.precipitation !== undefined && repW.precipitation > 0 && repW.precipitation < 1.5);
+      const isRain =
+        [51, 53, 55, 56, 57, 61, 63, 65, 66, 67, 80, 81, 82, 95, 96, 99].includes(
+          repW.weatherCode
+        ) || (repW.precipitation !== undefined && repW.precipitation > 0.05);
 
       cl.members.forEach((m) => {
         fullWeatherMap[m.CamId] = { ...repW };
 
-        const isHotspot = isFrequentFloodCamera(m);
-
-        // TẦNG 1: Weather & Rain Gating
-        // Khô ráo hoặc Mưa nhỏ/phùn (WMO 51-57, 61, 63) VÀ KHÔNG PHẢI điểm ngập thường xuyên
-        // -> Tự động gán LEVEL_1 nếu mưa, LEVEL_0 nếu khô ráo: ⚡ 0 Token - 0 API Call - 0 Fetch
-        if (!isHeavyOrStorm && !isHotspot) {
-          fullFloodMap[m.CamId] = {
-            camId: m.CamId,
-            floodLevel: isLightRainOrDrizzle ? "LEVEL_1" : "LEVEL_0",
-            isRaining: isLightRainOrDrizzle,
-            rainIntensity: isLightRainOrDrizzle ? "light" : "none",
-            roadCondition: isLightRainOrDrizzle ? "wet" : "dry",
-            description: isLightRainOrDrizzle
-              ? "Đường ướt do mưa - Mặt đường trơn trượt, đọng nước nhẹ mép đường"
-              : "Thời tiết thông thoáng - Tuyến đường khô ráo, không ngập",
-            analyzedAt: now,
-          };
-          return;
-        }
-
-        // TẦNG 2: State TTL Cooldown (10 phút)
-        // Kiểm tra xem camera đã được AI phân tích trong vòng TTL chưa
         const existingFlood = cache.floodMap[m.CamId];
-        if (
+        const isFresh = Boolean(
           existingFlood &&
-          now - (existingFlood.analyzedAt || 0) < floodTtlMs &&
-          existingFlood.description &&
-          !existingFlood.description.includes("Mất kết nối")
-        ) {
-          // Tái sử dụng State cũ từ Cache: ⚡ 0 Token - 0 API Call
+          existingFlood.analyzedAt &&
+          now - existingFlood.analyzedAt < floodTtlMs
+        );
+
+        // If camera already has a valid AI or spatial analysis within 20 mins TTL, keep it
+        if (isFresh && existingFlood) {
           fullFloodMap[m.CamId] = existingFlood;
           return;
         }
 
-        // Mưa to / Giông bão hoặc Điểm ngập thường xuyên & hết TTL -> Chuyển tiếp Tầng 3
-        camsNeedingFloodAnalysis.push(m);
+        // Lightweight weather-derived state for map markers (0 Token, 0 AI API Call)
+        // Full AI vision analysis will be triggered on-demand when the user clicks the camera icon
+        fullFloodMap[m.CamId] = {
+          camId: m.CamId,
+          floodLevel: isRain ? "LEVEL_1" : "LEVEL_0",
+          isRaining: isRain,
+          rainIntensity: isRain
+            ? [65, 81, 82, 95, 96, 99].includes(repW.weatherCode) || (repW.precipitation || 0) >= 2.0
+              ? "heavy"
+              : "light"
+            : "none",
+          roadCondition: isRain ? "wet" : "dry",
+          description: isRain
+            ? "Đường ướt do mưa - Mặt đường trơn trượt, đọng nước nhẹ mép đường"
+            : "Thời tiết thông thoáng - Tuyến đường khô ráo, không ngập",
+          analyzedAt: isFresh && existingFlood?.analyzedAt ? existingFlood.analyzedAt : now,
+        };
       });
     }
   });
 
-  // TẦNG 3 & 4: Server Proactive Image Check & Micro-Batching (Tối đa 35 ảnh/batch)
-  if (camsNeedingFloodAnalysis.length > 0) {
-    try {
-      // Ưu tiên sắp xếp:
-      // 1. Giông bão (WMO 95-99)
-      // 2. Điểm ngập thường xuyên / triều cường (Hotspots)
-      // 3. Mưa rào lớn (WMO 80-82, precip >= 2.0)
-      camsNeedingFloodAnalysis.sort((a, b) => {
-        const wa = fullWeatherMap[a.CamId];
-        const wb = fullWeatherMap[b.CamId];
-        const stormA = wa && [95, 96, 99].includes(wa.weatherCode) ? 10 : 0;
-        const stormB = wb && [95, 96, 99].includes(wb.weatherCode) ? 10 : 0;
-        const spotA = isFrequentFloodCamera(a) ? 5 : 0;
-        const spotB = isFrequentFloodCamera(b) ? 5 : 0;
-        return stormB + spotB - (stormA + spotA);
-      });
-
-      // Tầng 4 quy định Micro-Batching tối đa 35 ảnh/request để tối ưu token & tránh nghẽn server camera
-      const maxBatchCount = parseInt(process.env.GEMINI_BATCH_SIZE || "35", 10) || 35;
-      const batchForProactive = camsNeedingFloodAnalysis.slice(0, maxBatchCount);
-      const remainingCams = camsNeedingFloodAnalysis.slice(maxBatchCount);
-
-      // Tầng 3: Server chủ động fetch ảnh snapshot camera
-      const camIds = batchForProactive.map((c) => c.CamId);
-      const snapshotResults = await fetchBatchCameraSnapshots(camIds, 6, 5000);
-
-      const itemsForGemini: CameraImageInput[] = [];
-      const offlineCamIds: string[] = [];
-
-      snapshotResults.forEach((res) => {
-        if (res.imageBase64 && res.imageBase64.length > 50) {
-          itemsForGemini.push({
-            camId: res.camId,
-            imageBase64: res.imageBase64,
-          });
-        } else {
-          offlineCamIds.push(res.camId);
-        }
-      });
-
-      // Camera thực sự không phản hồi trong chu kỳ này -> gán fallback an toàn
-      offlineCamIds.forEach((camId) => {
-        const w = fullWeatherMap[camId];
-        const isStorm = w && [95, 96, 99].includes(w.weatherCode);
-        const isRain = w && ([65, 80, 81, 82].includes(w.weatherCode) || (w.precipitation || 0) > 0);
-
-        const offlineResult: CameraFloodAnalysis = {
-          camId,
-          floodLevel: isStorm ? "LEVEL_1" : "LEVEL_0",
-          isRaining: Boolean(isStorm || isRain),
-          rainIntensity: isStorm ? "heavy" : isRain ? "moderate" : "none",
-          roadCondition: isStorm || isRain ? "wet" : "dry",
-          description: isStorm
-            ? "Khu vực có giông bão - Đang kết nối lại luồng hình ảnh camera"
-            : isRain
-            ? "Khu vực có mưa ẩm ướt - Đang kết nối lại luồng hình ảnh camera"
-            : "Tuyến đường thông suốt - Đang kết nối lại luồng hình ảnh camera",
-          analyzedAt: now,
-        };
-        fullFloodMap[camId] = offlineResult;
-        cache.floodMap[camId] = offlineResult;
-      });
-
-      // TẦNG 4: Micro-Batching (Gom tối đa 35 ảnh/request) gửi sang Google Gemini AI
-      if (itemsForGemini.length > 0) {
-        const analyzed = await analyzeFloodWithGemini(itemsForGemini, fullWeatherMap);
-        analyzed.forEach((res) => {
-          fullFloodMap[res.camId] = res;
-          cache.floodMap[res.camId] = res;
-        });
-      }
-
-      // Xử lý các camera còn lại chưa kịp quét trong batch này (đợi chu kỳ sau quét tiếp)
-      remainingCams.forEach((cam) => {
-        const w = fullWeatherMap[cam.CamId];
-        const isStorm = w && [95, 96, 99].includes(w.weatherCode);
-        const isHeavy = w && ([65, 81, 82].includes(w.weatherCode) || (w.precipitation || 0) >= 2.0);
-        const isSpot = isFrequentFloodCamera(cam);
-
-        const pendingRes: CameraFloodAnalysis = {
-          camId: cam.CamId,
-          floodLevel: isStorm ? "LEVEL_1" : "LEVEL_0",
-          isRaining: Boolean(isStorm || isHeavy),
-          rainIntensity: isStorm ? "heavy" : isHeavy ? "moderate" : "light",
-          roadCondition: "wet",
-          description: isStorm
-            ? "Cảnh báo giông bão diện rộng - Tuyến đường ẩm ướt, đang theo dõi ngập"
-            : isHeavy
-            ? "Mưa lớn diện rộng - Tuyến đường ẩm ướt, đang theo dõi ngập"
-            : isSpot
-            ? "Điểm trũng / triều cường - Tuyến đường thông suốt, chưa ghi nhận ngập"
-            : "Có mưa ẩm ướt - Tuyến đường thông suốt, không ngập úng",
-          analyzedAt: now,
-        };
-        fullFloodMap[cam.CamId] = pendingRes;
-        cache.floodMap[cam.CamId] = pendingRes;
-      });
-    } catch (err) {
-      console.error("[ServerWeather] Proactive flood analysis error:", err);
-      camsNeedingFloodAnalysis.forEach((cam) => {
-        if (!fullFloodMap[cam.CamId]) {
-          const w = fullWeatherMap[cam.CamId];
-          const isStorm = w && [95, 96, 99].includes(w.weatherCode);
-          const isHeavyRain =
-            w &&
-            ([81, 82, 65].includes(w.weatherCode) ||
-              (w.precipitation !== undefined && w.precipitation >= 4.0));
-          const isHotspot = isFrequentFloodCamera(cam);
-
-          const fallbackRes: CameraFloodAnalysis = {
-            camId: cam.CamId,
-            floodLevel: isStorm ? "LEVEL_1" : "LEVEL_0",
-            isRaining: Boolean(isStorm || isHeavyRain),
-            rainIntensity: isStorm ? "heavy" : isHeavyRain ? "moderate" : "none",
-            roadCondition: isStorm || isHeavyRain ? "wet" : "dry",
-            description: isStorm
-              ? "Cảnh báo giông bão - Tuyến đường có nguy cơ ngập nhẹ"
-              : isHeavyRain
-              ? "Mưa lớn diện rộng - Tuyến đường ẩm ướt, đang theo dõi ngập"
-              : isHotspot
-              ? "Điểm trũng / triều cường - Tuyến đường thông suốt, chưa ghi nhận ngập"
-              : "Có mưa ẩm ướt - Tuyến đường thông suốt, không ngập úng",
-            analyzedAt: now,
-          };
-          fullFloodMap[cam.CamId] = fallbackRes;
-          cache.floodMap[cam.CamId] = fallbackRes;
-        }
-      });
-    }
-  }
-
-  // Ensure all valid cameras have a floodMap entry
+  // Ensure all valid cameras have a fallback entry in fullFloodMap
   validCams.forEach((cam) => {
     if (!fullFloodMap[cam.CamId]) {
       fullFloodMap[cam.CamId] = {
@@ -413,7 +267,7 @@ export async function getAggregatedWeatherFloodState(): Promise<{
   lastUpdated: number;
 }> {
   const now = Date.now();
-  const intervalSec = parseInt(process.env.NEXT_PUBLIC_FLOOD_INTERVAL || "60", 10) || 60;
+  const intervalSec = FLOOD_SCAN_INTERVAL_SEC;
   const maxAgeMs = intervalSec * 1000;
 
   // Cache hit: Valid within interval window

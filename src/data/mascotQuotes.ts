@@ -5,11 +5,13 @@ export const MASCOT_IMAGE_MAP: Record<MascotType, Record<MascotMood, string>> = 
     sunny: encodeURI("/mascot/duck/Vịt Nắng.png"),
     rain: encodeURI("/mascot/duck/Vịt Mưa.png"),
     flood: encodeURI("/mascot/duck/Vịt Ngập.png"),
+    sleep: encodeURI("/mascot/duck/Vịt Ngủ.png"),
   },
   cat: {
     sunny: encodeURI("/mascot/cat/Mèo Nắng.png"),
     rain: encodeURI("/mascot/cat/Mèo Mưa.png"),
     flood: encodeURI("/mascot/cat/Mèo Ngập.png"),
+    sleep: encodeURI("/mascot/cat/Mèo Ngủ.png"),
   },
 };
 
@@ -20,7 +22,7 @@ export interface QuoteConfig {
 }
 
 export const TIME_BASED_QUOTES: Record<string, QuoteConfig[]> = {
-  // Tan tầm 17h00 - 18h30 (Được yêu cầu cụ thể)
+  // Tan tầm 17h00 - 18h30
   rush_hour_5pm: [
     {
       defaultText: "5h rồi, kiểm tra camera xem đường về ngập không nha!",
@@ -96,22 +98,54 @@ export const TIME_BASED_QUOTES: Record<string, QuoteConfig[]> = {
     },
   ],
 
-  // Tối muộn (sau 21:00)
+  // Tối khuya giờ đi ngủ (sau 22:00 - 05:00)
   night: [
     {
-      defaultText: "Về nhà an toàn nhé! Ở nhà luôn có người đang chờ bạn đó ❤️",
-      duckVariant: "Khuya rồi, đi chậm thôi nha! Vịt chuẩn bị đi ngủ rồi nè 🦆🌙",
-      catVariant: "Đêm muộn rồi sen ơi, về cẩn thận nhé, meow cuộn tròn đợi sen ở cửa nè 🐱🏠",
+      defaultText: "Đã khuya rồi, gác lại mọi âu lo và đi ngủ thôi nào. Chúc bạn ngủ thật ngon! 🌙💤",
+      duckVariant: "Oáp... Khò... quác... Vịt buồn ngủ díp cả mắt rồi, tắt đèn đắp chăn ngủ thôi bạn ơi 🦆😴✨",
+      catVariant: "Purrr... meow... Khuya rồi sen ơi, đừng lướt điện thoại nữa, mau cuộn tròn ngủ với meow nè 🐱💤",
     },
     {
-      defaultText: "Đường vắng ban đêm, hãy chạy đúng tốc độ và chú ý quan sát đèn tín hiệu!",
-      duckVariant: "Đêm hôm đường thoáng nhưng chớ chủ quan, quan sát kỹ các ngã tư nha 🦆🚨",
-      catVariant: "Meow nhắc sen: Đường khuya sương lạnh, kéo kín khóa áo gió vào nhé 🐱🧥",
+      defaultText: "Cả thành phố đã chìm vào giấc ngủ. Chúc bạn có những giấc mơ thật đẹp! 🌟",
+      duckVariant: "Vịt ôm gối ngủ khò khò đây nè... Nhớ khóa cửa cẩn thận rồi ngủ sớm nha 🦆🛌💤",
+      catVariant: "Meow nhắm mắt lim dim rồi... Sen sạc pin điện thoại, kéo rèm rồi ngủ ngoan nha meow 🐱🌙",
+    },
+    {
+      defaultText: "Một ngày dài đã qua, bạn đã làm rất tốt rồi! Hãy ngủ một giấc thật sâu nhé ❤️",
+      duckVariant: "Khò khò... Nạp lại 100% năng lượng cho ngày mai nào, chúc bạn ngủ ngon nha 🦆😴",
+      catVariant: "Meow gác đêm bảo vệ giấc ngủ cho sen đây! Chúc sen ngủ thật sâu giấc nha 🐱✨",
+    },
+    {
+      defaultText: "Khuya rồi, nếu còn ở ngoài đường hãy chạy xe thật cẩn thận và về nhà sớm nha!",
+      duckVariant: "Sương đêm xuống lạnh rồi, ai còn đi đường nhớ kéo kín áo gió và về ngủ sớm nha 🦆🧥",
+      catVariant: "Đường đêm vắng vẻ, về tới nhà là phải tắm rửa đắp chăn đi ngủ ngay nha sen meow 🐱🏠",
     },
   ],
 };
 
 export const MOOD_BASED_QUOTES: Record<MascotMood, QuoteConfig[]> = {
+  sleep: [
+    {
+      defaultText: "Đã đến giờ đi ngủ rồi! Thả lỏng toàn thân và chúc bạn một giấc ngủ thật êm đềm 🌙😴",
+      duckVariant: "Khò... quác... khò... Vịt ngủ say tít thò lò rồi, chúc bạn ngủ ngon mơ đẹp nha 🦆💤🛌",
+      catVariant: "Zzz... meow... Meow cuộn tròn thành cục bông ấm áp rồi nè, sen cũng ngủ ngoan nha 🐱😴💤",
+    },
+    {
+      defaultText: "Tắt đèn, kéo chăn ấm và nhắm mắt lại nào. Ngày mai sẽ là một ngày tuyệt vời! ✨",
+      duckVariant: "Oáp... Vịt ngáy khò khò rồi nè, đi ngủ sớm mai dậy đón bình minh nha 🦆🌙💤",
+      catVariant: "Purrr... Purrr... Tiếng meow ngáy ru sen ngủ nè, ngủ thật ngon nha sen yêu 🐱🛏️❤️",
+    },
+    {
+      defaultText: "Đêm muộn rồi, cho đôi mắt và cơ thể nghỉ ngơi thôi nào! Good night ❤️",
+      duckVariant: "Nhắm tịt mắt lại thôi... Vịt hẹn bạn sáng mai lại cùng check camera nha 🦆😴👋",
+      catVariant: "Sen ơi đừng thức khuya hại sức khỏe meow! Tắt màn hình đi ngủ ngay và luôn nè 🐱💤🚨",
+    },
+    {
+      defaultText: "Gác lại deadline và mệt mỏi, giường êm nệm ấm đang đợi bạn đó 🛌✨",
+      duckVariant: "Vịt chúc bạn có giấc mơ bay bổng như chim trời, ngủ thật sâu nha 🦆✨🌙",
+      catVariant: "Được cuộn tròn ngủ là sướng nhất trần đời meow! Chúc sen ngủ siêu ngon 🐱💤🐾",
+    },
+  ],
   flood: [
     {
       defaultText: "Cảnh báo ngập: Đoạn này nước dâng cao rồi, bạn đi cẩn thận thật nhiều nhé! 🚨",
@@ -194,8 +228,11 @@ export function pickDynamicQuote(mascot: MascotType, mood: MascotMood): string {
 
   let pool: QuoteConfig[] = [];
 
-  // Priority 1: 17h00 - 18h30 Rush hour
-  if (hour === 17 || (hour === 18 && minute <= 30)) {
+  // Priority 1: Late Night / Bedtime (22h00 - 05h00)
+  if (mood === "sleep" || hour >= 22 || hour < 5) {
+    pool = [...TIME_BASED_QUOTES.night, ...MOOD_BASED_QUOTES.sleep];
+  } else if (hour === 17 || (hour === 18 && minute <= 30)) {
+    // Priority 2: 17h00 - 18h30 Rush hour
     pool = [...TIME_BASED_QUOTES.rush_hour_5pm];
   } else if (mood === "flood") {
     pool = [...MOOD_BASED_QUOTES.flood];
@@ -205,7 +242,7 @@ export function pickDynamicQuote(mascot: MascotType, mood: MascotMood): string {
     pool = [...TIME_BASED_QUOTES.noon];
   } else if (hour >= 18 && hour < 21) {
     pool = [...TIME_BASED_QUOTES.evening];
-  } else if (hour >= 21 || hour < 5) {
+  } else if (hour >= 21) {
     pool = [...TIME_BASED_QUOTES.night];
   }
 
@@ -229,3 +266,57 @@ export function pickDynamicQuote(mascot: MascotType, mood: MascotMood): string {
   lastPickedQuote = result;
   return result;
 }
+
+export interface MascotEmotionContext {
+  floodLevel?: "LEVEL_0" | "LEVEL_1" | "LEVEL_2" | "LEVEL_3" | "UNCLEAR";
+  isRaining?: boolean;
+  rainIntensity?: "none" | "light" | "moderate" | "heavy";
+  weatherCategory?: string;
+  trafficDensity?: "low" | "moderate" | "high" | "jam";
+  roadCondition?: "dry" | "wet" | "flooded";
+  mood?: MascotMood;
+}
+
+export function getMascotEmotionTitle(mascot: MascotType, ctx?: MascotEmotionContext): string {
+  const isDuck = mascot === "duck";
+  const now = new Date();
+  const hour = now.getHours();
+  const minute = now.getMinutes();
+
+  if (ctx?.floodLevel === "LEVEL_3") {
+    return isDuck ? "🦆 BÉ VỊT NGUY CẤP:" : "🐱 BÉ MÈO HỐT HOẢNG:";
+  }
+  if (ctx?.floodLevel === "LEVEL_2") {
+    return isDuck ? "🦆 BÉ VỊT BÁO ĐỘNG:" : "🐱 BÉ MÈO LO SỐT VÓ:";
+  }
+  if (ctx?.floodLevel === "LEVEL_1") {
+    return isDuck ? "🦆 BÉ VỊT CẢNH GIÁC:" : "🐱 BÉ MÈO CẢNH GIÁC:";
+  }
+  if (ctx?.mood === "sleep" || (hour >= 22 || hour < 5)) {
+    return isDuck ? "🦆 BÉ VỊT NGỦ SAY:" : "🐱 BÉ MÈO KHÒ KHÒ:";
+  }
+  if (ctx?.isRaining || ctx?.weatherCategory === "tornado" || ctx?.weatherCategory === "cloud-rain" || ctx?.weatherCategory === "droplet") {
+    if (ctx?.rainIntensity === "heavy" || ctx?.weatherCategory === "tornado") {
+      return isDuck ? "🦆 BÉ VỊT CẢNH GIÁC BÃO:" : "🐱 BÉ MÈO TRỐN GIÔNG:";
+    }
+    return isDuck ? "🦆 BÉ VỊT CHU ĐÁO:" : "🐱 BÉ MÈO ÂN CẦN:";
+  }
+  if (ctx?.trafficDensity === "jam") {
+    return isDuck ? "🦆 BÉ VỊT BÌNH TĨNH:" : "🐱 BÉ MÈO SỐT RUỘT:";
+  }
+  if (ctx?.trafficDensity === "high") {
+    return isDuck ? "🦆 BÉ VỊT TẬP TRUNG:" : "🐱 BÉ MÈO CHĂM CHÚ:";
+  }
+  if (hour === 17 || (hour === 18 && minute <= 30)) {
+    return isDuck ? "🦆 BÉ VỊT ĐÓN TAN TẦM:" : "🐱 BÉ MÈO NÓNG LÒNG ĐỢI SEN:";
+  }
+  if (hour >= 6 && hour < 9) {
+    return isDuck ? "🦆 BÉ VỊT NĂNG ĐỘNG:" : "🐱 BÉ MÈO TƯƠI TỈNH:";
+  }
+  if (hour >= 21) {
+    return isDuck ? "🦆 BÉ VỊT YÊN TÂM:" : "🐱 BÉ MÈO CUỘN TRÒN ĐỢI SEN:";
+  }
+  // Default dry / sunny / safe
+  return isDuck ? "🦆 BÉ VỊT HÀO HỨNG:" : "🐱 BÉ MÈO HÀO HỨNG:";
+}
+

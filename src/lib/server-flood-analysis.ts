@@ -1,8 +1,12 @@
 import { CameraFloodAnalysis, CameraWeatherState, FloodLevel } from "@/types/camera";
 import { getCameraTrafficDensity } from "@/lib/google-traffic";
 import { optimizeCameraImageForAI, computeImageHash } from "@/lib/image-optimizer";
-import { getFloodFromSupabase, upsertFloodToSupabase } from "@/lib/supabase";
+import { getFloodFromSupabase, upsertFloodToSupabase, upsertBatchFloodToSupabase, SupabaseFloodRecord } from "@/lib/supabase";
 import { isFrequentFloodCamera } from "@/data/floodHotspots";
+import {
+  GEMINI_FLOOD_TTL_MINUTES,
+  GEMINI_SPATIAL_CACHE_RADIUS_KM,
+} from "@/config/constants";
 
 export interface CameraImageInput {
   camId: string;
@@ -381,6 +385,22 @@ export async function analyzeFloodWithGemini(
     });
   }
 
+  // Async sync all analyzed results to Supabase
+  if (allResults.length > 0) {
+    const records: SupabaseFloodRecord[] = allResults.map((r) => ({
+      cam_id: r.camId,
+      flood_level: r.floodLevel,
+      is_raining: Boolean(r.isRaining),
+      rain_intensity: r.rainIntensity || "none",
+      road_condition: r.roadCondition || "dry",
+      traffic_density: r.trafficDensity || "moderate",
+      traffic_speed: r.trafficSpeed || "normal",
+      description: r.description || "",
+      analyzed_at: r.analyzedAt || Date.now(),
+    }));
+    upsertBatchFloodToSupabase(records).catch(() => {});
+  }
+
   return allResults;
 }
 
@@ -427,7 +447,7 @@ export async function saveToSpatialCacheAndPropagate(
   imageHash?: string
 ) {
   const now = Date.now();
-  const radiusKm = parseFloat(process.env.GEMINI_SPATIAL_CACHE_RADIUS_KM || "0.8") || 0.8;
+  const radiusKm = GEMINI_SPATIAL_CACHE_RADIUS_KM;
 
   const { getAllCameras } = await import("@/lib/cameras");
   const allCameras = getAllCameras();
@@ -503,13 +523,13 @@ export async function saveToSpatialCacheAndPropagate(
 }
 
 /**
- * Check if camera or any neighbor has fresh analysis in Spatial Cache or Supabase (TTL 5-10 mins)
+ * Check if camera or any neighbor has fresh analysis in Spatial Cache or Supabase (TTL 20 mins)
  */
 export async function getFromSpatialCache(camId: string): Promise<CameraFloodAnalysis | null> {
   const now = Date.now();
-  const ttlMinutes = parseInt(process.env.GEMINI_FLOOD_TTL_MINUTES || "8", 10) || 8;
+  const ttlMinutes = GEMINI_FLOOD_TTL_MINUTES;
   const ttlMs = ttlMinutes * 60 * 1000;
-  const radiusKm = parseFloat(process.env.GEMINI_SPATIAL_CACHE_RADIUS_KM || "0.8") || 0.8;
+  const radiusKm = GEMINI_SPATIAL_CACHE_RADIUS_KM;
 
   // 1. Direct Memory Cache hit for this camera
   const direct = spatialCache.get(camId);
@@ -568,11 +588,19 @@ export async function analyzeSingleCameraWithGemini(
   weather?: CameraWeatherState
 ): Promise<CameraFloodAnalysis> {
   const now = Date.now();
+
+  // TẦNG 1: SPATIAL CACHE & SUPABASE CHECK (20 Phút TTL - ⚡ 0 Token)
+  // Nếu camera hoặc khu vực lân cận trong 0.8km đã có kết quả trong vòng 20 phút -> Tái sử dụng nguyên vẹn timestamp cũ!
+  const cached = await getFromSpatialCache(camId);
+  if (cached && cached.analyzedAt && now - cached.analyzedAt < GEMINI_FLOOD_TTL_MINUTES * 60 * 1000) {
+    return cached;
+  }
+
   const { getAllCameras } = await import("@/lib/cameras");
   const allCameras = getAllCameras();
   const targetCam = allCameras.find((c) => c.CamId === camId);
 
-  // TẦNG 1: WEATHER GATING (1 Giờ TTL)
+  // TẦNG 2: WEATHER GATING (1 Giờ TTL)
   // Nếu vệ tinh báo trời nắng ráo (WMO 0-3, precipitation = 0) và không phải điểm nóng ngập -> Trả về LEVEL_0 ngay (⚡ 0 Token)
   const isSunnyAndDry =
     weather &&
@@ -591,16 +619,10 @@ export async function analyzeSingleCameraWithGemini(
       trafficDensity: "moderate",
       trafficSpeed: "normal",
       description: "Thời tiết khô ráo, tầm nhìn tốt, giao thông thông suốt",
-      analyzedAt: now,
+      analyzedAt: cached?.analyzedAt || now,
     };
     await saveToSpatialCacheAndPropagate(camId, safeResult);
     return safeResult;
-  }
-
-  // TẦNG 2: SPATIAL CACHE & SUPABASE CHECK (5-10 Phút TTL)
-  const cached = await getFromSpatialCache(camId);
-  if (cached) {
-    return cached;
   }
 
   // Fetch snapshot if not provided

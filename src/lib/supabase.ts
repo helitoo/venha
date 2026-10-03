@@ -41,26 +41,41 @@ export interface SupabaseFloodRecord {
   analyzed_at: number;
 }
 
+import { GEMINI_FLOOD_TTL_MINUTES } from "@/config/constants";
+
 /**
  * Fetch cached flood analysis from Supabase by CamId
+ * Checks both analyzed_at (bigint ms) and updated_at (timestamptz) against 20m TTL
  */
 export async function getFloodFromSupabase(
   camId: string,
-  ttlMinutes = 10
+  ttlMinutes = GEMINI_FLOOD_TTL_MINUTES
 ): Promise<CameraFloodAnalysis | null> {
   const supabase = getSupabaseClient();
   if (!supabase) return null;
 
   try {
-    const minTimestamp = Date.now() - ttlMinutes * 60 * 1000;
     const { data, error } = await supabase
       .from("camera_flood_cache")
       .select("*")
       .eq("cam_id", camId)
-      .gte("analyzed_at", minTimestamp)
       .single();
 
     if (error || !data) return null;
+
+    // Check TTL against analyzed_at or updated_at
+    const analyzedTime =
+      typeof data.analyzed_at === "number" && data.analyzed_at > 0
+        ? data.analyzed_at
+        : data.updated_at
+        ? new Date(data.updated_at).getTime()
+        : 0;
+
+    const now = Date.now();
+    if (analyzedTime === 0 || now - analyzedTime > ttlMinutes * 60 * 1000) {
+      // Record is stale (> 20 mins)
+      return null;
+    }
 
     return {
       camId: data.cam_id,
@@ -71,7 +86,7 @@ export async function getFloodFromSupabase(
       trafficDensity: data.traffic_density,
       trafficSpeed: data.traffic_speed,
       description: data.description,
-      analyzedAt: data.analyzed_at,
+      analyzedAt: analyzedTime,
     };
   } catch (err) {
     console.warn(`[Supabase] Read cache error for ${camId}:`, err);
@@ -111,6 +126,53 @@ export async function upsertFloodToSupabase(
     return !error;
   } catch (err) {
     console.warn(`[Supabase] Upsert error for ${record.cam_id}:`, err);
+    return false;
+  }
+}
+
+/**
+ * Batch UPSERT multiple flood analyses into Supabase in chunks of 100
+ */
+export async function upsertBatchFloodToSupabase(
+  records: SupabaseFloodRecord[]
+): Promise<boolean> {
+  const supabase = getSupabaseClient();
+  if (!supabase || !records || records.length === 0) return false;
+
+  try {
+    const nowIso = new Date().toISOString();
+    const rows = records.map((r) => ({
+      cam_id: r.cam_id,
+      flood_level: r.flood_level,
+      is_raining: Boolean(r.is_raining),
+      rain_intensity: r.rain_intensity || "none",
+      road_condition: r.road_condition || "dry",
+      traffic_density: r.traffic_density || "moderate",
+      traffic_speed: r.traffic_speed || "normal",
+      description: r.description || "",
+      image_hash: r.image_hash,
+      lat: r.lat,
+      lng: r.lng,
+      analyzed_at: r.analyzed_at,
+      updated_at: nowIso,
+    }));
+
+    // Chunk by 100 to stay within payload limits
+    const CHUNK_SIZE = 100;
+    for (let i = 0; i < rows.length; i += CHUNK_SIZE) {
+      const chunk = rows.slice(i, i + CHUNK_SIZE);
+      const { error } = await supabase
+        .from("camera_flood_cache")
+        .upsert(chunk, { onConflict: "cam_id" });
+
+      if (error) {
+        console.warn("[Supabase] Batch upsert chunk error:", error);
+      }
+    }
+
+    return true;
+  } catch (err) {
+    console.warn("[Supabase] Batch upsert error:", err);
     return false;
   }
 }

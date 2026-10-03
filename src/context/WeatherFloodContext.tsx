@@ -17,6 +17,7 @@ import {
   FloodLevel,
   WeatherCategory,
 } from "@/types/camera";
+import { FLOOD_SCAN_INTERVAL_SEC } from "@/config/constants";
 
 interface WeatherFloodContextType {
   weatherMap: Record<string, CameraWeatherState>;
@@ -83,11 +84,8 @@ export function WeatherFloodProvider({
     initialLastUpdated || null
   );
 
-  // Interval in seconds from environment variable (default 60s)
-  const floodInterval = useMemo(() => {
-    const envVal = parseInt(process.env.NEXT_PUBLIC_FLOOD_INTERVAL || "60", 10);
-    return isNaN(envVal) || envVal <= 0 ? 60 : envVal;
-  }, []);
+  // Interval in seconds (default 60s)
+  const floodInterval = FLOOD_SCAN_INTERVAL_SEC;
 
   // Global Epoch-Synchronized Countdown:
   // All clients everywhere compute the exact same second in real-time
@@ -217,7 +215,16 @@ export function WeatherFloodProvider({
     (cam: CameraItem) => {
       const weather = weatherMap[cam.CamId];
       const flood = floodMap[cam.CamId];
-      const weatherCategory: WeatherCategory = weather ? weather.category : "leaf";
+
+      // Tự động kết hợp giữa AI thị giác (flood) và dữ liệu vệ tinh Open-Meteo (weather):
+      let weatherCategory: WeatherCategory = weather ? weather.category : "leaf";
+      if (flood?.isRaining || flood?.roadCondition === "wet") {
+        if (flood.rainIntensity === "heavy") weatherCategory = "tornado";
+        else if (flood.rainIntensity === "moderate") weatherCategory = "cloud-rain";
+        else weatherCategory = "droplet";
+      } else if (flood?.roadCondition === "dry" && !flood?.isRaining) {
+        weatherCategory = "leaf";
+      }
 
       // 1. Phân cấp mức độ ngập dựa trên kết quả phân tích
       if (flood && flood.floodLevel !== "UNCLEAR") {
@@ -259,7 +266,8 @@ export function WeatherFloodProvider({
             const isRainCondition =
               weatherCategory === "droplet" ||
               weatherCategory === "cloud-rain" ||
-              weatherCategory === "tornado";
+              weatherCategory === "tornado" ||
+              Boolean(flood?.isRaining);
 
             return {
               bgColor: isRainCondition ? "bg-sky-600" : "bg-emerald-600",

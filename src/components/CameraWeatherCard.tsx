@@ -148,32 +148,32 @@ export default function CameraWeatherCard() {
   // 1. COLLAPSED MINI PILL BUTTON (BOTTOM-RIGHT)
   if (!isOpen) {
     return (
-      <div className="absolute bottom-6 right-4 z-[990] font-sans pointer-events-auto">
+      <div className="absolute bottom-3 right-3 sm:bottom-6 sm:right-4 z-[990] font-sans pointer-events-auto">
         <button
           onClick={() => setIsOpen(true)}
           title="Nhấn để mở Dự Báo Thời Tiết & Triều Cường TP.HCM"
-          className="group flex items-center gap-2.5 px-3.5 py-2.5 rounded-2xl bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border border-slate-200 dark:border-slate-800 shadow-2xl hover:shadow-cyan-500/10 hover:border-cyan-500/40 transition-all duration-300 active:scale-95 text-slate-800 dark:text-slate-100"
+          className="group flex items-center gap-2 sm:gap-2.5 px-2.5 py-2 sm:px-3.5 sm:py-2.5 rounded-2xl bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border border-slate-200 dark:border-slate-800 shadow-2xl hover:shadow-cyan-500/10 hover:border-cyan-500/40 transition-all duration-300 active:scale-95 text-slate-800 dark:text-slate-100"
         >
-          <div className="w-8 h-8 rounded-xl bg-cyan-500/10 dark:bg-cyan-500/20 text-cyan-600 dark:text-cyan-400 flex items-center justify-center shrink-0">
+          <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-cyan-500/10 dark:bg-cyan-500/20 text-cyan-600 dark:text-cyan-400 flex items-center justify-center shrink-0">
             {wmo.category === "rain" || (weatherData && weatherData.precipitation > 0) ? (
-              <CloudRain className="w-4 h-4 text-cyan-500 animate-pulse" />
+              <CloudRain className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-cyan-500 animate-pulse" />
             ) : wmo.category === "storm" ? (
-              <CloudLightning className="w-4 h-4 text-purple-500 animate-bounce" />
+              <CloudLightning className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-purple-500 animate-bounce" />
             ) : (
-              <Sun className="w-4 h-4 text-amber-500 animate-spin-slow" />
+              <Sun className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-500 animate-spin-slow" />
             )}
           </div>
           <div className="flex flex-col text-left">
-            <div className="flex items-center gap-1.5">
-              <span className="text-xs font-bold leading-tight">
+            <div className="flex items-center gap-1 sm:gap-1.5">
+              <span className="text-[11px] sm:text-xs font-bold leading-tight">
                 Dự báo TP.HCM
               </span>
-              <span className="text-xs font-mono font-bold text-cyan-600 dark:text-cyan-400">
+              <span className="text-[11px] sm:text-xs font-mono font-bold text-cyan-600 dark:text-cyan-400">
                 {weatherData ? `${weatherData.temperature}°C` : "--°C"}
               </span>
             </div>
-            <div className="text-[10px] text-slate-500 dark:text-slate-400 font-medium flex items-center gap-1 mt-0.5">
-              <span className="truncate max-w-[110px]">{wmo.label.split(",")[0]}</span>
+            <div className="text-[9px] sm:text-[10px] text-slate-500 dark:text-slate-400 font-medium flex items-center gap-1 mt-0.5">
+              <span className="truncate max-w-[85px] sm:max-w-[110px]">{wmo.label.split(",")[0]}</span>
               <span>•</span>
               <span className="text-blue-600 dark:text-blue-400 font-semibold group-hover:underline flex items-center">
                 Mở <ChevronUp className="w-3 h-3 ml-0.5 inline-block" />
@@ -187,33 +187,40 @@ export default function CameraWeatherCard() {
 
   // 2. EXPANDED TP.HCM WEATHER FORECAST CARD
   return (
-    <div className="absolute bottom-6 right-4 z-[990] w-[340px] sm:w-[380px] bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border border-slate-200 dark:border-slate-800 rounded-3xl shadow-2xl overflow-hidden animate-in fade-in slide-in-from-bottom-6 duration-300 font-sans pointer-events-auto">
-      {/* Header */}
-      <div className="p-4 pb-2 border-b border-slate-200/80 dark:border-slate-800 flex items-start justify-between gap-2">
-        <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-1.5 text-[11px] font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wider">
-            <Thermometer className="w-3.5 h-3.5" />
-            <span>Dự Báo Khí Tượng & Ngập Lụt</span>
-          </div>
-          <h3 className="text-sm font-bold text-slate-900 dark:text-slate-100 truncate mt-0.5">
-            TP. Hồ Chí Minh
-          </h3>
-          <div className="flex items-center gap-1 text-[11px] text-slate-500 dark:text-slate-400 truncate mt-0.5">
-            <MapPin className="w-3 h-3 text-rose-500 shrink-0" />
-            <span className="truncate">Toàn thành phố • Giám sát mưa & triều cường</span>
-          </div>
-        </div>
+    <>
+      {/* Mobile Backdrop to click-outside-to-close */}
+      <div
+        className="fixed inset-0 bg-black/40 backdrop-blur-xs sm:hidden z-[995] pointer-events-auto"
+        onClick={() => setIsOpen(false)}
+      />
 
-        <div className="flex items-center gap-1">
-          <button
-            onClick={() => setIsOpen(false)}
-            title="Thu gọn bảng dự báo thời tiết"
-            className="p-1.5 rounded-xl text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition"
-          >
-            <ChevronDown className="w-5 h-5" />
-          </button>
+      <div className="fixed inset-x-3 bottom-3 sm:inset-x-auto sm:right-4 sm:bottom-6 z-[1000] w-auto sm:w-[380px] max-h-[82vh] overflow-y-auto bg-white/98 dark:bg-slate-900/98 backdrop-blur-2xl border border-slate-200 dark:border-slate-800 rounded-3xl shadow-2xl overflow-hidden animate-in fade-in slide-in-from-bottom-6 duration-300 font-sans pointer-events-auto">
+        {/* Header */}
+        <div className="p-3.5 sm:p-4 pb-2 border-b border-slate-200/80 dark:border-slate-800 flex items-start justify-between gap-2">
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center gap-1.5 text-[10px] sm:text-[11px] font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wider">
+              <Thermometer className="w-3.5 h-3.5" />
+              <span>Dự Báo Khí Tượng & Ngập Lụt</span>
+            </div>
+            <h3 className="text-xs sm:text-sm font-bold text-slate-900 dark:text-slate-100 truncate mt-0.5">
+              TP. Hồ Chí Minh
+            </h3>
+            <div className="flex items-center gap-1 text-[10px] sm:text-[11px] text-slate-500 dark:text-slate-400 truncate mt-0.5">
+              <MapPin className="w-3 h-3 text-rose-500 shrink-0" />
+              <span className="truncate">Toàn thành phố • Giám sát mưa & triều cường</span>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-1">
+            <button
+              onClick={() => setIsOpen(false)}
+              title="Thu gọn bảng dự báo thời tiết"
+              className="p-1.5 rounded-xl text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+            >
+              <ChevronDown className="w-5 h-5" />
+            </button>
+          </div>
         </div>
-      </div>
 
       {/* Mascot Commentary Speech Bubble */}
       <div className="px-4 py-2.5 bg-blue-50/50 dark:bg-slate-800/40 border-b border-slate-200/60 dark:border-slate-800 flex items-center gap-3">
@@ -378,5 +385,6 @@ export default function CameraWeatherCard() {
         </div>
       </div>
     </div>
+    </>
   );
 }

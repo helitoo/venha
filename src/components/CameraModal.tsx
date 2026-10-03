@@ -2,10 +2,13 @@
 
 import React, { useEffect, useState, useCallback, useMemo } from "react";
 import { CameraItem, CameraFloodAnalysis } from "@/types/camera";
+import { MascotMood } from "@/types/mascot";
 import { useCameraContext, useCameraStream } from "@/context/CameraContext";
 import { useWeatherFloodContext } from "@/context/WeatherFloodContext";
 import { useMascotContext } from "@/context/MascotContext";
 import { getGoogleTrafficMeta, getCameraTrafficDensity } from "@/lib/google-traffic";
+import { getMascotEmotionTitle } from "@/data/mascotQuotes";
+import { GEMINI_FLOOD_TTL_MINUTES } from "@/config/constants";
 import {
   X,
   MapPin,
@@ -14,7 +17,7 @@ import {
   Droplet,
   CloudRain,
   Tornado,
-  Leaf,
+  Camera,
   ShieldAlert,
   Sparkles,
   Bot,
@@ -51,7 +54,7 @@ export default function CameraModal({ camera, onClose }: CameraModalProps) {
 }
 
 const CLIENT_CACHE_KEY_PREFIX = "venha_cam_flood_";
-const CLIENT_CACHE_TTL_MS = 10 * 60 * 1000; // 10 minutes
+const CLIENT_CACHE_TTL_MS = GEMINI_FLOOD_TTL_MINUTES * 60 * 1000; // 20 minutes
 
 function getClientFloodCache(camId: string): CameraFloodAnalysis | null {
   if (typeof window === "undefined") return null;
@@ -167,7 +170,7 @@ function CameraModalContent({
     }
   }, [camera.CamId, isAnalyzingAI, weather]);
 
-  // Auto-scan on camera open if no fresh scan exists (within 10 minutes)
+  // Auto-scan on camera open if no fresh scan exists (within 20 minutes)
   const hasAutoScannedRef = React.useRef(false);
   useEffect(() => {
     if (hasAutoScannedRef.current) return;
@@ -175,7 +178,7 @@ function CameraModalContent({
     const isStaleOrMissing =
       !effectiveFlood ||
       !effectiveFlood.analyzedAt ||
-      now - effectiveFlood.analyzedAt > 10 * 60 * 1000;
+      now - effectiveFlood.analyzedAt > GEMINI_FLOOD_TTL_MINUTES * 60 * 1000;
 
     if (isStaleOrMissing && !isAnalyzingAI) {
       hasAutoScannedRef.current = true;
@@ -204,6 +207,8 @@ function CameraModalContent({
   const mascotTip = useMemo(() => {
     const isDuck = mascotType === "duck";
     const name = isDuck ? "Bé Vịt" : "Bé Mèo";
+    const currentHour = new Date().getHours();
+    const isNightSleep = currentHour >= 22 || currentHour < 5;
 
     if (effectiveFlood?.floodLevel === "LEVEL_3") {
       return `${name}: "Báo động đỏ! Điểm này ngập sâu hơn 40cm, xe máy tuyệt đối không nên cố đi qua nha!"`;
@@ -217,6 +222,11 @@ function CameraModalContent({
     if (effectiveFlood?.isRaining) {
       return `${name}: "Đường ướt mưa nhưng chưa ngập đâu, nhớ mặc áo mưa cẩn thận và đi chậm lại nha!"`;
     }
+    if (isNightSleep) {
+      return isDuck
+        ? `${name}: "Khuya rồi, đường phố vắng vẻ thông thoáng. Nếu còn ở ngoài đường nhớ chạy xe cẩn thận và về nhà ngủ sớm nha bạn ơi 🦆🌙"`
+        : `${name}: "Đêm muộn đường vắng tanh rồi meow! Sen về tới nhà nhớ khóa cửa, đắp chăn đi ngủ sớm giữ sức khỏe nha 🐱💤"`;
+    }
     if (trafficDensity === "jam") {
       return `${name}: "Khu vực này đang ùn tắc, kẹt xe khá nghiêm trọng! Bạn nên chọn đường khác đi vòng nha!"`;
     }
@@ -224,18 +234,26 @@ function CameraModalContent({
       return `${name}: "Đoạn đường này xe cộ đang khá đông đúc và di chuyển chậm, bạn nhớ giữ đều ga và quan sát kỹ nhé!"`;
     }
     if (trafficDensity === "low") {
-      return `${name}: "Đoạn đường này đang rất thông thoáng, xe cộ vắng vẻ chạy bon bon meow!"`;
+      return isDuck
+        ? `${name}: "Đoạn đường này đang rất thông thoáng, xe cộ vắng vẻ tha hồ vi vu bạn ơi 🦆🛵"`
+        : `${name}: "Đoạn đường này đang rất thông thoáng, xe cộ vắng vẻ chạy bon bon meow 🐱🛵"`;
     }
     return `${name}: "Mặt đường thông thoáng và khô ráo! Lộ trình an toàn để di chuyển rồi đấy!"`;
   }, [effectiveFlood, mascotType, trafficDensity]);
 
-  const mascotAvatar = getMascotImage(
+  const currentHour = new Date().getHours();
+  const isNightSleep = currentHour >= 22 || currentHour < 5;
+
+  const mascotMoodForModal: MascotMood =
     effectiveFlood?.floodLevel === "LEVEL_3" || effectiveFlood?.floodLevel === "LEVEL_2"
       ? "flood"
       : effectiveFlood?.isRaining
       ? "rain"
-      : "sunny"
-  );
+      : isNightSleep
+      ? "sleep"
+      : "sunny";
+
+  const mascotAvatar = getMascotImage(mascotMoodForModal);
 
   return (
     <div className="fixed inset-0 z-[99999] bg-slate-950/70 backdrop-blur-xl flex items-center justify-center p-3 sm:p-5 overflow-y-auto animate-fadeIn select-none">
@@ -270,7 +288,7 @@ function CameraModalContent({
                     ) : weather.category === "droplet" ? (
                       <Droplet className="w-3.5 h-3.5 text-blue-500" />
                     ) : (
-                      <Leaf className="w-3.5 h-3.5 text-emerald-500" />
+                      <Camera className="w-3.5 h-3.5 text-emerald-500" />
                     )}
                     <span>WMO: {weather.weatherCode}</span>
                   </span>
@@ -369,24 +387,22 @@ function CameraModalContent({
                 </div>
               </div>
 
-              {/* On-Demand Scan Button */}
-              <button
-                onClick={handleTriggerAI}
-                disabled={isAnalyzingAI}
-                className="px-3 py-1.5 rounded-xl bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white text-xs font-bold transition shadow-md shadow-cyan-600/20 flex items-center gap-1.5 active:scale-95 disabled:opacity-50"
-              >
+              {/* Update Timestamp Status Badge */}
+              <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-cyan-50 dark:bg-cyan-950/60 border border-cyan-200/80 dark:border-cyan-900/60 text-cyan-700 dark:text-cyan-300 text-xs font-semibold shadow-xs">
                 {isAnalyzingAI ? (
                   <>
-                    <RefreshCw className="w-3.5 h-3.5 animate-spin" />
-                    <span>Đang phân tích ảnh...</span>
+                    <RefreshCw className="w-3.5 h-3.5 animate-spin text-cyan-600 dark:text-cyan-400" />
+                    <span>Đang cập nhật...</span>
                   </>
                 ) : (
                   <>
-                    <Zap className="w-3.5 h-3.5 fill-current" />
-                    <span>Quét ảnh ngay</span>
+                    <Clock className="w-3.5 h-3.5 text-cyan-600 dark:text-cyan-400" />
+                    <span>
+                      Cập nhật: {effectiveFlood?.analyzedAt ? new Date(effectiveFlood.analyzedAt).toLocaleTimeString("vi-VN", { hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false }) : "Thời gian thực"}
+                    </span>
                   </>
                 )}
-              </button>
+              </div>
             </div>
 
             {/* Diagnostic Metrics Grid (4 Columns: Rain, Flood, Road Surface, Traffic Density) */}
@@ -469,9 +485,11 @@ function CameraModalContent({
                   </span>
                 </div>
                 <span className="text-[10px] text-slate-500 dark:text-slate-400 mt-1 truncate">
-                  {effectiveFlood?.analyzedAt
-                    ? `Cập nhật: ${new Date(effectiveFlood.analyzedAt).toLocaleTimeString("vi-VN")}`
-                    : "Vừa cập nhật"}
+                  {effectiveFlood?.roadCondition === "flooded"
+                    ? "Cảnh báo ngập đọng"
+                    : effectiveFlood?.roadCondition === "wet"
+                    ? "Chú ý mặt đường trơn"
+                    : "Giao thông thông suốt"}
                 </span>
               </div>
 
@@ -545,15 +563,56 @@ function CameraModalContent({
           </div>
 
           {/* C. MASCOT COMMENTARY CARD */}
-          <div className="bg-amber-50/70 dark:bg-slate-900/60 border border-amber-200/70 dark:border-slate-800 rounded-xl p-3.5 flex items-center gap-3 shadow-sm">
-            <div className="w-12 h-12 rounded-lg bg-white dark:bg-slate-800 border border-amber-200 dark:border-amber-500/20 p-1 shrink-0 flex items-center justify-center shadow-sm">
+          <div
+            className={`border rounded-xl p-3.5 flex items-center gap-3 shadow-sm transition-all ${
+              mascotMoodForModal === "sleep"
+                ? "bg-indigo-50/80 dark:bg-indigo-950/40 border-indigo-200/80 dark:border-indigo-900/50"
+                : mascotMoodForModal === "flood"
+                ? "bg-rose-50/70 dark:bg-rose-950/40 border-rose-200/70 dark:border-rose-900/40"
+                : mascotMoodForModal === "rain"
+                ? "bg-cyan-50/70 dark:bg-cyan-950/40 border-cyan-200/70 dark:border-cyan-900/40"
+                : "bg-amber-50/70 dark:bg-slate-900/60 border-amber-200/70 dark:border-slate-800"
+            }`}
+          >
+            <div
+              className={`w-12 h-12 rounded-lg p-1 shrink-0 flex items-center justify-center shadow-sm border ${
+                mascotMoodForModal === "sleep"
+                  ? "bg-indigo-100/80 dark:bg-indigo-900/60 border-indigo-200 dark:border-indigo-700/60"
+                  : "bg-white dark:bg-slate-800 border-amber-200 dark:border-amber-500/20"
+              }`}
+            >
               <img src={mascotAvatar} alt="Mascot" className="w-full h-full object-contain" />
             </div>
             <div className="flex-1">
-              <div className="text-[11px] font-bold text-amber-600 dark:text-amber-400 flex items-center gap-1.5">
-                <span>{mascotType === "duck" ? "🦆 Bé Vịt" : "🐱 Bé Mèo"} nhắc nhở</span>
-                <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-amber-500/20 text-amber-800 dark:text-amber-300">
-                  Lời khuyên
+              <div
+                className={`text-[11px] font-bold flex items-center gap-1.5 ${
+                  mascotMoodForModal === "sleep"
+                    ? "text-indigo-600 dark:text-indigo-300"
+                    : mascotMoodForModal === "flood"
+                    ? "text-rose-600 dark:text-rose-400"
+                    : mascotMoodForModal === "rain"
+                    ? "text-cyan-600 dark:text-cyan-300"
+                    : "text-amber-600 dark:text-amber-400"
+                }`}
+              >
+                <span>
+                  {getMascotEmotionTitle(mascotType, {
+                    floodLevel: effectiveFlood?.floodLevel,
+                    isRaining: effectiveFlood?.isRaining,
+                    rainIntensity: effectiveFlood?.rainIntensity,
+                    trafficDensity,
+                    roadCondition: effectiveFlood?.roadCondition,
+                    mood: mascotMoodForModal,
+                  })}
+                </span>
+                <span
+                  className={`text-[10px] px-1.5 py-0.2 rounded-full ${
+                    mascotMoodForModal === "sleep"
+                      ? "bg-indigo-500/20 text-indigo-800 dark:text-indigo-200"
+                      : "bg-amber-500/20 text-amber-800 dark:text-amber-300"
+                  }`}
+                >
+                  {mascotMoodForModal === "sleep" ? "🌙 Nhắc nhở" : "Lời khuyên"}
                 </span>
               </div>
               <p className="text-xs text-slate-700 dark:text-slate-300 mt-0.5 leading-snug">{mascotTip}</p>
@@ -562,38 +621,38 @@ function CameraModalContent({
         </div>
 
         {/* 3. MODAL ACTIONS FOOTER */}
-        <div className="px-5 py-3.5 bg-slate-50 dark:bg-slate-950/80 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between flex-wrap gap-2 text-xs text-slate-600 dark:text-slate-300">
-          <div className="flex items-center gap-2 text-slate-500 dark:text-slate-400">
-            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-            <span className="text-[11px] font-medium">Tự động nạp ảnh mới mỗi {refreshInterval}s</span>
+        <div className="p-3 sm:px-5 sm:py-3.5 bg-slate-50 dark:bg-slate-950/80 border-t border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2.5 text-xs text-slate-600 dark:text-slate-300">
+          <div className="flex items-center justify-center sm:justify-start gap-2 text-slate-500 dark:text-slate-400">
+            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shrink-0" />
+            <span className="text-[10px] sm:text-[11px] font-medium">Tự động nạp ảnh mới mỗi {refreshInterval}s</span>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="grid grid-cols-3 sm:flex items-center gap-1.5 sm:gap-2">
             <button
               onClick={handleCopyLink}
               title="Sao chép link chia sẻ camera này"
-              className="flex items-center gap-1 px-3 py-1.5 rounded-xl bg-white hover:bg-slate-100 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-semibold transition active:scale-95 border border-slate-200 dark:border-slate-700 shadow-sm"
+              className="flex items-center justify-center gap-1 px-2.5 sm:px-3 py-2 sm:py-1.5 rounded-xl bg-white hover:bg-slate-100 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-semibold transition active:scale-95 border border-slate-200 dark:border-slate-700 shadow-sm text-[11px] sm:text-xs"
             >
-              {copiedLink ? <Check className="w-3.5 h-3.5 text-emerald-500" /> : <Copy className="w-3.5 h-3.5" />}
-              <span>{copiedLink ? "Đã chép link" : "Sao chép"}</span>
+              {copiedLink ? <Check className="w-3.5 h-3.5 text-emerald-500 shrink-0" /> : <Copy className="w-3.5 h-3.5 shrink-0" />}
+              <span className="truncate">{copiedLink ? "Đã chép" : "Sao chép"}</span>
             </button>
 
             <button
               onClick={refresh}
-              className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-semibold transition shadow-md shadow-blue-600/20 active:scale-95"
+              className="flex items-center justify-center gap-1 px-2.5 sm:px-3.5 py-2 sm:py-1.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-semibold transition shadow-md shadow-blue-600/20 active:scale-95 text-[11px] sm:text-xs"
             >
-              <RefreshCw className="w-3.5 h-3.5" />
-              <span>Làm mới ảnh</span>
+              <RefreshCw className={`w-3.5 h-3.5 shrink-0 ${stream.isFetching ? "animate-spin" : ""}`} />
+              <span className="truncate">Làm mới</span>
             </button>
 
             <a
               href={`/camera/${camera.CamId}`}
               target="_blank"
               rel="noreferrer"
-              className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-white hover:bg-slate-100 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 font-semibold transition border border-slate-200 dark:border-slate-700 shadow-sm"
+              className="flex items-center justify-center gap-1 px-2.5 sm:px-3.5 py-2 sm:py-1.5 rounded-xl bg-white hover:bg-slate-100 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 font-semibold transition border border-slate-200 dark:border-slate-700 shadow-sm text-[11px] sm:text-xs"
             >
-              <ExternalLink className="w-3.5 h-3.5" />
-              <span>Mở trang riêng</span>
+              <ExternalLink className="w-3.5 h-3.5 shrink-0" />
+              <span className="truncate">Trang riêng</span>
             </a>
           </div>
         </div>

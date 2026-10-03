@@ -2,13 +2,14 @@
 
 import React, { useRef, useEffect } from "react";
 import { useMascotContext } from "@/context/MascotContext";
-import { Sparkles, X, RefreshCw, Sun, CloudRain, ShieldAlert } from "lucide-react";
+import { MascotMood } from "@/types/mascot";
+import { Sparkles, X, RefreshCw, Sun, CloudRain, ShieldAlert, Moon } from "lucide-react";
 
 /**
  * Mascot Weather Animation Canvas inside the square frame
- * Renders rain streaks or sunny glow particles based on current mood
+ * Renders rain streaks, sunny glow particles, or starry night sleep particles based on current mood
  */
-function MascotWeatherCanvas({ mood }: { mood: "sunny" | "rain" | "flood" }) {
+function MascotWeatherCanvas({ mood }: { mood: MascotMood }) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   useEffect(() => {
@@ -30,7 +31,8 @@ function MascotWeatherCanvas({ mood }: { mood: "sunny" | "rain" | "flood" }) {
 
     // Particle setup
     const isRain = mood === "rain" || mood === "flood";
-    const particleCount = mood === "flood" ? 45 : isRain ? 25 : 12;
+    const isSleep = mood === "sleep";
+    const particleCount = mood === "flood" ? 45 : isRain ? 25 : isSleep ? 16 : 12;
 
     interface Particle {
       x: number;
@@ -40,16 +42,26 @@ function MascotWeatherCanvas({ mood }: { mood: "sunny" | "rain" | "flood" }) {
       length: number;
       radius: number;
       opacity: number;
+      text?: string;
+      fontSize?: number;
     }
 
-    const particles: Particle[] = Array.from({ length: particleCount }, () => ({
+    const particles: Particle[] = Array.from({ length: particleCount }, (_, idx) => ({
       x: Math.random() * width,
       y: Math.random() * height,
-      speedY: isRain ? (mood === "flood" ? 6 + Math.random() * 5 : 4 + Math.random() * 3) : 0.3 + Math.random() * 0.4,
-      speedX: isRain ? (mood === "flood" ? -1.5 : -0.8) : (Math.random() - 0.5) * 0.5,
+      speedY: isRain
+        ? (mood === "flood" ? 6 + Math.random() * 5 : 4 + Math.random() * 3)
+        : isSleep
+        ? 0.2 + Math.random() * 0.3
+        : 0.3 + Math.random() * 0.4,
+      speedX: isRain
+        ? (mood === "flood" ? -1.5 : -0.8)
+        : (Math.random() - 0.5) * 0.4,
       length: isRain ? (mood === "flood" ? 14 + Math.random() * 10 : 8 + Math.random() * 6) : 0,
-      radius: isRain ? 0 : 2 + Math.random() * 3,
+      radius: isRain ? 0 : isSleep ? 1 + Math.random() * 1.5 : 2 + Math.random() * 3,
       opacity: 0.3 + Math.random() * 0.5,
+      text: isSleep && idx % 4 === 0 ? "z" : undefined,
+      fontSize: 8 + Math.random() * 4,
     }));
 
     const render = () => {
@@ -88,6 +100,28 @@ function MascotWeatherCanvas({ mood }: { mood: "sunny" | "rain" | "flood" }) {
         );
         ctx.fillStyle = gradient;
         ctx.fillRect(0, height - 16, width, 16);
+      } else if (isSleep) {
+        // Night dreamy stars and floating "Zzz"
+        particles.forEach((p) => {
+          if (p.text) {
+            ctx.font = `italic ${p.fontSize}px sans-serif`;
+            ctx.fillStyle = `rgba(199, 210, 254, ${p.opacity * 0.8})`;
+            ctx.fillText(p.text, p.x, p.y);
+          } else {
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(224, 231, 255, ${p.opacity * 0.7})`;
+            ctx.fill();
+          }
+
+          p.y -= p.speedY;
+          p.x += p.speedX;
+
+          if (p.y < 0) {
+            p.y = height;
+            p.x = Math.random() * width;
+          }
+        });
       } else {
         // Sunny warm ambient glow particles
         particles.forEach((p) => {
@@ -140,24 +174,32 @@ export default function MascotWidget() {
       ? "from-slate-900 via-indigo-950/80 to-blue-950/90 border-rose-500/40 shadow-rose-900/30"
       : mascotMood === "rain"
       ? "from-slate-900 via-sky-950/80 to-cyan-950/80 border-sky-400/40 shadow-sky-950/40"
+      : mascotMood === "sleep"
+      ? "from-slate-950 via-indigo-950/90 to-purple-950/90 border-indigo-400/30 shadow-indigo-950/50"
       : "from-amber-950/30 via-slate-900/90 to-blue-950/60 border-amber-400/30 shadow-amber-900/20";
 
   return (
-    <div className="absolute bottom-6 left-4 z-[990] flex flex-col items-start gap-2.5 select-none pointer-events-auto">
+    <div className="absolute bottom-3 left-3 sm:bottom-6 sm:left-4 z-[990] flex flex-col items-start gap-2 select-none pointer-events-auto">
       {/* 1. DUOLINGO-STYLE SPEECH BUBBLE */}
       {isSpeechBubbleOpen && (
-        <div className="relative max-w-[270px] sm:max-w-[320px] bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border border-slate-200 dark:border-slate-800 rounded-2xl p-3 shadow-2xl animate-in fade-in slide-in-from-bottom-3 duration-300">
+        <div className="relative max-w-[calc(100vw-100px)] sm:max-w-[320px] bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border border-slate-200 dark:border-slate-800 rounded-2xl p-2.5 sm:p-3 shadow-2xl animate-in fade-in slide-in-from-bottom-3 duration-300">
           <div className="flex items-start justify-between gap-1.5 mb-1">
             <div className="flex items-center gap-1.5">
-              <span className="text-xs">
+              <span className="text-[11px] sm:text-xs font-bold">
                 {mascotType === "duck" ? "🦆 Bé Vịt" : "🐱 Bé Mèo"}
               </span>
-              <span className="text-[10px] px-1.5 py-0.5 rounded-full font-bold bg-blue-500/15 text-blue-500 dark:text-blue-400">
-                {mascotMood === "flood" ? "🚨 Cảnh báo" : mascotMood === "rain" ? "🌧️ Mưa" : "☀️ Nắng ráo"}
+              <span className="text-[9px] sm:text-[10px] px-1.5 py-0.5 rounded-full font-bold bg-blue-500/15 text-blue-500 dark:text-blue-400">
+                {mascotMood === "flood"
+                  ? "🚨 Cảnh báo"
+                  : mascotMood === "rain"
+                  ? "🌧️ Mưa"
+                  : mascotMood === "sleep"
+                  ? "🌙 Giờ đi ngủ"
+                  : "☀️ Nắng ráo"}
               </span>
             </div>
 
-            <div className="flex items-center gap-1">
+            <div className="flex items-center gap-0.5">
               <button
                 onClick={cycleNextQuote}
                 title="Đổi câu nói khác"
@@ -177,13 +219,13 @@ export default function MascotWidget() {
 
           <p
             onClick={cycleNextQuote}
-            className="text-xs sm:text-[13px] leading-relaxed font-semibold text-slate-800 dark:text-slate-100 cursor-pointer hover:opacity-85 transition"
+            className="text-[11px] sm:text-[13px] leading-relaxed font-semibold text-slate-800 dark:text-slate-100 cursor-pointer hover:opacity-85 transition"
           >
             &ldquo;{currentQuote}&rdquo;
           </p>
 
           {/* Speech Bubble Arrow pointing down to Mascot */}
-          <div className="absolute -bottom-2 left-8 w-4 h-4 bg-white/95 dark:bg-slate-900/95 border-r border-b border-slate-200 dark:border-slate-800 transform rotate-45" />
+          <div className="absolute -bottom-2 left-6 sm:left-8 w-4 h-4 bg-white/95 dark:bg-slate-900/95 border-r border-b border-slate-200 dark:border-slate-800 transform rotate-45" />
         </div>
       )}
 
@@ -191,13 +233,13 @@ export default function MascotWidget() {
       <div className="relative group">
         <div
           onClick={cycleNextQuote}
-          className={`relative w-28 h-28 sm:w-32 sm:h-32 rounded-3xl bg-gradient-to-b ${moodGradientClass} border backdrop-blur-xl shadow-2xl overflow-hidden cursor-pointer transition-all duration-300 transform group-hover:scale-105 active:scale-95`}
+          className={`relative w-20 h-20 sm:w-28 sm:h-28 rounded-2xl sm:rounded-3xl bg-gradient-to-b ${moodGradientClass} border backdrop-blur-xl shadow-2xl overflow-hidden cursor-pointer transition-all duration-300 transform group-hover:scale-105 active:scale-95`}
         >
-          {/* Animated Weather Canvas (Rain / Sun particles) */}
+          {/* Animated Weather Canvas (Rain / Sun / Sleep particles) */}
           <MascotWeatherCanvas mood={mascotMood} />
 
           {/* Character Image */}
-          <div className="relative z-10 w-full h-full p-2 flex items-center justify-center">
+          <div className="relative z-10 w-full h-full p-1.5 sm:p-2 flex items-center justify-center">
             <img
               src={imgSrc}
               alt={mascotType === "duck" ? "Bé Vịt" : "Bé Mèo"}
@@ -206,13 +248,15 @@ export default function MascotWidget() {
           </div>
 
           {/* Weather Status Icon Badge (Top-Left) */}
-          <div className="absolute top-2 left-2 z-20 p-1 rounded-xl bg-black/40 backdrop-blur-md text-white border border-white/10 shadow">
+          <div className="absolute top-1.5 left-1.5 sm:top-2 sm:left-2 z-20 p-1 rounded-lg sm:rounded-xl bg-black/40 backdrop-blur-md text-white border border-white/10 shadow">
             {mascotMood === "flood" ? (
-              <ShieldAlert className="w-3.5 h-3.5 text-rose-400 animate-pulse" />
+              <ShieldAlert className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-rose-400 animate-pulse" />
             ) : mascotMood === "rain" ? (
-              <CloudRain className="w-3.5 h-3.5 text-cyan-300" />
+              <CloudRain className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-cyan-300" />
+            ) : mascotMood === "sleep" ? (
+              <Moon className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-indigo-300 animate-pulse" />
             ) : (
-              <Sun className="w-3.5 h-3.5 text-amber-300" />
+              <Sun className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-amber-300" />
             )}
           </div>
         </div>
@@ -224,12 +268,13 @@ export default function MascotWidget() {
             toggleMascotType();
           }}
           title={mascotType === "duck" ? "Đổi sang Bé Mèo 🐱" : "Đổi sang Bé Vịt 🦆"}
-          className="absolute -top-2 -right-2 z-30 px-2 py-1 rounded-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-xl flex items-center gap-1 text-[11px] font-bold text-slate-800 dark:text-slate-200 hover:scale-110 active:scale-95 transition cursor-pointer"
+          className="absolute -top-1.5 -right-1.5 sm:-top-2 sm:-right-2 z-30 px-1.5 py-0.5 sm:px-2 sm:py-1 rounded-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-xl flex items-center gap-1 text-[10px] sm:text-[11px] font-bold text-slate-800 dark:text-slate-200 hover:scale-110 active:scale-95 transition cursor-pointer"
         >
           <span>{mascotType === "duck" ? "🦆" : "🐱"}</span>
-          <span className="text-[10px] text-blue-500 font-semibold uppercase">Đổi</span>
+          <span className="text-[9px] sm:text-[10px] text-blue-500 font-semibold uppercase">Đổi</span>
         </button>
       </div>
     </div>
   );
 }
+

@@ -4,10 +4,23 @@ import { getCameraById, getAllCameras, getDistricts } from "@/lib/cameras";
 import { CameraProvider } from "@/context/CameraContext";
 import CameraDetailClient from "./CameraDetailClient";
 
+import type { Metadata } from "next";
+
 interface CameraPageProps {
   params: Promise<{
     id: string;
   }>;
+}
+
+export async function generateMetadata({ params }: CameraPageProps): Promise<Metadata> {
+  const { id } = await params;
+  const camera = getCameraById(id);
+  if (!camera) return { title: "Về Nhà" };
+
+  return {
+    title: `${camera.CamName} | Về Nhà`,
+    description: `Xem camera trực tiếp ${camera.CamName} (${camera.District || "TP.HCM"}) trên hệ thống Về Nhà.`,
+  };
 }
 
 export async function generateStaticParams() {

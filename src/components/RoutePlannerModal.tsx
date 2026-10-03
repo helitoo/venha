@@ -388,8 +388,7 @@ export default function RoutePlannerModal({
           zIndexOffset: isFlooded ? 1500 : 1000,
         });
 
-        // Hover & click listeners to update Right Column Preview
-        camMarker.on("mouseover", () => setHoveredCam(cItem));
+        // Click listener to update Right Column Preview (Single click required, hover disabled)
         camMarker.on("click", () => setHoveredCam(cItem));
 
         layers.addLayer(camMarker);
@@ -410,7 +409,6 @@ export default function RoutePlannerModal({
             icon: floodCallout,
             zIndexOffset: 1600,
           });
-          flMarker.on("mouseover", () => setHoveredCam(cItem));
           flMarker.on("click", () => setHoveredCam(cItem));
           layers.addLayer(flMarker);
         }
@@ -598,14 +596,15 @@ export default function RoutePlannerModal({
                 )}
               </div>
 
-              {/* Swap Button */}
-              <div className="hidden md:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-20">
+              {/* Swap Button (Desktop Center + Mobile Floating) */}
+              <div className="flex md:absolute md:left-1/2 md:top-1/2 md:-translate-x-1/2 md:-translate-y-1/2 z-20 justify-center -my-1 md:my-0">
                 <button
                   onClick={handleSwapLocations}
                   title="Đổi chiều: Điểm xuất phát ⇄ Điểm đến"
-                  className="p-2.5 rounded-full bg-cyan-600 hover:bg-cyan-500 text-white shadow-lg shadow-cyan-600/30 transition hover:scale-110 active:scale-95 border-2 border-white dark:border-slate-900 cursor-pointer"
+                  className="p-2 sm:p-2.5 rounded-full bg-cyan-600 hover:bg-cyan-500 text-white shadow-lg shadow-cyan-600/30 transition hover:scale-110 active:scale-95 border-2 border-white dark:border-slate-900 cursor-pointer flex items-center gap-1 text-[11px] font-bold"
                 >
-                  <ArrowUpDown className="w-4 h-4" />
+                  <ArrowUpDown className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                  <span className="md:hidden">Đổi chiều</span>
                 </button>
               </div>
 
@@ -811,7 +810,7 @@ export default function RoutePlannerModal({
                     />
                     <b>
                       {activeRoute.maxFloodLevel === "LEVEL_0"
-                        ? "Khô ráo (An toàn)"
+                        ? "Thông suốt (An toàn)"
                         : activeRoute.maxFloodLevel === "LEVEL_3"
                           ? "Báo động: Ngập nặng (>40cm)"
                           : activeRoute.maxFloodLevel === "LEVEL_2"
@@ -860,7 +859,7 @@ export default function RoutePlannerModal({
                 {/* Leaflet Embedded Map */}
                 <div
                   ref={miniMapContainerRef}
-                  className="w-full h-[460px] rounded-xl overflow-hidden border border-slate-200/80 dark:border-slate-800 relative shadow-inner z-0"
+                  className="w-full h-[280px] sm:h-[380px] lg:h-[460px] rounded-xl overflow-hidden border border-slate-200/80 dark:border-slate-800 relative shadow-inner z-0"
                 />
               </div>
 

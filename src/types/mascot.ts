@@ -1,6 +1,6 @@
 export type MascotType = "duck" | "cat";
 
-export type MascotMood = "sunny" | "rain" | "flood";
+export type MascotMood = "sunny" | "rain" | "flood" | "sleep";
 
 export interface UserSavedLocation {
   lat: number;

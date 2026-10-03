@@ -13,8 +13,6 @@ import {
   Sparkles,
   CheckCircle2,
   AlertTriangle,
-  FileText,
-  ExternalLink,
 } from "lucide-react";
 import { useMascotContext } from "@/context/MascotContext";
 
@@ -27,7 +25,6 @@ const STORAGE_KEY = "venha_intro_modal_seen_v1";
 
 const TABS = [
   { id: "about", label: "Giới thiệu", icon: Info },
-  { id: "benefits", label: "Lợi ích nổi bật", icon: Sparkles },
   { id: "terms", label: "Điều khoản & An toàn", icon: ShieldCheck },
   { id: "attribution", label: "Tôn Trọng & Bản Quyền", icon: Award },
   { id: "thanks", label: "Tri Ân & Chúc Phúc", icon: Heart },
@@ -41,7 +38,6 @@ export default function AboutProjectModal({
 }: AboutProjectModalProps) {
   const [activeTab, setActiveTab] = useState<Tab>("about");
   const [dontShowAgain, setDontShowAgain] = useState(true);
-  const { getMascotImage } = useMascotContext();
 
   const handleClose = () => {
     if (dontShowAgain) {
@@ -96,13 +92,13 @@ export default function AboutProjectModal({
           </button>
         </div>
 
-        {/* Tab Bar - Centered Navigation */}
+        {/* Tab Bar - Centered Navigation (4 Tabs) */}
         <div className="flex items-center justify-center gap-1 sm:gap-2 px-4 pt-2.5 border-b border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900 overflow-x-auto no-scrollbar">
           {TABS.map(({ id, label, icon: Icon }) => (
             <button
               key={id}
               onClick={() => setActiveTab(id)}
-              className={`flex items-center gap-1.5 px-3 py-2 rounded-t-xl text-xs font-semibold transition cursor-pointer whitespace-nowrap border-b-2 ${
+              className={`flex items-center gap-1.5 px-3.5 py-2 rounded-t-xl text-xs font-semibold transition cursor-pointer whitespace-nowrap border-b-2 ${
                 activeTab === id
                   ? "text-blue-600 dark:text-blue-400 border-blue-600 dark:border-blue-400 bg-blue-50/50 dark:bg-blue-950/40"
                   : "text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 border-transparent hover:bg-slate-50 dark:hover:bg-slate-800/40"
@@ -116,134 +112,137 @@ export default function AboutProjectModal({
 
         {/* Content Area */}
         <div className="flex-1 overflow-y-auto px-6 py-5 text-sm text-slate-700 dark:text-slate-300 space-y-4">
-          {/* TAB 1: GIỚI THIỆU */}
+          {/* TAB 1: GIỚI THIỆU & LỢI ÍCH (GỘP CHUNG) */}
           {activeTab === "about" && (
             <div className="space-y-4 leading-relaxed">
+              {/* Introduction Banner */}
               <div className="p-4 rounded-xl bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-950/40 dark:to-indigo-950/40 border border-blue-100 dark:border-blue-900/50">
                 <p className="text-sm text-slate-800 dark:text-slate-200">
                   <strong className="text-blue-600 dark:text-blue-400">Về Nhà An Toàn (Venha)</strong> là dự án công nghệ phục vụ cộng đồng hoàn toàn phi lợi nhuận, ra đời với sứ mệnh đồng hành cùng hàng triệu bà con, học sinh, sinh viên và người lao động tại TP. Hồ Chí Minh trên mỗi cung đường trở về nhà bình an.
                 </p>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-center">
-                <div className="p-3.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50/60 dark:bg-slate-900/60">
-                  <span className="text-xl sm:text-2xl font-black text-blue-600 dark:text-blue-400 block font-mono">
+              {/* Quick Metrics */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-center">
+                <div className="p-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50/60 dark:bg-slate-900/60">
+                  <span className="text-lg sm:text-xl font-black text-blue-600 dark:text-blue-400 block font-mono">
                     500+
                   </span>
-                  <span className="text-xs font-medium text-slate-600 dark:text-slate-400">
+                  <span className="text-[11px] font-medium text-slate-600 dark:text-slate-400">
                     Camera giao thông trực tiếp
                   </span>
                 </div>
-                <div className="p-3.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50/60 dark:bg-slate-900/60">
-                  <span className="text-xl sm:text-2xl font-black text-cyan-600 dark:text-cyan-400 block font-mono">
+                <div className="p-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50/60 dark:bg-slate-900/60">
+                  <span className="text-lg sm:text-xl font-black text-cyan-600 dark:text-cyan-400 block font-mono">
                     24/7
                   </span>
-                  <span className="text-xs font-medium text-slate-600 dark:text-slate-400">
+                  <span className="text-[11px] font-medium text-slate-600 dark:text-slate-400">
                     Giám sát mưa & ngập úng
                   </span>
                 </div>
-                <div className="p-3.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50/60 dark:bg-slate-900/60">
-                  <span className="text-xl sm:text-2xl font-black text-emerald-600 dark:text-emerald-400 block font-mono">
+                <div className="p-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50/60 dark:bg-slate-900/60">
+                  <span className="text-lg sm:text-xl font-black text-emerald-600 dark:text-emerald-400 block font-mono">
                     100%
                   </span>
-                  <span className="text-xs font-medium text-slate-600 dark:text-slate-400">
+                  <span className="text-[11px] font-medium text-slate-600 dark:text-slate-400">
                     Miễn phí vì cộng đồng
                   </span>
                 </div>
               </div>
 
-              <p className="text-xs text-slate-600 dark:text-slate-400 leading-normal">
-                Ứng dụng kết hợp hình ảnh camera giao thông thực tế, dữ liệu khí tượng mưa gió và trí tuệ nhân tạo thị giác để giúp bạn chủ động nhận diện đoạn đường ngập nước, triều cường, chọn hướng đi khô ráo và an toàn nhất.
-              </p>
+              {/* Benefits Cards Section */}
+              <div className="pt-1">
+                <h4 className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2.5 flex items-center gap-1.5">
+                  <Sparkles className="w-3.5 h-3.5 text-blue-500" />
+                  <span>Các tính năng &amp; lợi ích nổi bật</span>
+                </h4>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                  {/* Benefit 1 */}
+                  <div className="p-3 rounded-xl border border-blue-200/80 dark:border-blue-900/50 bg-gradient-to-br from-blue-50/70 to-blue-100/30 dark:from-blue-950/30 dark:to-blue-900/10 space-y-1 shadow-xs">
+                    <div className="flex items-center gap-2">
+                      <div className="w-7 h-7 rounded-lg bg-blue-600 text-white flex items-center justify-center shrink-0 shadow-sm shadow-blue-500/20">
+                        <Camera className="w-3.5 h-3.5" />
+                      </div>
+                      <div>
+                        <h5 className="text-xs font-bold text-blue-900 dark:text-blue-300">
+                          Camera Trực Tiếp Toàn Thành Phố
+                        </h5>
+                        <span className="text-[10px] font-medium text-blue-600 dark:text-blue-400">
+                          Hơn 500+ điểm nút giao thông
+                        </span>
+                      </div>
+                    </div>
+                    <p className="text-[11px] text-slate-600 dark:text-slate-400 leading-relaxed">
+                      Xem ngay hình ảnh thực tế từ các trục đường chính, vòng xoay, cầu vượt và ngã tư tại tất cả các quận huyện và TP. Thủ Đức.
+                    </p>
+                  </div>
+
+                  {/* Benefit 2 */}
+                  <div className="p-3 rounded-xl border border-cyan-200/80 dark:border-cyan-900/50 bg-gradient-to-br from-cyan-50/70 to-cyan-100/30 dark:from-cyan-950/30 dark:to-cyan-900/10 space-y-1 shadow-xs">
+                    <div className="flex items-center gap-2">
+                      <div className="w-7 h-7 rounded-lg bg-cyan-600 text-white flex items-center justify-center shrink-0 shadow-sm shadow-cyan-500/20">
+                        <CloudRain className="w-3.5 h-3.5" />
+                      </div>
+                      <div>
+                        <h5 className="text-xs font-bold text-cyan-900 dark:text-cyan-300">
+                          Cảnh Báo Mưa &amp; Ngập Bằng AI
+                        </h5>
+                        <span className="text-[10px] font-medium text-cyan-600 dark:text-cyan-400">
+                          Tự động phân tích mặt đường
+                        </span>
+                      </div>
+                    </div>
+                    <p className="text-[11px] text-slate-600 dark:text-slate-400 leading-relaxed">
+                      Nhận diện chuẩn xác vệt nước đọng, đường trơn trượt và phân loại 4 mức độ ngập lụt từ an toàn đến ngập sâu hơn 40cm.
+                    </p>
+                  </div>
+
+                  {/* Benefit 3 */}
+                  <div className="p-3 rounded-xl border border-emerald-200/80 dark:border-emerald-900/50 bg-gradient-to-br from-emerald-50/70 to-emerald-100/30 dark:from-emerald-950/30 dark:to-emerald-900/10 space-y-1 shadow-xs">
+                    <div className="flex items-center gap-2">
+                      <div className="w-7 h-7 rounded-lg bg-emerald-600 text-white flex items-center justify-center shrink-0 shadow-sm shadow-emerald-500/20">
+                        <Navigation className="w-3.5 h-3.5" />
+                      </div>
+                      <div>
+                        <h5 className="text-xs font-bold text-emerald-900 dark:text-emerald-300">
+                          Lập Lộ Trình Thay Thế An Toàn
+                        </h5>
+                        <span className="text-[10px] font-medium text-emerald-600 dark:text-emerald-400">
+                          Chủ động tránh điểm ngập
+                        </span>
+                      </div>
+                    </div>
+                    <p className="text-[11px] text-slate-600 dark:text-slate-400 leading-relaxed">
+                      Đề xuất tuyến đường tối ưu giúp phương tiện di chuyển suôn sẻ, hạn chế tối đa nguy cơ chết máy giữa đường ngập nước.
+                    </p>
+                  </div>
+
+                  {/* Benefit 4 */}
+                  <div className="p-3 rounded-xl border border-amber-200/80 dark:border-amber-900/50 bg-gradient-to-br from-amber-50/70 to-amber-100/30 dark:from-amber-950/30 dark:to-amber-900/10 space-y-1 shadow-xs">
+                    <div className="flex items-center gap-2">
+                      <div className="w-7 h-7 rounded-lg bg-amber-500 text-white flex items-center justify-center shrink-0 shadow-sm shadow-amber-500/20">
+                        <Sparkles className="w-3.5 h-3.5" />
+                      </div>
+                      <div>
+                        <h5 className="text-xs font-bold text-amber-900 dark:text-amber-300">
+                          Mascot Đồng Hành Dễ Thương
+                        </h5>
+                        <span className="text-[10px] font-medium text-amber-600 dark:text-amber-400">
+                          Bé Vịt &amp; Bé Mèo nhắc nhở
+                        </span>
+                      </div>
+                    </div>
+                    <p className="text-[11px] text-slate-600 dark:text-slate-400 leading-relaxed">
+                      Lời nhắc nhở ấm áp về tình hình thời tiết, nhắc chuẩn bị áo mưa và giữ khoảng cách an toàn khi lái xe trong ngày mưa gió.
+                    </p>
+                  </div>
+                </div>
+              </div>
             </div>
           )}
 
-          {/* TAB 2: LỢI ÍCH NỔI BẬT */}
-          {activeTab === "benefits" && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              {/* Benefit 1 */}
-              <div className="p-3.5 rounded-xl border border-blue-200/80 dark:border-blue-900/50 bg-gradient-to-br from-blue-50/70 to-blue-100/30 dark:from-blue-950/30 dark:to-blue-900/10 space-y-1.5 shadow-xs">
-                <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-lg bg-blue-600 text-white flex items-center justify-center shrink-0 shadow-sm shadow-blue-500/20">
-                    <Camera className="w-4 h-4" />
-                  </div>
-                  <div>
-                    <h4 className="text-xs font-bold text-blue-900 dark:text-blue-300">
-                      Camera Trực Tiếp Toàn Thành Phố
-                    </h4>
-                    <span className="text-[10px] font-medium text-blue-600 dark:text-blue-400">
-                      Hơn 500+ điểm nút giao thông
-                    </span>
-                  </div>
-                </div>
-                <p className="text-[11px] text-slate-600 dark:text-slate-400 leading-relaxed">
-                  Xem ngay hình ảnh thực tế từ các trục đường chính, vòng xoay, cầu vượt và ngã tư tại tất cả các quận huyện và TP. Thủ Đức.
-                </p>
-              </div>
-
-              {/* Benefit 2 */}
-              <div className="p-3.5 rounded-xl border border-cyan-200/80 dark:border-cyan-900/50 bg-gradient-to-br from-cyan-50/70 to-cyan-100/30 dark:from-cyan-950/30 dark:to-cyan-900/10 space-y-1.5 shadow-xs">
-                <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-lg bg-cyan-600 text-white flex items-center justify-center shrink-0 shadow-sm shadow-cyan-500/20">
-                    <CloudRain className="w-4 h-4" />
-                  </div>
-                  <div>
-                    <h4 className="text-xs font-bold text-cyan-900 dark:text-cyan-300">
-                      Cảnh Báo Mưa &amp; Ngập Bằng AI
-                    </h4>
-                    <span className="text-[10px] font-medium text-cyan-600 dark:text-cyan-400">
-                      Tự động phân tích mặt đường
-                    </span>
-                  </div>
-                </div>
-                <p className="text-[11px] text-slate-600 dark:text-slate-400 leading-relaxed">
-                  Nhận diện chuẩn xác vệt nước đọng, đường trơn trượt và phân loại 4 mức độ ngập lụt từ an toàn đến ngập sâu hơn 40cm.
-                </p>
-              </div>
-
-              {/* Benefit 3 */}
-              <div className="p-3.5 rounded-xl border border-emerald-200/80 dark:border-emerald-900/50 bg-gradient-to-br from-emerald-50/70 to-emerald-100/30 dark:from-emerald-950/30 dark:to-emerald-900/10 space-y-1.5 shadow-xs">
-                <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-lg bg-emerald-600 text-white flex items-center justify-center shrink-0 shadow-sm shadow-emerald-500/20">
-                    <Navigation className="w-4 h-4" />
-                  </div>
-                  <div>
-                    <h4 className="text-xs font-bold text-emerald-900 dark:text-emerald-300">
-                      Lập Lộ Trình Thay Thế An Toàn
-                    </h4>
-                    <span className="text-[10px] font-medium text-emerald-600 dark:text-emerald-400">
-                      Chủ động tránh điểm ngập
-                    </span>
-                  </div>
-                </div>
-                <p className="text-[11px] text-slate-600 dark:text-slate-400 leading-relaxed">
-                  Đề xuất tuyến đường tối ưu giúp phương tiện di chuyển suôn sẻ, hạn chế tối đa nguy cơ chết máy giữa đường ngập nước.
-                </p>
-              </div>
-
-              {/* Benefit 4 */}
-              <div className="p-3.5 rounded-xl border border-amber-200/80 dark:border-amber-900/50 bg-gradient-to-br from-amber-50/70 to-amber-100/30 dark:from-amber-950/30 dark:to-amber-900/10 space-y-1.5 shadow-xs">
-                <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-lg bg-amber-500 text-white flex items-center justify-center shrink-0 shadow-sm shadow-amber-500/20">
-                    <Sparkles className="w-4 h-4" />
-                  </div>
-                  <div>
-                    <h4 className="text-xs font-bold text-amber-900 dark:text-amber-300">
-                      Mascot Đồng Hành Dễ Thương
-                    </h4>
-                    <span className="text-[10px] font-medium text-amber-600 dark:text-amber-400">
-                      Bé Vịt &amp; Bé Mèo nhắc nhở
-                    </span>
-                  </div>
-                </div>
-                <p className="text-[11px] text-slate-600 dark:text-slate-400 leading-relaxed">
-                  Lời nhắc nhở ấm áp về tình hình thời tiết, nhắc chuẩn bị áo mưa và giữ khoảng cách an toàn khi lái xe trong ngày mưa gió.
-                </p>
-              </div>
-            </div>
-          )}
-
-          {/* TAB 3: ĐIỀU KHOẢN & AN TOÀN */}
+          {/* TAB 2: ĐIỀU KHOẢN & AN TOÀN */}
           {activeTab === "terms" && (
             <div className="space-y-3 text-xs leading-relaxed">
               <div className="rounded-xl border border-amber-200 bg-amber-50/90 dark:bg-amber-950/40 dark:border-amber-900/60 p-3.5 flex items-start gap-2.5 text-amber-900 dark:text-amber-200">
@@ -292,7 +291,7 @@ export default function AboutProjectModal({
             </div>
           )}
 
-          {/* TAB 4: TÔN TRỌNG & BẢN QUYỀN DỮ LIỆU */}
+          {/* TAB 3: TÔN TRỌNG & BẢN QUYỀN DỮ LIỆU */}
           {activeTab === "attribution" && (
             <div className="space-y-3.5 text-xs leading-relaxed">
               <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300">
@@ -343,34 +342,29 @@ export default function AboutProjectModal({
                 ].map((src) => (
                   <div
                     key={src.code}
-                    className="p-3 rounded-xl border border-slate-200 dark:border-slate-800 flex items-start gap-3 bg-white dark:bg-slate-900/70 shadow-2xs"
+                    className="p-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/70 shadow-2xs space-y-1"
                   >
-                    <div className="w-12 h-9 rounded-lg bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-center font-mono font-bold text-[10px] text-slate-700 dark:text-slate-300 shrink-0">
-                      {src.code}
+                    <div className="flex items-center justify-between gap-2">
+                      <h5 className="font-bold text-xs text-slate-900 dark:text-slate-100">
+                        {src.title}
+                      </h5>
+                      <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded-md shrink-0 ${src.color}`}>
+                        {src.tag}
+                      </span>
                     </div>
-                    <div className="flex-1 min-w-0 space-y-0.5">
-                      <div className="flex items-center justify-between gap-2">
-                        <h5 className="font-bold text-xs text-slate-900 dark:text-slate-100 truncate">
-                          {src.title}
-                        </h5>
-                        <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded-md shrink-0 ${src.color}`}>
-                          {src.tag}
-                        </span>
-                      </div>
-                      <p className="text-[10px] font-medium text-slate-500 dark:text-slate-400">
-                        {src.agency}
-                      </p>
-                      <p className="text-[11px] text-slate-600 dark:text-slate-400 leading-snug">
-                        {src.role}
-                      </p>
-                    </div>
+                    <p className="text-[10px] font-medium text-slate-500 dark:text-slate-400">
+                      {src.agency}
+                    </p>
+                    <p className="text-[11px] text-slate-600 dark:text-slate-400 leading-snug">
+                      {src.role}
+                    </p>
                   </div>
                 ))}
               </div>
             </div>
           )}
 
-          {/* TAB 5: TRI ÂN & LỜI CHÚC PHÚC */}
+          {/* TAB 4: TRI ÂN & LỜI CHÚC PHÚC */}
           {activeTab === "thanks" && (
             <div className="space-y-4">
               {/* DÒNG 1: Cảm ơn bà con & người dùng đặt trước */}

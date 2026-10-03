@@ -8,9 +8,9 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Xem Camera Giao Thông TP.HCM - Trực Tiếp & Thời Gian Thực",
+  title: "Về Nhà",
   description:
-    "Hệ thống theo dõi luồng hình ảnh trực tiếp từ hàng trăm camera giao thông trên toàn địa bàn TP. Hồ Chí Minh.",
+    "Về Nhà - Hệ thống theo dõi camera giao thông trực tiếp, thời tiết & cảnh báo ngập lụt TP. Hồ Chí Minh.",
   icons: {
     icon: [
       { url: "/logo-cat.png", type: "image/png" },

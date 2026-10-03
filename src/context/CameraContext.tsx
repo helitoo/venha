@@ -12,6 +12,7 @@ import React, {
 } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { CameraItem, CameraStreamState, ViewMode } from "@/types/camera";
+import { CAMERA_REFRESH_INTERVAL_SEC } from "@/config/constants";
 
 interface CameraContextType {
   // Lists & data
@@ -88,12 +89,6 @@ export function CameraProvider({
   const searchParam = searchParams.get("q") || "";
   const districtParam = searchParams.get("district") || "all";
   const viewParam = (searchParams.get("view") === "map" ? "map" : "grid") as ViewMode;
-  const envInterval = parseInt(
-    process.env.NEXT_PUBLIC_CAMERA_REFRESH_INTERVAL ||
-      process.env.NEXT_PUBLIC_REFRESH_INTERVAL ||
-      "30",
-    10
-  );
 
   // States
   const [currentPage, setCurrentPage] = useState<number>(pageParam);
@@ -101,9 +96,7 @@ export function CameraProvider({
   const [searchQuery, setSearchQuery] = useState<string>(searchParam);
   const [selectedDistrict, setSelectedDistrict] = useState<string>(districtParam);
   const [viewMode, setViewModeState] = useState<ViewMode>(viewParam);
-  const [refreshInterval, setRefreshIntervalState] = useState<number>(
-    Number.isNaN(envInterval) ? 30 : envInterval
-  );
+  const [refreshInterval, setRefreshIntervalState] = useState<number>(CAMERA_REFRESH_INTERVAL_SEC);
   const [gridCols, setGridCols] = useState<2 | 3 | 4>(3);
   const [selectedCamera, setSelectedCamera] = useState<CameraItem | null>(null);
   const [isDarkMode, setIsDarkMode] = useState<boolean>(false);

@@ -110,9 +110,16 @@ export function MascotProvider({ children }: { children: React.ReactNode }) {
     (cam: CameraItem): MascotMood => {
       const flood = floodMap[cam.CamId];
       const weather = weatherMap[cam.CamId];
+      const currentHour = new Date().getHours();
 
+      // Severe flood always alerts first
       if (flood && (flood.floodLevel === "LEVEL_3" || flood.floodLevel === "LEVEL_2")) {
         return "flood";
+      }
+
+      // Late night sleep time (22h00 - 05h00)
+      if (currentHour >= 22 || currentHour < 5) {
+        return "sleep";
       }
 
       if (
@@ -134,6 +141,8 @@ export function MascotProvider({ children }: { children: React.ReactNode }) {
 
   // 4. Compute current Mascot Mood based on User Location (or General City Forecast)
   const mascotMood: MascotMood = useMemo(() => {
+    const currentHour = new Date().getHours();
+
     // If user has location, find closest camera
     if (userLocation && allCameras.length > 0) {
       let closestCam: CameraItem | null = null;
@@ -160,6 +169,12 @@ export function MascotProvider({ children }: { children: React.ReactNode }) {
     if (severeFloodCount > 0 || moderateFloodCount > 0) {
       return "flood";
     }
+
+    // Late night sleep time (22h00 - 05h00)
+    if (currentHour >= 22 || currentHour < 5) {
+      return "sleep";
+    }
+
     if (rainyCameraIds.length > 0) {
       return "rain";
     }
