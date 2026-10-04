@@ -135,6 +135,9 @@ export default function CameraMapView({ onSelectCamera }: CameraMapViewProps) {
 
   const [mapLoaded, setMapLoaded] = useState(false);
   const [visibleCount, setVisibleCount] = useState(0);
+  const [isFollowUser, setIsFollowUser] = useState(false);
+  const isFollowUserRef = useRef(false);
+  const userLocationRef = useRef<{ lat: number; lng: number } | null>(null);
   const [showHotspotsModal, setShowHotspotsModal] = useState(false);
   const [showTimelineModal, setShowTimelineModal] = useState(false);
   const [showAboutModal, setShowAboutModal] = useState(false);
@@ -361,33 +364,37 @@ export default function CameraMapView({ onSelectCamera }: CameraMapViewProps) {
 
       const etaIcon = L.divIcon({
         html: `
-          <div class="flex flex-col items-center pointer-events-auto cursor-pointer select-none filter drop-shadow-xl">
-            <div class="px-3.5 py-1.5 rounded-xl bg-white dark:bg-slate-900 border-2 ${isDry ? "border-blue-600 dark:border-blue-500" : "border-rose-600 dark:border-rose-500"
-          } shadow-2xl flex items-center gap-2.5 transform hover:scale-105 transition-transform">
-              <div class="flex flex-col text-left leading-tight">
-                <span class="text-xs font-black ${isDry ? "text-slate-900 dark:text-white" : "text-rose-600"
-          } flex items-center gap-1">
+          <div class="flex flex-col items-center pointer-events-auto cursor-pointer select-none filter drop-shadow-xl whitespace-nowrap">
+            <div class="px-3 py-1.5 rounded-2xl bg-white dark:bg-slate-900 border-2 ${
+              isDry ? "border-blue-600 dark:border-blue-500" : "border-rose-600 dark:border-rose-500"
+            } shadow-2xl flex items-center gap-2.5 transform hover:scale-105 transition-transform">
+              <div class="flex flex-col text-left leading-tight shrink-0">
+                <span class="text-xs font-black ${
+                  isDry ? "text-slate-900 dark:text-white" : "text-rose-600"
+                } flex items-center gap-1">
                   🚗 ${durationMin} phút
                 </span>
                 <span class="text-[10px] text-slate-500 font-mono font-medium">
                   ${distKm} km
                 </span>
               </div>
-              <div class="h-4 w-[1px] bg-slate-200 dark:bg-slate-700" />
-              <span class="px-1.5 py-0.5 rounded-full text-[9px] font-bold ${isDry
-            ? "bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 border border-emerald-500/30"
-            : "bg-rose-500/15 text-rose-700 dark:text-rose-400 border border-rose-500/30 animate-pulse"
-          }">
+              <div class="h-5 w-[1px] bg-slate-200 dark:bg-slate-700 shrink-0" />
+              <span class="px-2 py-0.5 rounded-full text-[10px] font-bold shrink-0 ${
+                isDry
+                  ? "bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 border border-emerald-500/30"
+                  : "bg-rose-500/15 text-rose-700 dark:text-rose-400 border border-rose-500/30 animate-pulse"
+              }">
                 ${isDry ? "🟢 Né ngập" : "⚠️ Có điểm ngập"}
               </span>
             </div>
-            <div class="w-3 h-3 bg-white dark:bg-slate-900 border-r-2 border-b-2 ${isDry ? "border-blue-600 dark:border-blue-500" : "border-rose-600 dark:border-rose-500"
-          } transform rotate-45 -mt-1.5 shadow-sm"></div>
+            <div class="w-3 h-3 bg-white dark:bg-slate-900 border-r-2 border-b-2 ${
+              isDry ? "border-blue-600 dark:border-blue-500" : "border-rose-600 dark:border-rose-500"
+            } transform rotate-45 -mt-2.5 z-10"></div>
           </div>
         `,
         className: "google-eta-badge",
-        iconSize: [160, 52],
-        iconAnchor: [80, 52],
+        iconSize: [220, 56],
+        iconAnchor: [110, 56],
       });
       const etaMarker = L.marker(midPt, { icon: etaIcon, zIndexOffset: 2500 });
       routeLayersRef.current.addLayer(etaMarker);
@@ -751,6 +758,7 @@ export default function CameraMapView({ onSelectCamera }: CameraMapViewProps) {
     if (typeof window === "undefined" || !mapContainerRef.current) return;
 
     let isMounted = true;
+    let watchId: number | null = null;
 
     async function initLeaflet() {
       const L = (await import("leaflet")).default;
@@ -797,6 +805,15 @@ export default function CameraMapView({ onSelectCamera }: CameraMapViewProps) {
       markersLayerRef.current = markersLayer;
       mapInstanceRef.current = map;
 
+      // Update userLocationRef
+      userLocationRef.current = userLocation ? { lat: userLocation.lat, lng: userLocation.lng } : null;
+
+      // When user drags/pans the map manually, turn off automatic follow mode
+      map.on("dragstart", () => {
+        isFollowUserRef.current = false;
+        setIsFollowUser(false);
+      });
+
       // Attach Viewport Culling Events (moveend, zoomend) & Zoom State Tracking
       let timer: NodeJS.Timeout | null = null;
       const onMapMove = () => {
@@ -816,22 +833,45 @@ export default function CameraMapView({ onSelectCamera }: CameraMapViewProps) {
         onMapMove();
       });
 
-      // Attempt Geolocation to locate, add user location pin, save location & zoom to nearby cameras
+      // Continuous real-time Geolocation tracking (chấm xanh tự động cập nhật vị trí)
       if ("geolocation" in navigator) {
+        // Lần đầu lấy vị trí nhanh để pan map
         navigator.geolocation.getCurrentPosition(
           (position) => {
             if (!isMounted || !mapInstanceRef.current) return;
             const userLat = position.coords.latitude;
             const userLng = position.coords.longitude;
+            userLocationRef.current = { lat: userLat, lng: userLng };
             saveUserLocation(userLat, userLng);
             updateUserLocationMarker(userLat, userLng);
             mapInstanceRef.current.setView([userLat, userLng], 15);
             updateVisibleMarkers(false);
           },
           (error) => {
-            console.warn("Geolocation prompt or access denied/failed:", error);
+            console.warn("Geolocation initial prompt or access denied/failed:", error);
           },
           { enableHighAccuracy: true, timeout: 10000, maximumAge: 60000 }
+        );
+
+        // Theo dõi liên tục sự thay đổi vị trí của người dùng
+        watchId = navigator.geolocation.watchPosition(
+          (position) => {
+            if (!isMounted || !mapInstanceRef.current) return;
+            const userLat = position.coords.latitude;
+            const userLng = position.coords.longitude;
+            userLocationRef.current = { lat: userLat, lng: userLng };
+            saveUserLocation(userLat, userLng);
+            updateUserLocationMarker(userLat, userLng);
+
+            // Nếu đang bật chế độ bám theo vị trí người dùng (Live Tracking)
+            if (isFollowUserRef.current && mapInstanceRef.current) {
+              mapInstanceRef.current.panTo([userLat, userLng], { animate: true, duration: 0.5 });
+            }
+          },
+          (error) => {
+            console.warn("Geolocation watchPosition error:", error);
+          },
+          { enableHighAccuracy: true, timeout: 15000, maximumAge: 5000 }
         );
       }
 
@@ -842,6 +882,9 @@ export default function CameraMapView({ onSelectCamera }: CameraMapViewProps) {
 
     return () => {
       isMounted = false;
+      if (watchId !== null && "geolocation" in navigator) {
+        navigator.geolocation.clearWatch(watchId);
+      }
       if (mapInstanceRef.current) {
         mapInstanceRef.current.remove();
         mapInstanceRef.current = null;
@@ -869,15 +912,22 @@ export default function CameraMapView({ onSelectCamera }: CameraMapViewProps) {
     updateVisibleMarkers,
   ]);
 
-  // Handler to locate & center user's location (or default to HCMC center)
+  // Handler to locate, center & track user's location
   const handleResetCenter = useCallback(() => {
     if (!mapInstanceRef.current) return;
+
+    // Toggle follow mode
+    const nextFollow = !isFollowUserRef.current;
+    isFollowUserRef.current = nextFollow;
+    setIsFollowUser(nextFollow);
+
     if ("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           if (mapInstanceRef.current) {
             const userLat = position.coords.latitude;
             const userLng = position.coords.longitude;
+            userLocationRef.current = { lat: userLat, lng: userLng };
             saveUserLocation(userLat, userLng);
             updateUserLocationMarker(userLat, userLng);
             mapInstanceRef.current.setView([userLat, userLng], 15);
@@ -1526,13 +1576,26 @@ export default function CameraMapView({ onSelectCamera }: CameraMapViewProps) {
 
       {/* 3. RIGHT FLOATING UTILITIES */}
       <div className="absolute right-3 top-24 sm:right-4 sm:top-32 z-[990] flex flex-col items-end gap-1.5 sm:gap-2">
-        {/* GPS Location Button (Placed First to avoid slider overlap) */}
+        {/* GPS Location Button (Tự động zoom & theo dõi vị trí hiện tại) */}
         <button
           onClick={handleResetCenter}
-          title="Định vị & phóng to vị trí hiện tại của tôi"
-          className="p-2 sm:p-2.5 rounded-xl bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 shadow-lg hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-blue-600 dark:hover:text-blue-400 transition hover:scale-105 active:scale-95 cursor-pointer"
+          title={
+            isFollowUser
+              ? "Đang theo dõi vị trí trực tiếp (Bấm để tắt)"
+              : "Định vị & tự động zoom vào vị trí hiện tại của tôi"
+          }
+          aria-label="Định vị vị trí hiện tại"
+          className={`p-2 sm:p-2.5 rounded-xl backdrop-blur-md border shadow-lg transition active:scale-95 cursor-pointer flex items-center justify-center ${
+            isFollowUser
+              ? "bg-blue-600 text-white border-blue-500 shadow-blue-500/40 ring-2 ring-blue-400/50"
+              : "bg-white/95 dark:bg-slate-900/95 border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-blue-600 dark:hover:text-blue-400"
+          }`}
         >
-          <Crosshair className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-blue-500" />
+          <MapPin
+            className={`w-4 h-4 sm:w-4.5 sm:h-4.5 ${
+              isFollowUser ? "text-white fill-current animate-bounce" : "text-blue-600 dark:text-blue-400 fill-blue-500/20"
+            }`}
+          />
         </button>
 
         {/* Zoom Toggle Button + Horizontal Slider Popover */}
