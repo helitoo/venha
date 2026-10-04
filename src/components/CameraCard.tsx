@@ -3,7 +3,8 @@
 import React from "react";
 import { CameraItem } from "@/types/camera";
 import { useCameraStream } from "@/context/CameraContext";
-import { Video, MapPin, RefreshCw, AlertCircle } from "lucide-react";
+import { Video, MapPin, RefreshCw, AlertCircle, ExternalLink } from "lucide-react";
+import { getOfficialCameraPlayerUrl } from "@/lib/cameras";
 
 interface CameraCardProps {
   camera: CameraItem;
@@ -23,32 +24,34 @@ export default function CameraCard({ camera, onSelect }: CameraCardProps) {
     isCountingDown,
   } = stream;
 
-  // Calculate SVG countdown stroke
-  const radius = 12;
-  const circumference = 2 * Math.PI * radius;
-  const strokeDashoffset =
-    refreshInterval > 0 && isCountingDown
-      ? circumference - ((refreshInterval - timeLeft) / refreshInterval) * circumference
-      : isFetching
-      ? circumference
-      : 0;
-
   return (
     <div
       onClick={() => onSelect && onSelect(camera)}
-      className="group relative bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col cursor-pointer"
+      className="group relative bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden shadow-xs hover:shadow-md transition-all flex flex-col cursor-pointer"
     >
-      {/* Media Container */}
-      <div className="relative aspect-video w-full bg-slate-950 flex items-center justify-center overflow-hidden">
-        {/* Skeleton placeholder on initial page load only */}
-        {isInitialLoading && !hasError && (
-          <div className="absolute inset-0 bg-slate-800 animate-pulse flex flex-col items-center justify-center text-slate-500 gap-2 z-10">
-            <Video className="w-8 h-8 opacity-40 animate-bounce" />
-            <span className="text-xs">Đang nạp luồng camera...</span>
-          </div>
-        )}
+      {/* Media & Official Link Container */}
+      <div className="relative aspect-video w-full bg-slate-50 dark:bg-slate-950/70 flex flex-col items-center justify-center p-3 text-center overflow-hidden border-b border-slate-100 dark:border-slate-800/80">
+        {/* Stylized Camera Icon */}
+        <div className="w-10 h-10 rounded-2xl bg-blue-500/10 dark:bg-blue-500/15 border border-blue-500/20 text-blue-600 dark:text-blue-400 flex items-center justify-center mb-1.5 shadow-2xs group-hover:scale-105 transition-transform">
+          <Video className="w-5 h-5" />
+        </div>
+        
+        <span className="text-[11px] font-semibold text-slate-800 dark:text-slate-200 line-clamp-1">
+          {camera.CamName}
+        </span>
+        <span className="text-[10px] text-blue-600 dark:text-blue-400 font-medium flex items-center gap-1 mt-0.5">
+          <span>Xem camera trực tiếp</span>
+          <ExternalLink className="w-3 h-3" />
+        </span>
 
-        {/* Live Image (Displays current image while context pre-fetches next image in background) */}
+        {/* Live Status Badge */}
+        <div className="absolute top-2 left-2 flex items-center gap-1.5 bg-white/90 dark:bg-slate-900/90 border border-slate-200 dark:border-slate-700/80 px-2 py-0.5 rounded-full text-[9px] font-medium text-slate-700 dark:text-slate-300 z-10 shrink-0 whitespace-nowrap shadow-2xs">
+          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse shrink-0" />
+          <span>Sở GTVT</span>
+        </div>
+
+        {/* NOTE: Direct snapshot proxy image display commented out below for full legal compliance & copyright safety */}
+        {/*
         {currentImgSrc && (
           <img
             src={currentImgSrc}
@@ -57,70 +60,7 @@ export default function CameraCard({ camera, onSelect }: CameraCardProps) {
             loading="lazy"
           />
         )}
-
-        {/* Error State when completely unable to fetch */}
-        {hasError && !currentImgSrc && (
-          <div className="absolute inset-0 bg-slate-900/90 flex flex-col items-center justify-center text-slate-400 p-4 text-center z-10">
-            <AlertCircle className="w-6 h-6 text-amber-500 mb-1" />
-            <span className="text-xs font-medium text-slate-200">Mất tín hiệu camera</span>
-            <span className="text-[10px] text-slate-500">Tự động kết nối lại sau giây lát</span>
-          </div>
-        )}
-
-        {/* Live Badge & Fetching Status managed by Context */}
-        <div className="absolute top-2 left-2 flex items-center gap-1.5 bg-black/60 backdrop-blur-md px-2 py-0.5 rounded-full text-[10px] font-medium text-white z-20 shrink-0 whitespace-nowrap">
-          {isFetching ? (
-            <>
-              <RefreshCw className="w-2.5 h-2.5 text-blue-400 animate-spin shrink-0" />
-              <span className="text-blue-300 font-mono shrink-0 whitespace-nowrap">LOADING</span>
-            </>
-          ) : (
-            <>
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping shrink-0" />
-              <span className="w-2 h-2 rounded-full bg-emerald-500 -ml-2.5 shrink-0" />
-              <span className="shrink-0 whitespace-nowrap">LIVE</span>
-            </>
-          )}
-        </div>
-
-        {/* Circular Countdown Timer */}
-        {refreshInterval > 0 && (
-          <div className="absolute top-2 right-2 flex items-center justify-center bg-black/60 backdrop-blur-md rounded-full w-7 h-7 z-20 shrink-0">
-            <svg className="w-6 h-6 transform -rotate-90">
-              <circle
-                cx="12"
-                cy="12"
-                r={radius}
-                className="stroke-slate-700"
-                strokeWidth="2.5"
-                fill="none"
-              />
-              <circle
-                cx="12"
-                cy="12"
-                r={radius}
-                className={`transition-all duration-1000 ease-linear ${
-                  isFetching ? "stroke-blue-400" : "stroke-emerald-400"
-                }`}
-                strokeWidth="2.5"
-                strokeDasharray={circumference}
-                strokeDashoffset={strokeDashoffset}
-                strokeLinecap="round"
-                fill="none"
-              />
-            </svg>
-            <span
-              suppressHydrationWarning
-              className="absolute text-[9px] font-semibold text-white shrink-0 whitespace-nowrap"
-            >
-              {isFetching ? (
-                <RefreshCw className="w-2.5 h-2.5 animate-spin" />
-              ) : (
-                `${timeLeft}s`
-              )}
-            </span>
-          </div>
-        )}
+        */}
       </div>
 
       {/* Camera Info */}

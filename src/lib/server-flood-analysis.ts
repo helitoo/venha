@@ -83,8 +83,8 @@ export async function analyzeFloodWithGemini(
   }
 
   const apiKey = process.env.GEMINI_API_KEY;
-  const configuredModel = process.env.GEMINI_MODEL || "gemini-2.5-flash-lite";
-  const configuredFallback = process.env.GEMINI_FALLBACK_MODEL || "gemini-2.5-flash";
+  const configuredModel = process.env.GEMINI_MODEL || "gemini-3.5-flash-lite";
+  const configuredFallback = process.env.GEMINI_FALLBACK_MODEL || "gemini-3.1-flash-lite";
   const promptText = process.env.GEMINI_FLOOD_PROMPT || DEFAULT_PROMPT;
   const mediaResolution = process.env.GEMINI_MEDIA_RESOLUTION || "MEDIA_RESOLUTION_LOW";
   const batchSize = parseInt(process.env.GEMINI_BATCH_SIZE || "35", 10) || 35;
@@ -168,12 +168,10 @@ export async function analyzeFloodWithGemini(
   const candidateModels = [
     configuredModel,
     configuredFallback,
-    "gemini-2.5-flash-lite",
-    "gemini-2.5-flash",
-    "gemini-2.0-flash-lite",
     "gemini-3.5-flash-lite",
-    "gemini-3.8-flash",
-    "gemini-flash-latest",
+    "gemini-3.1-flash-lite",
+    "gemini-2.5-flash-lite",
+    "gemini-2.0-flash-lite",
   ].filter((v, i, a) => Boolean(v) && a.indexOf(v) === i);
 
   // Split into micro-batches of batchSize

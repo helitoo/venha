@@ -3,9 +3,10 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { CameraItem } from "@/types/camera";
-import { ArrowLeft, MapPin, Video, Info, Sun, Moon, RefreshCw, Sparkles, Map } from "lucide-react";
+import { ArrowLeft, MapPin, Video, Info, Sun, Moon, RefreshCw, Sparkles, Map, ExternalLink, ShieldCheck } from "lucide-react";
 import CameraCard from "@/components/CameraCard";
 import { useCameraStream } from "@/context/CameraContext";
+import { getOfficialCameraPlayerUrl } from "@/lib/cameras";
 
 interface CameraDetailClientProps {
   camera: CameraItem;
@@ -102,68 +103,63 @@ export default function CameraDetailClient({
               </div>
             </div>
 
-            {/* Refresh stream button */}
-            <button
-              onClick={handleManualRefresh}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-blue-50 hover:bg-blue-100 dark:bg-blue-950/60 dark:hover:bg-blue-900/60 text-blue-600 dark:text-blue-400 text-xs font-bold transition active:scale-95 border border-blue-200/80 dark:border-blue-900/50 cursor-pointer shadow-xs"
-              title="Làm mới luồng hình ảnh"
+            <a
+              href={getOfficialCameraPlayerUrl(camera.CamId, camera.CamName)}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold transition active:scale-95 shadow-md shadow-blue-600/30 cursor-pointer"
             >
-              <RefreshCw className={`w-3.5 h-3.5 ${stream.isFetching ? "animate-spin" : ""}`} />
-              <span>Nạp lại ảnh</span>
-            </button>
+              <span>Xem trực tiếp (Cổng GT TP.HCM)</span>
+              <ExternalLink className="w-3.5 h-3.5" />
+            </a>
           </div>
 
-          {/* Big Live Stream Canvas */}
-          <div className="relative aspect-video w-full bg-slate-950 flex items-center justify-center overflow-hidden">
-            {stream.isFetching && (
-              <div className="absolute top-3 right-3 bg-black/70 backdrop-blur-md px-3 py-1 rounded-full text-xs text-cyan-400 flex items-center gap-1.5 font-medium z-10">
-                <RefreshCw className="w-3 h-3 animate-spin" />
-                <span>Đang tải lại...</span>
-              </div>
-            )}
+          {/* Clean Live Stream Canvas / Official Portal Hub */}
+          <div className="relative aspect-video w-full bg-slate-50 dark:bg-slate-950/70 flex flex-col items-center justify-center p-6 text-center overflow-hidden border-b border-slate-100 dark:border-slate-800">
+            <div className="w-14 h-14 rounded-2xl bg-blue-500/10 dark:bg-blue-500/15 border border-blue-500/20 text-blue-600 dark:text-blue-400 flex items-center justify-center mb-3 shadow-2xs">
+              <Video className="w-7 h-7" />
+            </div>
 
+            <h3 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white mb-1">
+              Xem Luồng Camera Trực Tiếp
+            </h3>
+            <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 max-w-md mb-4">
+              Xem luồng video thời gian thực từ Cổng thông tin giao thông TP.HCM
+            </p>
+
+            <a
+              href={getOfficialCameraPlayerUrl(camera.CamId, camera.CamName)}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-semibold text-xs sm:text-sm flex items-center gap-2 shadow-sm shadow-blue-600/20 transition active:scale-95"
+            >
+              <Video className="w-4 h-4" />
+              <span>Mở Xem Camera Trực Tiếp ↗</span>
+            </a>
+
+            {/* NOTE: Direct snapshot proxy image display commented out below for full legal compliance & copyright safety */}
+            {/*
             <img
               src={`/api/proxy?id=${encodeURIComponent(camera.CamId)}&t=${refreshKey}`}
               alt={camera.CamName}
-              onError={(e) => {
-                const target = e.currentTarget;
-                target.style.display = "none";
-                const errBox = target.nextElementSibling as HTMLElement;
-                if (errBox) errBox.style.display = "flex";
-              }}
               className="w-full h-full object-contain"
             />
-
-            <div style={{ display: "none" }} className="absolute inset-0 flex-col items-center justify-center text-center p-6 bg-slate-900 text-slate-400 gap-3">
-              <div className="w-12 h-12 rounded-2xl bg-rose-500/10 text-rose-500 flex items-center justify-center">
-                <Video className="w-6 h-6" />
-              </div>
-              <div>
-                <strong className="block text-sm font-bold text-slate-200">Không thể tải luồng hình ảnh</strong>
-                <span className="text-xs text-slate-400 mt-1 block">Tín hiệu camera đang tạm ngắt hoặc đường truyền bận</span>
-              </div>
-              <button
-                onClick={handleManualRefresh}
-                className="px-4 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs flex items-center gap-1.5 shadow-md shadow-blue-600/30 transition active:scale-95 cursor-pointer"
-              >
-                <RefreshCw className="w-3.5 h-3.5" />
-                <span>Tải lại ảnh</span>
-              </button>
-            </div>
+            */}
           </div>
 
-          {/* Card Footer */}
-          <div className="p-4 bg-slate-50/90 dark:bg-slate-950/80 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between flex-wrap gap-2 text-xs text-slate-600 dark:text-slate-400">
-            <div className="flex items-center gap-2">
-              <Info className="w-4 h-4 text-blue-600 dark:text-blue-400 shrink-0" />
-              <span>Dữ liệu luồng trực tiếp từ Trung tâm Quản lý Giao thông đô thị TP.HCM</span>
+          {/* AI Legal Disclaimer Banner */}
+          <div className="p-4 bg-slate-50/90 dark:bg-slate-950/80 border-t border-slate-200 dark:border-slate-800 flex items-start gap-2.5 text-xs text-slate-500 dark:text-slate-400">
+            <ShieldCheck className="w-4 h-4 text-blue-500 shrink-0 mt-0.5" />
+            <div className="flex-1">
+              <span className="font-semibold text-slate-700 dark:text-slate-300">Tuyên bố miễn trừ: </span>
+              <span>Dữ liệu và phân tích AI chỉ mang tính chất tham khảo. Người tham gia giao thông cần tự quan sát thực tế và tuân thủ chỉ dẫn giao thông của cơ quan chức năng.</span>
             </div>
             <Link
               href="/"
-              className="inline-flex items-center gap-1 text-blue-600 dark:text-blue-400 hover:underline font-semibold"
+              className="inline-flex items-center gap-1 text-blue-600 dark:text-blue-400 hover:underline font-semibold shrink-0"
             >
               <Map className="w-3.5 h-3.5" />
-              <span>Xem trên bản đồ</span>
+              <span>Bản đồ</span>
             </Link>
           </div>
         </div>

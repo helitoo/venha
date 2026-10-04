@@ -24,3 +24,14 @@ export function getDistricts(): string[] {
   });
   return Array.from(districtSet).sort((a, b) => a.localeCompare(b, "vi"));
 }
+
+/**
+ * Generate official live camera player link directly on Cổng thông tin Giao thông TP.HCM
+ */
+export function getOfficialCameraPlayerUrl(camId: string, camLocation?: string): string {
+  const location = encodeURIComponent(camLocation || "Camera Giao Thông TP.HCM");
+  return `https://giaothong.hochiminhcity.gov.vn/expandcameraplayer/?camId=${encodeURIComponent(
+    camId
+  )}&camLocation=${location}&camMode=camera&videoUrl=https://d2zihajmogu5jn.cloudfront.net/bipbop-advanced/bipbop_16x9_variant.m3u8`;
+}
+

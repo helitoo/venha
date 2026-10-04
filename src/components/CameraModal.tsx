@@ -9,6 +9,7 @@ import { useMascotContext } from "@/context/MascotContext";
 import { getCameraTrafficDensity } from "@/lib/google-traffic";
 import { getMascotEmotionTitle } from "@/data/mascotQuotes";
 import { GEMINI_FLOOD_TTL_MINUTES } from "@/config/constants";
+import { getOfficialCameraPlayerUrl } from "@/lib/cameras";
 import {
   X,
   MapPin,
@@ -29,6 +30,7 @@ import {
   Activity,
   AlertTriangle,
   Video,
+  ShieldCheck,
 } from "lucide-react";
 
 interface CameraModalProps {
@@ -335,82 +337,34 @@ function CameraModalContent({
 
         {/* SCROLLABLE CONTENT BODY */}
         <div className="overflow-y-auto flex-1 p-3.5 sm:p-4 space-y-3.5">
-          {/* A. SNAPSHOT STREAM VIEWPORT WITH SKELETON & ERROR FALLBACK */}
-          <div className="relative aspect-video bg-slate-950 rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-inner group flex items-center justify-center">
-            {/* Skeleton Loading State */}
-            {stream.isInitialLoading && !stream.currentImgSrc && !isStreamFailed && (
-              <div className="absolute inset-0 bg-slate-900/90 animate-pulse flex flex-col items-center justify-center text-slate-400 gap-2 z-10">
-                <div className="w-12 h-12 rounded-2xl bg-slate-800 flex items-center justify-center text-cyan-400 animate-bounce">
-                  <Video className="w-6 h-6" />
-                </div>
-                <div className="flex items-center gap-2 text-xs font-semibold text-slate-300">
-                  <RefreshCw className="w-3.5 h-3.5 animate-spin text-cyan-400" />
-                  <span>Đang nạp luồng camera trực tiếp...</span>
-                </div>
+          {/* A. OFFICIAL CAMERA STREAM ACCESS BAR (CLEAN & MINIMALIST) */}
+          <div className="flex items-center justify-between gap-3 p-3 sm:p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 transition-colors">
+            <div className="flex items-center gap-3 min-w-0">
+              <div className="w-10 h-10 rounded-xl bg-blue-500/10 dark:bg-blue-500/15 border border-blue-500/20 text-blue-600 dark:text-blue-400 flex items-center justify-center shrink-0">
+                <Video className="w-5 h-5" />
               </div>
-            )}
-
-            {/* Error Fallback with Retry */}
-            {isStreamFailed ? (
-              <div className="absolute inset-0 bg-slate-900/95 flex flex-col items-center justify-center text-center p-4 gap-2 z-20">
-                <div className="w-12 h-12 rounded-2xl bg-rose-500/10 text-rose-500 flex items-center justify-center border border-rose-500/20">
-                  <AlertTriangle className="w-6 h-6" />
+              <div className="min-w-0">
+                <div className="flex items-center gap-1.5 flex-nowrap">
+                  <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shrink-0" />
+                  <span className="text-xs sm:text-sm font-bold text-slate-900 dark:text-white truncate">
+                    Xem Camera Trực Tiếp
+                  </span>
                 </div>
-                <div>
-                  <h4 className="text-xs sm:text-sm font-bold text-slate-200">
-                    Không có tín hiệu camera
-                  </h4>
-                  <p className="text-[11px] text-slate-400 mt-0.5">
-                    Hệ thống máy chủ giao thông tạm ngắt hoặc đường truyền bận
-                  </p>
-                </div>
-                <button
-                  onClick={handleManualRefresh}
-                  className="mt-1 px-3.5 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold flex items-center gap-1.5 shadow-md shadow-blue-600/30 transition active:scale-95 cursor-pointer"
-                >
-                  <RefreshCw className={`w-3.5 h-3.5 ${stream.isFetching ? "animate-spin" : ""}`} />
-                  <span>Thử tải lại</span>
-                </button>
+                <p className="text-[11px] text-slate-500 dark:text-slate-400 truncate mt-0.5">
+                  Nguồn chính thức: Cổng TT Giao Thông TP.HCM
+                </p>
               </div>
-            ) : null}
-
-            {/* Live Camera Snapshot Image */}
-            {stream.currentImgSrc && !isStreamFailed && (
-              <img
-                src={stream.currentImgSrc}
-                alt={camera.CamName}
-                onError={() => setImgLoadError(true)}
-                className="w-full h-full object-cover transition-opacity duration-300"
-              />
-            )}
-
-            {/* Top-left LIVE Badge */}
-            <div className="absolute top-2.5 left-2.5 flex items-center gap-1.5 pointer-events-none z-10 flex-nowrap">
-              <span className="px-2.5 py-0.5 rounded-full bg-red-600/90 text-white text-[10px] sm:text-[11px] font-bold flex items-center gap-1.5 shadow-lg backdrop-blur-md shrink-0 whitespace-nowrap">
-                <span className="w-2 h-2 rounded-full bg-white animate-ping" />
-                TRỰC TIẾP
-              </span>
-              <span className="px-2 py-0.5 rounded-full bg-slate-900/80 text-slate-200 text-[10px] font-medium backdrop-blur-md shrink-0 whitespace-nowrap">
-                {camera.District || "TP.HCM"}
-              </span>
             </div>
 
-            {/* Top-right In-Viewport Refresh Button */}
-            <div className="absolute top-2.5 right-2.5 flex items-center gap-1.5 z-10">
-              {stream.isFetching && (
-                <div className="bg-black/75 backdrop-blur-md px-2.5 py-1 rounded-full text-[10px] text-cyan-400 flex items-center gap-1.5 font-medium shrink-0 whitespace-nowrap shadow-md">
-                  <RefreshCw className="w-3 h-3 animate-spin" />
-                  <span>Cập nhật...</span>
-                </div>
-              )}
-              <button
-                onClick={handleManualRefresh}
-                title="Làm mới ảnh ngay"
-                className="p-2 rounded-full bg-black/60 hover:bg-black/80 backdrop-blur-md text-slate-200 hover:text-white transition active:scale-90 border border-white/10 cursor-pointer shrink-0"
-              >
-                <RefreshCw className={`w-3.5 h-3.5 ${stream.isFetching ? "animate-spin" : ""}`} />
-              </button>
-            </div>
+            <a
+              href={getOfficialCameraPlayerUrl(camera.CamId, camera.CamName)}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-semibold text-xs transition active:scale-95 shadow-sm shadow-blue-600/20 cursor-pointer whitespace-nowrap shrink-0"
+            >
+              <span>Mở xem</span>
+              <ExternalLink className="w-3.5 h-3.5 opacity-80" />
+            </a>
           </div>
 
           {/* B. DIAGNOSTIC ROAD & FLOOD METRICS */}
@@ -638,18 +592,20 @@ function CameraModalContent({
               </p>
             </div>
           </div>
+
+          {/* D. AI LEGAL DISCLAIMER */}
+          <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950/40 border border-slate-200/80 dark:border-slate-800/80 flex items-center gap-2 text-[11px] text-slate-500 dark:text-slate-400">
+            <ShieldCheck className="w-3.5 h-3.5 text-slate-400 dark:text-slate-500 shrink-0" />
+            <p className="leading-snug">
+              <span className="font-semibold text-slate-600 dark:text-slate-300">Lưu ý: </span>
+              Đánh giá ngập và lộ trình do AI phân tích mang tính chất tham khảo. Vui lòng tự quan sát thực tế khi lưu thông.
+            </p>
+          </div>
         </div>
 
         {/* MODAL ACTIONS FOOTER */}
-        <div className="p-3 sm:px-4 sm:py-3 bg-slate-50 dark:bg-slate-950/80 border-t border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2.5 text-xs text-slate-600 dark:text-slate-300 shrink-0">
-          <div className="flex items-center justify-center sm:justify-start gap-1.5 text-slate-500 dark:text-slate-400 shrink-0 whitespace-nowrap">
-            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shrink-0" />
-            <span className="text-[10px] sm:text-[11px] font-medium shrink-0 whitespace-nowrap">
-              Tự nạp ảnh mỗi {refreshInterval}s
-            </span>
-          </div>
-
-          <div className="grid grid-cols-3 sm:flex items-center gap-1.5 sm:gap-2 flex-nowrap">
+        <div className="p-3 sm:px-4 sm:py-3 bg-slate-50 dark:bg-slate-950/80 border-t border-slate-200 dark:border-slate-800 flex items-center justify-end gap-2 text-xs text-slate-600 dark:text-slate-300 shrink-0">
+          <div className="flex items-center gap-1.5 sm:gap-2 flex-nowrap">
             <button
               onClick={handleCopyLink}
               title="Sao chép link chia sẻ camera này"
